@@ -10,7 +10,7 @@
     "netbull translation symfony bundle"
   ],
   "license" : [
-    "AGPL-3.0"
+    "AGPL-3.0-or-later"
   ],
   "require" : {
     "symfony/templating": "^3.4 || ^4.0",
