@@ -1,0 +1,24 @@
+{
+  "name" : "netbull/translation-bundle",
+  "description" : "Translation bundle",
+  "type" : "symfony-bundle",
+  "authors" : [{
+    "name" : "Aleksandar Dimitrov",
+    "email" : "netbull2007@gmail.com"
+  }],
+  "keywords" : [
+    "netbull translation symfony bundle"
+  ],
+  "license" : [
+    "AGPL-3.0"
+  ],
+  "require" : {
+    "symfony/templating": "^3.4 || ^4.0",
+    "symfony/framework-bundle": "^3.4 || ^4.0"
+  },
+  "autoload" : {
+    "psr-4" : {
+      "NetBull\\TranslationBundle\\" : ""
+    }
+  }
+}

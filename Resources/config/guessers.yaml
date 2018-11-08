@@ -1,0 +1,22 @@
+services:
+  netbull_translation.locale_domain_guesser:
+    class: NetBull\TranslationBundle\Guessers\DomainLocaleGuesser
+    arguments: ['@netbull_translation.validator.meta', '@netbull_translation.locale_map']
+    tags:
+      - { name: 'locale_guesser', alias: 'domain' }
+
+  netbull_translation.locale_cookie_guesser:
+    class: NetBull\TranslationBundle\Guessers\CookieLocaleGuesser
+    arguments: ['@netbull_translation.validator.meta', '%netbull_translation.locale.cookie.name%']
+    tags:
+      - { name: 'locale_guesser', alias: 'cookie' }
+
+  netbull_translation.locale_session_guesser:
+    class: NetBull\TranslationBundle\Guessers\SessionLocaleGuesser
+    arguments: ['@session', '@netbull_translation.validator.meta', '%netbull_translation.locale.session.variable%']
+    tags:
+      - { name: 'locale_guesser', alias: 'session' }
+
+  netbull_translation.locale_guess_manager:
+    class: NetBull\TranslationBundle\Guessers\LocaleGuesserManager
+    arguments: ['%netbull_translation.locale.guessing_order%', '@logger']
