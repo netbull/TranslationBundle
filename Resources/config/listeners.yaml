@@ -6,11 +6,11 @@ services:
     arguments: ['@netbull_translation.locale_guess_manager', '%kernel.default_locale%', '@?netbull_translation.best_locale_matcher', '@logger']
     calls:
       - [setEventDispatcher, [ '@event_dispatcher' ]]
-      - [setDisableVaryHeader, ['%netbull_translation.locale.disable_vary_header%']]
-      - [setExcludedPattern, ['%netbull_translation.locale.guessing_excluded_pattern%']]
+      - [setDisableVaryHeader, ['%netbull_translation.disable_vary_header%']]
+      - [setExcludedPattern, ['%netbull_translation.guessing_excluded_pattern%']]
 
   netbull_translation.locale_update_listener:
     class: NetBull\TranslationBundle\EventListener\LocaleUpdateListener
-    arguments: ['@event_dispatcher', '@netbull_translation.locale_cookie', '@?netbull_translation.locale_session', '%netbull_translation.locale.guessing_order%', '@logger']
+    arguments: ['@event_dispatcher', '@netbull_translation.locale_cookie', '@?netbull_translation.locale_session', '%netbull_translation.guessing_order%', '@logger']
     tags:
       - { name: kernel.event_subscriber }

@@ -45,8 +45,8 @@ class TranslationExtension extends \Twig_Extension
      */
     public function renderSwitcher($route = null, $parameters = [], $template = null)
     {
-        $showCurrentLocale = $this->container->getParameter('netbull_translation.locale.switcher.show_current_locale');
-        $useController = $this->container->getParameter('netbull_translation.locale.switcher.use_controller');
+        $showCurrentLocale = $this->container->getParameter('netbull_translation.switcher.show_current_locale');
+        $useController = $this->container->getParameter('netbull_translation.switcher.use_controller');
         $allowedLocales = $this->container->get('netbull_translation.allowed_locales_provider')->getAllowedLocales();
         $request = $this->container->get('request_stack')->getMasterRequest();
         $infoBuilder = new TargetInformationBuilder($request, $this->container->get('router'), $allowedLocales, $showCurrentLocale, $useController);

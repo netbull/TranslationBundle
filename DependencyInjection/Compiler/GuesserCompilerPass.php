@@ -23,7 +23,7 @@ class GuesserCompilerPass implements CompilerPassInterface
 
         $definition = $container->getDefinition('netbull_translation.locale_guess_manager');
         $taggedServiceIds = $container->findTaggedServiceIds('locale_guesser');
-        $neededServices = $container->getParameter('netbull_translation.locale.guessing_order');
+        $neededServices = $container->getParameter('netbull_translation.guessing_order');
 
         foreach ($taggedServiceIds as $id => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {

@@ -3,37 +3,37 @@ services:
     public: true
     class: NetBull\TranslationBundle\Information\AllowedLocalesProvider
     calls:
-      - [setAllowedLocales, [ '%netbull_translation.locale.allowed_locales%' ]]
+      - [setAllowedLocales, [ '%netbull_translation.allowed_locales%' ]]
 
   netbull_translation.locale_map:
     class: NetBull\TranslationBundle\LocaleMap
-    arguments: [ '%netbull_translation.locale.locale_map%' ]
+    arguments: [ '%netbull_translation.locale_map%' ]
 
   netbull_translation.best_locale_matcher:
     class: NetBull\TranslationBundle\Matcher\DefaultBestLocaleMatcher
     arguments: ['@netbull_translation.allowed_locales_provider']
 
   netbull_translation.locale_cookie:
-    class: '%netbull_translation.locale.cookie.class%'
+    class: '%netbull_translation.cookie.class%'
     arguments:
-      - '%netbull_translation.locale.cookie.name%'
-      - '%netbull_translation.locale.cookie.ttl%'
-      - '%netbull_translation.locale.cookie.path%'
-      - '%netbull_translation.locale.cookie.secure%'
-      - '%netbull_translation.locale.cookie.httpOnly%'
-      - '%netbull_translation.locale.cookie.set_on_change%'
-      - '%netbull_translation.locale.cookie.domain%'
+      - '%netbull_translation.cookie.name%'
+      - '%netbull_translation.cookie.ttl%'
+      - '%netbull_translation.cookie.path%'
+      - '%netbull_translation.cookie.secure%'
+      - '%netbull_translation.cookie.httpOnly%'
+      - '%netbull_translation.cookie.set_on_change%'
+      - '%netbull_translation.cookie.domain%'
 
   netbull_translation.locale_session:
     class: NetBull\TranslationBundle\Locale\Session\LocaleSession
-    arguments: ['@session', '%netbull_translation.locale.session.variable%']
+    arguments: ['@session', '%netbull_translation.session.variable%']
 
   netbull_translation.locale_switcher_helper:
     public: true
     class: NetBull\TranslationBundle\Templating\Helper\LocaleSwitchHelper
     tags:
       - { name: templating.helper, alias: switch }
-    arguments: ['@templating', '%netbull_translation.locale.switcher.template%']
+    arguments: ['@templating', '%netbull_translation.switcher.template%']
 
   netbull_translation.locale_twig.switcher:
     class: NetBull\TranslationBundle\Twig\TranslationExtension
@@ -48,6 +48,6 @@ services:
       - '@event_dispatcher'
       - '@netbull_translation.validator.meta'
       - '@router'
-      - '%netbull_translation.locale.switcher.use_referrer%'
-      - '%netbull_translation.locale.switcher.redirect_to_route%'
-      - '%netbull_translation.locale.switcher.redirect_status_code%'
+      - '%netbull_translation.switcher.use_referrer%'
+      - '%netbull_translation.switcher.redirect_to_route%'
+      - '%netbull_translation.switcher.redirect_status_code%'
