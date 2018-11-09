@@ -47,6 +47,7 @@ class NetBullTranslationExtension extends Extension
         $loader->load('validators.yaml');
         $loader->load('guessers.yaml');
         $loader->load('listeners.yaml');
+        $loader->load('forms.yaml');
         $loader->load('services.yaml');
     }
 
