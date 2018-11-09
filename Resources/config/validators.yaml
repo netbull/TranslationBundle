@@ -16,3 +16,4 @@ services:
 
   netbull_translation.validator.meta:
     class: NetBull\TranslationBundle\Validator\MetaValidator
+    arguments: ['@validator']
