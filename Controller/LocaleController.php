@@ -72,7 +72,7 @@ class LocaleController
      */
     public function switchAction(Request $request)
     {
-        $_locale = $request->attributes->get('_locale', $request->getLocale());
+        $_locale = $request->attributes->get('_route_params')['_locale'] ?? $request->getLocale();
         $statusCode = $request->attributes->get('statusCode', $this->statusCode);
         $useReferrer = $request->attributes->get('useReferrer', $this->useReferrer);
         $redirectToRoute = $request->attributes->get('route', $this->redirectToRoute);
