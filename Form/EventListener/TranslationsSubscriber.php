@@ -5,9 +5,9 @@ namespace NetBull\TranslationBundle\Form\EventListener;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
-use NetBull\CoreBundle\Form\Type\TranslationsType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+use NetBull\TranslationBundle\Form\Type\TranslationsType;
 use NetBull\TranslationBundle\Form\TranslationForm;
 use NetBull\TranslationBundle\Form\Type\TranslationsFieldsType;
 use NetBull\TranslationBundle\ORM\Subscribers\Translation\TranslationInterface;
