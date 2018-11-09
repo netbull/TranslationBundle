@@ -13,6 +13,7 @@ services:
     class: NetBull\TranslationBundle\Validator\LocaleAllowedValidator
     tags:
       - { name: validator.constraint_validator, alias: netbull_translation.validator.locale_allowed }
+    arguments: ['@netbull_translation.allowed_locales_provider']
 
   netbull_translation.validator.meta:
     class: NetBull\TranslationBundle\Validator\MetaValidator
