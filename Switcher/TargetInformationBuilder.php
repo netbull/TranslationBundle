@@ -80,10 +80,11 @@ class TargetInformationBuilder
         $info['locales'] = [];
 
         $parameters = array_merge((array) $this->request->attributes->get('_route_params'), $this->request->query->all(), (array) $parameters);
-        $targetLocales = $this->allowedLocales;
-        foreach ($targetLocales as $locale) {
+
+        foreach ($this->allowedLocales as $locale) {
             $strpos = 0 === strpos($this->request->getLocale(), $locale);
-            if ($this->showCurrentLocale && $strpos || !$strpos) {
+
+            if (($this->showCurrentLocale && $strpos) || !$strpos) {
                 $targetLocaleTargetLang = Intl::getLanguageBundle()->getLanguageName($locale, null, $locale);
                 $targetLocaleCurrentLang = Intl::getLanguageBundle()->getLanguageName($locale, null, $this->request->getLocale());
                 $parameters['_locale'] = $locale;
@@ -117,6 +118,7 @@ class TargetInformationBuilder
                 ];
             }
         }
+
         if (isset($strict)) {
             $generator->setStrictRequirements(false);
         }

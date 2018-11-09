@@ -9,9 +9,7 @@
   "keywords" : [
     "netbull translation symfony bundle"
   ],
-  "license" : [
-    "AGPL-3.0-or-later"
-  ],
+  "license" : "AGPL-3.0-or-later",
   "require" : {
     "symfony/templating": "^3.4 || ^4.0",
     "symfony/framework-bundle": "^3.4 || ^4.0"

@@ -30,7 +30,7 @@ services:
 
   netbull_translation.locale_switcher_helper:
     public: true
-    class: NetBull\TranslationBundle\Templating\Helper\LocaleSwitchHelper
+    class: NetBull\TranslationBundle\Templating\LocaleSwitchHelper
     tags:
       - { name: templating.helper, alias: switch }
     arguments: ['@templating', '%netbull_translation.switcher.template%']

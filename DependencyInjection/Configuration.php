@@ -70,6 +70,7 @@ class Configuration implements ConfigurationInterface
                                 ->booleanNode('show_current_locale')->defaultFalse()->end()
                                 ->scalarNode('redirect_to_route')->defaultNull()->end()
                                 ->scalarNode('redirect_status_code')->defaultValue('302')->end()
+                                ->scalarNode('route')->defaultValue('netbull_translation_locale_switcher')->end()
                                 ->booleanNode('use_controller')->defaultFalse()->end()
                                 ->booleanNode('use_referrer')->defaultTrue()->end()
                             ->end()
