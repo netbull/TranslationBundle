@@ -53,6 +53,8 @@ class NetBullTranslationExtension extends Extension
 
         if (!$config['disable_forms']) {
             $loader->load('forms.yaml');
+            $container->getDefinition('netbull_translation.type.translations')
+                ->replaceArgument(2, $config['allowed_locales']);
         }
     }
 

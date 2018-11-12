@@ -54,10 +54,10 @@ class TranslationsType extends AbstractType
     /**
      * TranslationsType constructor.
      * @param TranslationsSubscriber $translationsSubscriber
-     * @param array $locales
      * @param string $defaultLocale
+     * @param array $locales
      */
-    public function __construct(TranslationsSubscriber $translationsSubscriber, $locales = [], $defaultLocale = 'en')
+    public function __construct(TranslationsSubscriber $translationsSubscriber, $defaultLocale = 'en', $locales = [])
     {
         $this->translationsSubscriber = $translationsSubscriber;
         $this->locales = $locales;
