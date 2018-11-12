@@ -22,7 +22,6 @@ class Configuration implements ConfigurationInterface
         $validStatusCodes = [300, 301, 302, 303, 307];
         $rootNode
             ->children()
-                ->booleanNode('disable_forms')->defaultFalse()->end()
                 ->booleanNode('disable_locale_listeners')->defaultFalse()->end()
                 ->booleanNode('disable_vary_header')->defaultFalse()->end()
                 ->scalarNode('guessing_excluded_pattern')

@@ -1,12 +1,24 @@
-{%- block translations_rows -%}
+{% block translations_fields_widget %}
+    {% set isTabbed = form.parent and (form.parent.vars.render_type == constant('NetBull\\TranslationBundle\\Form\\Type\\TranslationsType::RENDER_TYPE_TABS') or form.parent.vars.render_type == constant('NetBull\\CoreBundle\\Form\\Type\\TranslationsType::RENDER_TYPE_TABS_SMALL')) %}
+
+    {% set locale = form.vars.name %}
+    {% set isActiveTab = false %}
+    {% if office_manager is defined %}
+        {% set isActiveTab = office_manager.defaults.locale == locale %}
+    {% endif %}
+    <div id="{{ form.vars.id }}" class="{% if isTabbed %}tab-pane{% endif %}{% if isTabbed and isActiveTab %} active{% endif %}"{% if isTabbed %} data-translation="{{ locale }}"{% endif %}>
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
+
+{%- block translations_rows_widget -%}
     {% for translationsFields in form %}
         {{ form_errors(translationsFields) }}
         {{ form_widget(translationsFields) }}
     {% endfor %}
 {%- endblock -%}
 
-
-{%- block tabs -%}
+{% block tabs %}
     <ul class="nav nav-tabs" role="tablist"{% if form.vars.prototype_trigger is defined and form.vars.prototype_trigger %} data-prototype="{{ form.vars.prototype_trigger|e('html_attr') }}"{% endif %}>
         {% for locale, child in form %}
             {% set isActiveTab = app.request.locale == locale %}
@@ -27,12 +39,12 @@
             {{ form_widget(child) }}
         {% endfor %}
     </div>
+{% endblock %}
+
+{%- block translations_tabs_widget -%}
+    {{ block('tabs') }}
 {%- endblock -%}
 
-{%- block translations_tabs -%}
-    {{ block(tabs) }}
-{%- endblock -%}
-
-{%- block translations_tabs_small -%}
-    {{ block(tabs) }}
+{%- block translations_tabs_small_widget -%}
+    {{ block('tabs') }}
 {%- endblock -%}
