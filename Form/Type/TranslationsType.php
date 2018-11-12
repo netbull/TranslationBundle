@@ -79,6 +79,7 @@ class TranslationsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->renderType = $options['render_type'];
         $this->translationsSubscriber->setParentForm($this);
         $builder->addEventSubscriber($this->translationsSubscriber);
     }
@@ -94,7 +95,6 @@ class TranslationsType extends AbstractType
         $view->vars['default_locale'] = $options['default_locale'];
         $view->vars['required_locales'] = $options['required_locales'];
         $view->vars['render_type'] = in_array($options['render_type'], $this->renderTypes) ? $options['render_type'] : self::RENDER_TYPE_TABS;
-        $this->renderType = $view->vars['render_type'];
 
         if ($this->prototype) {
             $view->vars['prototype'] = $this->prototype->setParent($form)->createView($view);
