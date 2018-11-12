@@ -2,6 +2,7 @@
 
 namespace NetBull\TranslationBundle\Form\EventListener;
 
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
@@ -103,7 +104,7 @@ class TranslationsSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function postSubmit(FormEvent $event)
+    public function submit(FormEvent $event)
     {
         $data = $event->getData();
         $form = $event->getForm();
@@ -114,10 +115,15 @@ class TranslationsSubscriber implements EventSubscriberInterface
          */
         foreach ($form as $locale => $translationForm) {
             $translation = $translationForm->getData();
+
             // Remove useless Translation object
-            if (!$translation || TranslationsFieldsType::isTranslationEmpty($translationForm)) {
+            if (!$translation || (TranslationsFieldsType::isTranslationEmpty($translationForm) && !$translationForm->getConfig()->getOption('required'))) {
                 $data->removeElement($translation);
                 continue;
+            }
+
+            if (TranslationsFieldsType::isTranslationEmpty($translationForm) && $translationForm->getConfig()->getOption('required')) {
+                $translationForm->addError(new FormError(sprintf('Language "%s" should not be blank.', \Locale::getDisplayLanguage($locale, 'en'))));
             }
 
             $translation->setLocale($locale);
@@ -131,7 +137,7 @@ class TranslationsSubscriber implements EventSubscriberInterface
     {
         return [
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::POST_SUBMIT => 'postSubmit',
+            FormEvents::POST_SUBMIT => 'submit',
         ];
     }
 
