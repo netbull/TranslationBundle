@@ -19,7 +19,7 @@ class TranslationsType extends AbstractType
 {
     const RENDER_TYPE_ROWS = 'rows';
     const RENDER_TYPE_TABS = 'tabs';
-    const RENDER_TYPE_TABS_SMALL = 'tabs-small';
+    const RENDER_TYPE_TABS_SMALL = 'tabs_small';
 
     /**
      * @var TranslationsSubscriber
@@ -135,7 +135,7 @@ class TranslationsType extends AbstractType
     /**
      * @inheritdoc
      */
-    public function getBlockPrefix()
+    public function getName()
     {
         return 'translations_' . $this->renderType;
     }
