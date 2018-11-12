@@ -2,9 +2,15 @@
 
 namespace NetBull\TranslationBundle\Form\Type;
 
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
+use NetBull\TranslationBundle\ORM\Subscribers\Translation\TranslationInterface;
 
 /**
  * Class TranslationsFieldsType
@@ -32,6 +38,52 @@ class TranslationsFieldsType extends AbstractType
     }
 
     /**
+     * @inheritdoc
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['empty'] = self::isTranslationEmpty($form);
+    }
+
+    /**
+     * @param FormInterface $form
+     * @return bool
+     */
+    public static function isTranslationEmpty(FormInterface $form)
+    {
+        $empty = true;
+
+        foreach ($form as $field => $fieldForm) {
+            if ($fieldForm->getData()) {
+                $empty = false;
+                break;
+            }
+        }
+
+        return $empty;
+    }
+
+    /**
+     * @param $payload
+     * @param ExecutionContextInterface $context
+     */
+    public function validate($payload, ExecutionContextInterface $context)
+    {
+        /** @var FormInterface $form **/
+        $form = $context->getObject();
+
+        if (!self::isTranslationEmpty($form) && $payload instanceof TranslationInterface) {
+            foreach ($context->getObject() as $field => $fieldForm) {
+                if (in_array($field, $payload->getMandatoryFields()) && !$fieldForm->getData()) {
+                    $context->buildViolation(sprintf('Field "%s" should not be blank.', ucfirst($field)))
+                        ->atPath($field)
+                        ->addViolation();
+                }
+            }
+        }
+    }
+
+    /**
      * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -39,6 +91,7 @@ class TranslationsFieldsType extends AbstractType
         $resolver->setDefaults([
             'fields' => [],
             'locale' => 'en',
+            'constraints' => new Callback(['callback' => [$this, 'validate']])
         ]);
     }
 }

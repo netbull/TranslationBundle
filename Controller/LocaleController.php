@@ -8,8 +8,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use NetBull\TranslationBundle\Locale\Events;
-use NetBull\TranslationBundle\Event\FilterLocaleSwitchEvent;
 use NetBull\TranslationBundle\Validator\MetaValidator;
+use NetBull\TranslationBundle\Event\FilterLocaleSwitchEvent;
 
 /**
  * Class LocaleController

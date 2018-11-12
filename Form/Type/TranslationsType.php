@@ -47,6 +47,11 @@ class TranslationsType extends AbstractType
     private $prototype;
 
     /**
+     * @var string
+     */
+    private $renderType = self::RENDER_TYPE_ROWS;
+
+    /**
      * TranslationsType constructor.
      * @param TranslationsSubscriber $translationsSubscriber
      * @param array $locales
@@ -89,6 +94,7 @@ class TranslationsType extends AbstractType
         $view->vars['default_locale'] = $options['default_locale'];
         $view->vars['required_locales'] = $options['required_locales'];
         $view->vars['render_type'] = in_array($options['render_type'], $this->renderTypes) ? $options['render_type'] : self::RENDER_TYPE_TABS;
+        $this->renderType = $view->vars['render_type'];
 
         if ($this->prototype) {
             $view->vars['prototype'] = $this->prototype->setParent($form)->createView($view);
@@ -124,5 +130,13 @@ class TranslationsType extends AbstractType
         ]);
 
         $resolver->setAllowedValues('render_type', $this->renderTypes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getBlockPrefix()
+    {
+        return 'translations_' . $this->renderType;
     }
 }

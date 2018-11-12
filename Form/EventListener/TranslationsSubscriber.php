@@ -4,13 +4,13 @@ namespace NetBull\TranslationBundle\Form\EventListener;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-use NetBull\TranslationBundle\Form\Type\TranslationsType;
 use NetBull\TranslationBundle\Form\TranslationForm;
+use NetBull\TranslationBundle\Form\Type\TranslationsType;
 use NetBull\TranslationBundle\Form\Type\TranslationsFieldsType;
-use NetBull\TranslationBundle\ORM\Subscribers\Translation\TranslationInterface;
 
 /**
  * Class TranslationsSubscriber
@@ -68,16 +68,13 @@ class TranslationsSubscriber implements EventSubscriberInterface
         if (isset($formOptions['locales'])) {
             foreach ($formOptions['locales'] as $locale) {
                 if (isset($fieldsOptions[$locale])) {
-                    $form->add(
-                        $locale,
-                        TranslationsFieldsType::class,
-                        [
-                            'data_class' => $translationClass,
-                            'fields' => $fieldsOptions[$locale],
-                            'locale' => $locale,
-                            'required' => in_array($locale, $formOptions['required_locales']),
-                        ]
-                    );
+                    $form->add($locale, TranslationsFieldsType::class, [
+                        'label' => $formOptions['render_type'] === TranslationsType::RENDER_TYPE_ROWS ? false : $locale,
+                        'data_class' => $translationClass,
+                        'fields' => $fieldsOptions[$locale],
+                        'locale' => $locale,
+                        'required' => in_array($locale, $formOptions['required_locales']),
+                    ]);
                 }
             }
         }
@@ -106,23 +103,24 @@ class TranslationsSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function submit(FormEvent $event)
+    public function postSubmit(FormEvent $event)
     {
         $data = $event->getData();
+        $form = $event->getForm();
 
-        foreach ($data as $locale => $translation) {
+        /**
+         * @var string $locale
+         * @var FormInterface $translationForm
+         */
+        foreach ($form as $locale => $translationForm) {
+            $translation = $translationForm->getData();
             // Remove useless Translation object
-            if (!$translation) {
+            if (!$translation || TranslationsFieldsType::isTranslationEmpty($translationForm)) {
                 $data->removeElement($translation);
-            } else {
-                $translation->setLocale($locale);
+                continue;
             }
 
-            if ($translation instanceof TranslationInterface) {
-                if ($translation->isEmpty()) {
-                    $data->removeElement($translation);
-                }
-            }
+            $translation->setLocale($locale);
         }
     }
 
@@ -133,7 +131,7 @@ class TranslationsSubscriber implements EventSubscriberInterface
     {
         return [
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::SUBMIT => 'submit',
+            FormEvents::POST_SUBMIT => 'postSubmit',
         ];
     }
 

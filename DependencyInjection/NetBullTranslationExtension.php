@@ -21,34 +21,39 @@ class NetBullTranslationExtension extends Extension
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        $this->bindParameters($container, 'netbull_translation', $config);
+        if (!$config['disable_locale_listeners']) {
+            $this->bindParameters($container, 'netbull_translation', $config);
 
-        // Fallback for missing intl extension
-        $intlExtensionInstalled = extension_loaded('intl');
-        $container->setParameter('netbull_translation.intl_extension_installed', $intlExtensionInstalled);
-        $iso3166 = $iso639one = $iso639two = $localeScript = [];
+            // Fallback for missing intl extension
+            $intlExtensionInstalled = extension_loaded('intl');
+            $container->setParameter('netbull_translation.intl_extension_installed', $intlExtensionInstalled);
+            $iso3166 = $iso639one = $iso639two = $localeScript = [];
 
-        if (!$intlExtensionInstalled) {
-            $yamlParser = new Parser();
-            $file = new FileLocator(__DIR__ . '/../Resources/config/locale');
-            $iso3166 = $yamlParser->parse(file_get_contents($file->locate('iso3166-1-alpha-2.yaml')));
-            $iso639one = $yamlParser->parse(file_get_contents($file->locate('iso639-1.yaml')));
-            $iso639two = $yamlParser->parse(file_get_contents($file->locate('iso639-2.yaml')));
-            $localeScript = $yamlParser->parse(file_get_contents($file->locate('locale_script.yaml')));
+            if (!$intlExtensionInstalled) {
+                $yamlParser = new Parser();
+                $file = new FileLocator(__DIR__ . '/../Resources/config/locale');
+                $iso3166 = $yamlParser->parse(file_get_contents($file->locate('iso3166-1-alpha-2.yaml')));
+                $iso639one = $yamlParser->parse(file_get_contents($file->locate('iso639-1.yaml')));
+                $iso639two = $yamlParser->parse(file_get_contents($file->locate('iso639-2.yaml')));
+                $localeScript = $yamlParser->parse(file_get_contents($file->locate('locale_script.yaml')));
+            }
+
+            $container->setParameter('netbull_translation.intl_extension_fallback.iso3166', $iso3166);
+            $mergedValues = array_merge($iso639one, $iso639two);
+            $container->setParameter('netbull_translation.intl_extension_fallback.iso639', $mergedValues);
+            $container->setParameter('netbull_translation.intl_extension_fallback.script', $localeScript);
+
+            $loader->load('validators.yaml');
+            $loader->load('guessers.yaml');
+            $loader->load('listeners.yaml');
+            $loader->load('services.yaml');
         }
 
-        $container->setParameter('netbull_translation.intl_extension_fallback.iso3166', $iso3166);
-        $mergedValues = array_merge($iso639one, $iso639two);
-        $container->setParameter('netbull_translation.intl_extension_fallback.iso639', $mergedValues);
-        $container->setParameter('netbull_translation.intl_extension_fallback.script', $localeScript);
-
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('validators.yaml');
-        $loader->load('guessers.yaml');
-        $loader->load('listeners.yaml');
-        $loader->load('forms.yaml');
-        $loader->load('services.yaml');
+        if (!$config['disable_forms']) {
+            $loader->load('forms.yaml');
+        }
     }
 
     /**

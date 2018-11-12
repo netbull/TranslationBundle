@@ -1,58 +1,38 @@
-{% block translations_widget %}
-    {{ form_errors(form) }}
+{%- block translations_rows -%}
+    {% for translationsFields in form %}
+        {{ form_errors(translationsFields) }}
+        {{ form_widget(translationsFields) }}
+    {% endfor %}
+{%- endblock -%}
 
-    {% if form.vars.render_type == constant('NetBull\\TranslationBundle\\Form\\Type\\TranslationsType::RENDER_TYPE_ROWS') %}
-        {% for translationsFields in form %}
-            {{ form_errors(translationsFields) }}
-            {{ form_widget(translationsFields) }}
+
+{%- block tabs -%}
+    <ul class="nav nav-tabs" role="tablist"{% if form.vars.prototype_trigger is defined and form.vars.prototype_trigger %} data-prototype="{{ form.vars.prototype_trigger|e('html_attr') }}"{% endif %}>
+        {% for locale, child in form %}
+            {% set isActiveTab = app.request.locale == locale %}
+            {% if office_manager %}
+                {% set isActiveTab = office_manager.defaults.locale == locale %}
+            {% endif %}
+
+            <li class="nav-item" data-translation="{{ locale }}">
+                <a {% if child.vars.empty %}title="Missing translation in {{ locale|language }}"{% endif %} class="nav-link {% if isActiveTab or form.children|length == 1 %}active{% endif %}" data-toggle="tab" href="#{{ child.vars.id }}">
+                    <i class="flag flag-icon-{{ locale }} {% if child.vars.empty %}no-translation{% endif %} mr-1"></i>{% if child.vars.label %} <span class=".d-none .d-lg-block .d-xl-none">{{ locale|language }}</span>{% endif %}
+                </a>
+            </li>
         {% endfor %}
-    {% elseif form.vars.render_type == constant('NetBull\\TranslationBundle\\Form\\Type\\TranslationsType::RENDER_TYPE_TABS') %}
-        <div class="tabbable-custom">
-            <ul class="nav nav-pills nav-justified">
-                {% for translationsFields in form %}
-                    {% set locale = translationsFields.vars.name %}
+    </ul>
 
-                    <li class="nav-item">
-                        <a class="nav-link {% if app.request.locale == locale or form.children|length == 1 %}active{% endif %}" data-toggle="tab" href="#{{ translationsFields.vars.id }}">
-                            <i class="flag flag-icon-{{ locale }} {% if translationsFields.children.caption is defined and translationsFields.children.caption.vars.value|length == 0 %}no-translation{% endif %}"></i> <span class="hidden-lg-down">{{ locale|language }}</span>
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
+    <div class="tab-content"{% if form.vars.prototype is defined and form.vars.prototype %} data-prototype="{{ form_widget(form.vars.prototype)|e('html_attr') }}"{% endif %}>
+        {% for child in form %}
+            {{ form_widget(child) }}
+        {% endfor %}
+    </div>
+{%- endblock -%}
 
-            <div class="tab-content">
-                {% for translationsFields in form %}
-                    {% set locale = translationsFields.vars.name %}
-                    <div class="tab-pane{% if app.request.locale == locale or form.children|length == 1 %} active{% endif %}" id="{{ translationsFields.vars.id }}">
-                        {{ form_errors(translationsFields) }}
-                        {{ form_widget(translationsFields) }}
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    {% elseif form.vars.render_type == constant('NetBull\\TranslationBundle\\Form\\Type\\TranslationsType::RENDER_TYPE_TABS_SMALL') %}
-        <div class="tabbable-custom tabbable-short">
-            <ul class="nav nav-pills nav-justified">
-                {% for translationsFields in form %}
-                    {% set locale = translationsFields.vars.name %}
+{%- block translations_tabs -%}
+    {{ block(tabs) }}
+{%- endblock -%}
 
-                    <li class="nav-item">
-                        <a class="nav-link {% if app.request.locale == locale or form.children|length == 1 %}active{% endif %}" data-toggle="tab" href="#{{ translationsFields.vars.id }}">
-                            <i class="flag flag-icon-{{ locale }} {% if translationsFields.children.caption is defined and translationsFields.children.caption.vars.value|length == 0 %}no-translation{% endif %}"></i>
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-
-            <div class="tab-content">
-                {% for translationsFields in form %}
-                    {% set locale = translationsFields.vars.name %}
-                    <div class="tab-pane{% if app.request.locale == locale or form.children|length == 1 %} active{% endif %}" id="{{ translationsFields.vars.id }}">
-                        {{ form_errors(translationsFields) }}
-                        {{ form_widget(translationsFields) }}
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    {% endif %}
-{% endblock %}
+{%- block translations_tabs_small -%}
+    {{ block(tabs) }}
+{%- endblock -%}
