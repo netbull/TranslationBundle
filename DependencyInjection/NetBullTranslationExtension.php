@@ -48,12 +48,14 @@ class NetBullTranslationExtension extends Extension
             $loader->load('validators.yaml');
             $loader->load('guessers.yaml');
             $loader->load('listeners.yaml');
-            $loader->load('services.yaml');
+            $loader->load('other.yaml');
         }
 
         $loader->load('forms.yaml');
         $container->getDefinition('netbull_translation.type.translations')
             ->replaceArgument(2, $config['allowed_locales']);
+
+        $loader->load('services.yaml');
     }
 
     /**
