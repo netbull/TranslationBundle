@@ -31,15 +31,9 @@ services:
   netbull_translation.locale_switcher_helper:
     public: true
     class: NetBull\TranslationBundle\Templating\LocaleSwitchHelper
+    arguments: ['@templating', '%netbull_translation.switcher.template%']
     tags:
       - { name: templating.helper, alias: switch }
-    arguments: ['@templating', '%netbull_translation.switcher.template%']
-
-  netbull_translation.locale_twig.switcher:
-    class: NetBull\TranslationBundle\Twig\TranslationExtension
-    tags:
-      - { name: twig.extension }
-    arguments: ['@service_container']
 
   netbull_translation.locale_switcher_controller:
     public: true
@@ -51,3 +45,9 @@ services:
       - '%netbull_translation.switcher.use_referrer%'
       - '%netbull_translation.switcher.redirect_to_route%'
       - '%netbull_translation.switcher.redirect_status_code%'
+
+  netbull_translation.twig.extension:
+    class: NetBull\TranslationBundle\Twig\TranslationExtension
+    arguments: ['@service_container', '@request_stack']
+    tags:
+      - { name: twig.extension }

@@ -2,8 +2,10 @@
 
 namespace NetBull\TranslationBundle\Twig;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use NetBull\TranslationBundle\Utils\TranslationGuesser;
 use NetBull\TranslationBundle\Switcher\TargetInformationBuilder;
 
 /**
@@ -18,12 +20,31 @@ class TranslationExtension extends \Twig_Extension
     protected $container;
 
     /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    /**
      * TranslationExtension constructor.
      * @param ContainerInterface $container
+     * @param RequestStack $requestStack
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, RequestStack $requestStack)
     {
         $this->container = $container;
+        $this->requestStack = $requestStack;
+    }
+
+    /**
+     * @return array|\Twig_Filter[]
+     */
+    public function getFilters()
+    {
+        return [
+            new \Twig_SimpleFilter('guessTranslation', [$this, 'guessTranslation']),
+            new \Twig_SimpleFilter('getTranslation', [$this, 'getTranslation']),
+            new \Twig_SimpleFilter('language', [$this, 'languageFromLocale']),
+        ];
     }
 
     /**
@@ -35,6 +56,10 @@ class TranslationExtension extends \Twig_Extension
             new \Twig_SimpleFunction('locale_switcher', [$this, 'renderSwitcher'], ['is_safe' => ['html']]),
         ];
     }
+
+    #########################################
+    #              Functions                #
+    #########################################
 
     /**
      * @param null $template
@@ -57,6 +82,65 @@ class TranslationExtension extends \Twig_Extension
         $info = $infoBuilder->getTargetInformation($route, $parameters);
 
         return $this->container->get('netbull_translation.locale_switcher_helper')->renderSwitch($info, $template);
+    }
+
+    #########################################
+    #                Filters                #
+    #########################################
+
+    /**
+     * @param array $translations
+     * @param string $field
+     * @param null $locale
+     * @param bool $strict
+     * @return mixed|string
+     */
+    public function guessTranslation(array $translations, $field = 'name', $locale = null, $strict = false)
+    {
+        if (empty($translations)) {
+            return '';
+        }
+
+        if (!$locale) {
+            $locale = $this->requestStack->getCurrentRequest()->getLocale();
+        }
+
+        return TranslationGuesser::guess($translations, $field, $locale, $strict);
+    }
+
+    /**
+     * @param array $translations
+     * @param null $locale
+     * @param bool $strict
+     * @return mixed|string
+     */
+    public function getTranslation(array $translations, $locale = null, $strict = false)
+    {
+        if (empty($translations)) {
+            return '';
+        }
+
+        if (!$locale) {
+            $locale = $this->requestStack->getCurrentRequest()->getLocale();
+        }
+
+        return TranslationGuesser::get($translations, $locale, $strict);
+    }
+
+    /**
+     * Return Language representation for a given Locale
+     * @param $locale
+     * @param string $toLocale
+     * @return string
+     */
+    public function languageFromLocale($locale, $toLocale = null)
+    {
+        $request = $this->requestStack->getCurrentRequest();
+        $auto = $request ? $request->getLocale() : 'en';
+        $toLocale = ($toLocale)?$toLocale:$auto;
+        $language = \Locale::getDisplayLanguage($locale, $toLocale);
+
+        return mb_convert_case($language, MB_CASE_TITLE, 'UTF-8');
     }
 
     /**
