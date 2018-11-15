@@ -17,7 +17,7 @@ trait TranslationTrait
      */
     public function getMandatoryFields()
     {
-        return $this->mandatoryFields;
+        return $this->mandatoryFields ?? [];
     }
 
     /**
