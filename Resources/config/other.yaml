@@ -1,8 +1,9 @@
-netbull_translation.allowed_locales_provider:
-  public: true
-  class: NetBull\TranslationBundle\Information\AllowedLocalesProvider
-  calls:
-    - [setAllowedLocales, [ '%netbull_translation.allowed_locales%' ]]
+services:
+  netbull_translation.allowed_locales_provider:
+    public: true
+    class: NetBull\TranslationBundle\Information\AllowedLocalesProvider
+    calls:
+      - [setAllowedLocales, [ '%netbull_translation.allowed_locales%' ]]
 
   netbull_translation.locale_map:
     class: NetBull\TranslationBundle\LocaleMap
