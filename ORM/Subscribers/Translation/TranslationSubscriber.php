@@ -2,6 +2,7 @@
 
 namespace NetBull\TranslationBundle\ORM\Subscribers\Translation;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\DoctrineBehaviors\Reflection\ClassAnalyzer;
 
 use Knp\DoctrineBehaviors\ORM\AbstractSubscriber;
@@ -15,6 +16,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\DBAL\Platforms;
 
@@ -24,6 +26,7 @@ use Doctrine\DBAL\Platforms;
  */
 class TranslationSubscriber extends AbstractSubscriber
 {
+    private $translatable;
     private $sluggableTrait = 'Knp\DoctrineBehaviors\Model\Sluggable\Sluggable';
 
     private $currentLocaleCallable;
@@ -341,7 +344,7 @@ class TranslationSubscriber extends AbstractSubscriber
             Events::loadClassMetadata,
             Events::postLoad,
             Events::prePersist,
-            Events::preUpdate,
+            Events::onFlush,
         ];
     }
 
@@ -351,32 +354,51 @@ class TranslationSubscriber extends AbstractSubscriber
     public function prePersist(LifecycleEventArgs $eventArgs)
     {
         $this->setLocales($eventArgs);
-        $this->generateSlug($eventArgs);
     }
 
     /**
-     * @param LifecycleEventArgs $eventArgs
+     * {@inheritdoc}
      */
-    public function preUpdate(LifecycleEventArgs $eventArgs)
+    public function onFlush(OnFlushEventArgs $eventArgs)
     {
-        $this->generateSlug($eventArgs);
+        $em = $eventArgs->getEntityManager();
+        $uow = $em->getUnitOfWork();
+
+        $insertions = $this->getEntities($em, $uow->getScheduledEntityInsertions());
+        $updates = $this->getEntities($em, $uow->getScheduledEntityUpdates());
+
+        foreach (array_merge($insertions, $updates) as $entity) {
+            $entity->generateSlug();
+            $em->persist($entity);
+            $classMetadata = $em->getClassMetadata(get_class($entity));
+            $uow->computeChangeSet($classMetadata, $entity);
+        }
     }
 
-    private function generateSlug(LifecycleEventArgs $eventArgs)
+    /**
+     * @param EntityManagerInterface $em
+     * @param $entities
+     * @return array
+     */
+    private function getEntities(EntityManagerInterface $em, $entities)
     {
-        $entity = $eventArgs->getEntity();
-        $em = $eventArgs->getEntityManager();
-        $classMetadata = $em->getClassMetadata(get_class($entity));
-        if (!$this->isTranslation($classMetadata)) {
-            return;
+        $output = [];
+        foreach ($entities as $entity) {
+            $classMetadata = $em->getClassMetadata(get_class($entity));
+
+            if (!$this->isTranslation($classMetadata)) {
+                continue;
+            }
+
+            $translatable = $entity->getTranslatable();
+            $classMetadata = $em->getClassMetadata(get_class($translatable));
+
+            if ($this->isSluggable($classMetadata)) {
+                $output[] = $translatable;
+            }
         }
 
-        $translatableClass = $entity->getTranslatableEntityClass();
-        $classMetadata = $em->getClassMetadata($translatableClass);
-
-        if ($this->isSluggable($classMetadata)) {
-            $entity->generateSlug();
-        }
+        return $output;
     }
 
     /**
@@ -391,7 +413,7 @@ class TranslationSubscriber extends AbstractSubscriber
         return $this->getClassAnalyzer()->hasTrait(
             $classMetadata->reflClass,
             $this->sluggableTrait,
-            $this->isRecursive
+            true
         );
     }
 }
