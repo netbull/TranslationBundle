@@ -5,8 +5,11 @@ services:
     calls:
       - [setAllowedLocales, [ '%netbull_translation.allowed_locales%' ]]
 
+  NetBull\TranslationBundle\Information\AllowedLocalesProvider:
+    alias: netbull_translation.allowed_locales_provider
+
   netbull_translation.locale_map:
-    class: NetBull\TranslationBundle\LocaleMap
+    class: NetBull\TranslationBundle\Locale\LocaleMap
     arguments: [ '%netbull_translation.locale_map%' ]
 
   netbull_translation.best_locale_matcher:
