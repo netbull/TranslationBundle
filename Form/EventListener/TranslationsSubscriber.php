@@ -2,11 +2,7 @@
 
 namespace NetBull\TranslationBundle\Form\EventListener;
 
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use NetBull\TranslationBundle\Form\TranslationForm;
@@ -25,30 +21,30 @@ class TranslationsSubscriber implements EventSubscriberInterface
     private $translationForm;
 
     /**
-     * @var FormFactoryInterface
+     * @var Form\FormFactoryInterface
      */
     private $formFactory;
 
     /**
-     * @var TranslationsType
+     * @var TranslationsType|null
      */
     private $parentForm;
 
     /**
      * TranslationsSubscriber constructor.
      * @param TranslationForm $translationForm
-     * @param FormFactoryInterface $formFactory
+     * @param Form\FormFactoryInterface $formFactory
      */
-    public function __construct(TranslationForm $translationForm, FormFactoryInterface $formFactory)
+    public function __construct(TranslationForm $translationForm, Form\FormFactoryInterface $formFactory)
     {
         $this->translationForm = $translationForm;
         $this->formFactory = $formFactory;
     }
 
     /**
-     * @param $form
+     * @param TranslationsType $form
      */
-    public function setParentForm($form)
+    public function setParentForm(TranslationsType $form)
     {
         $this->parentForm = $form;
     }
@@ -56,7 +52,7 @@ class TranslationsSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function preSetData(FormEvent $event)
+    public function preSetData(Form\FormEvent $event)
     {
         $form = $event->getForm();
 
@@ -80,7 +76,8 @@ class TranslationsSubscriber implements EventSubscriberInterface
             }
         }
 
-        if (isset($formOptions['prototype']) && $formOptions['prototype']) {
+        $formName = $form->getParent()->getName();
+        if (isset($formOptions['prototype']) && $formOptions['prototype'] && !$this->parentForm->getPrototype($formName)) {
             $options = [
                 'data_class' => $translationClass,
                 'fields' => $this->translationForm->getPrototypeFieldsOptions($translationClass, $formOptions),
@@ -88,30 +85,22 @@ class TranslationsSubscriber implements EventSubscriberInterface
                 'required' => false,
             ];
 
-            switch ($formOptions['render_type']) {
-                case TranslationsType::RENDER_TYPE_ROWS:
-
-                    break;
-                case TranslationsType::RENDER_TYPE_TABS:
-                case TranslationsType::RENDER_TYPE_TABS_SMALL:
-                    $builder = $this->formFactory->createNamedBuilder('__locale__', TranslationsFieldsType::class, null, $options);
-                    $this->parentForm->setPrototype($builder->getForm());
-                    break;
-            }
+            $builder = $this->formFactory->createNamedBuilder('__locale__', TranslationsFieldsType::class, null, $options);
+            $this->parentForm->setPrototype($formName, $builder->getForm());
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function submit(FormEvent $event)
+    public function submit(Form\FormEvent $event)
     {
         $data = $event->getData();
         $form = $event->getForm();
 
         /**
          * @var string $locale
-         * @var FormInterface $translationForm
+         * @var Form\FormInterface $translationForm
          */
         foreach ($form as $locale => $translationForm) {
             $translation = $translationForm->getData();
@@ -123,7 +112,7 @@ class TranslationsSubscriber implements EventSubscriberInterface
             }
 
             if (TranslationsFieldsType::isTranslationEmpty($translationForm) && $translationForm->getConfig()->getOption('required')) {
-                $translationForm->addError(new FormError(sprintf('Language "%s" should not be blank.', \Locale::getDisplayLanguage($locale, 'en'))));
+                $translationForm->addError(new Form\FormError(sprintf('Language "%s" should not be blank.', \Locale::getDisplayLanguage($locale, 'en'))));
             }
 
             $translation->setLocale($locale);
@@ -136,8 +125,8 @@ class TranslationsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::POST_SUBMIT => 'submit',
+            Form\FormEvents::PRE_SET_DATA => 'preSetData',
+            Form\FormEvents::POST_SUBMIT => 'submit',
         ];
     }
 
