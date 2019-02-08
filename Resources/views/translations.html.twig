@@ -1,5 +1,5 @@
 {% block translations_fields_widget %}
-    {% set isTabbed = form.parent and (form.parent.vars.render_type == constant('NetBull\\TranslationBundle\\Form\\Type\\TranslationsType::RENDER_TYPE_TABS') or form.parent.vars.render_type == constant('NetBull\\CoreBundle\\Form\\Type\\TranslationsType::RENDER_TYPE_TABS_SMALL')) %}
+    {% set isTabbed = form.parent and (form.parent.vars.render_type == constant('NetBull\\TranslationBundle\\Form\\Type\\TranslationsType::RENDER_TYPE_TABS') or form.parent.vars.render_type == constant('NetBull\\TranslationBundle\\Form\\Type\\TranslationsType::RENDER_TYPE_TABS_SMALL')) %}
 
     {% set locale = form.vars.name %}
     {% set isActiveTab = false %}
