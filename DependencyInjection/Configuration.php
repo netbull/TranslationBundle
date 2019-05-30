@@ -16,8 +16,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('netbull_translation');
+        $treeBuilder = new TreeBuilder('netbull_translation');
+        $rootNode = $treeBuilder->getRootNode();
 
         $validStatusCodes = [300, 301, 302, 303, 307];
         $rootNode
