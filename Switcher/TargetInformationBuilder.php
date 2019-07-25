@@ -2,8 +2,9 @@
 
 namespace NetBull\TranslationBundle\Switcher;
 
-use Symfony\Component\Intl\Intl;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Intl\Languages;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
@@ -61,7 +62,7 @@ class TargetInformationBuilder
      * @param null $targetRoute
      * @param array $parameters
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function getTargetInformation($targetRoute = null, $parameters = [])
     {
@@ -79,14 +80,12 @@ class TargetInformationBuilder
         $info['current_route'] = $route;
         $info['locales'] = [];
 
-        $parameters = array_merge((array) $this->request->attributes->get('_route_params'), $this->request->query->all(), (array) $parameters);
-
         foreach ($this->allowedLocales as $locale) {
             $strpos = 0 === strpos($this->request->getLocale(), $locale);
 
             if (($this->showCurrentLocale && $strpos) || !$strpos) {
-                $targetLocaleTargetLang = Intl::getLanguageBundle()->getLanguageName($locale, null, $locale);
-                $targetLocaleCurrentLang = Intl::getLanguageBundle()->getLanguageName($locale, null, $this->request->getLocale());
+                $targetLocaleTargetLang = Languages::getName($locale, $locale);
+                $targetLocaleCurrentLang = Languages::getName($locale, $this->request->getLocale());
                 $parameters['_locale'] = $locale;
                 try {
                     if (null !== $targetRoute && "" !== $targetRoute) {
@@ -104,7 +103,7 @@ class TargetInformationBuilder
                 } catch (InvalidParameterException $e) {
                     // skip routes for which we cannot generate a url for the given locale
                     continue;
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     if (isset($strict)) {
                         $generator->setStrictRequirements(false);
                     }
