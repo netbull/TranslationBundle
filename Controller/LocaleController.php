@@ -2,12 +2,11 @@
 
 namespace NetBull\TranslationBundle\Controller;
 
+use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
-use NetBull\TranslationBundle\Locale\Events;
 use NetBull\TranslationBundle\Validator\MetaValidator;
 use NetBull\TranslationBundle\Event\FilterLocaleSwitchEvent;
 
@@ -79,11 +78,11 @@ class LocaleController
         $metaValidator = $this->metaValidator;
 
         if (!$metaValidator->isAllowed($_locale)) {
-            throw new \InvalidArgumentException(sprintf('Not allowed to switch to locale %s', $_locale));
+            throw new InvalidArgumentException(sprintf('Not allowed to switch to locale %s', $_locale));
         }
 
         $localeSwitchEvent = new FilterLocaleSwitchEvent($request, $_locale);
-        $this->dispatcher->dispatch(Events::ON_LOCALE_CHANGE, $localeSwitchEvent);
+        $this->dispatcher->dispatch($localeSwitchEvent);
 
         return $this->getResponse($request, $useReferrer, $statusCode, $redirectToRoute, $_locale);
     }

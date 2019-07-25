@@ -4,12 +4,11 @@ namespace NetBull\TranslationBundle\EventListener;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-use NetBull\TranslationBundle\Locale\Events;
 use NetBull\TranslationBundle\Locale\Cookie\LocaleCookie;
 use NetBull\TranslationBundle\Locale\Session\LocaleSession;
 use NetBull\TranslationBundle\Event\FilterLocaleSwitchEvent;
@@ -99,11 +98,11 @@ class LocaleUpdateListener implements EventSubscriberInterface
     /**
      * Event for updating the cookie on response
      *
-     * @param FilterResponseEvent $event
+     * @param ResponseEvent $event
      *
-     * @return \Symfony\Component\HttpFoundation\Response;
+     * @return Response;
      */
-    public function updateCookieOnResponse(FilterResponseEvent $event)
+    public function updateCookieOnResponse(ResponseEvent $event)
     {
         $response = $event->getResponse();
         $cookie = $this->localeCookie->getLocaleCookie($this->locale);
@@ -150,7 +149,7 @@ class LocaleUpdateListener implements EventSubscriberInterface
     {
         return [
             // must be registered after the Router to have access to the _locale and before the Symfony LocaleListener
-            Events::ON_LOCALE_CHANGE => ['onLocaleChange'],
+            FilterLocaleSwitchEvent::class => ['onLocaleChange'],
         ];
     }
 }
