@@ -34,9 +34,7 @@ services:
   netbull_translation.locale_switcher_helper:
     public: true
     class: NetBull\TranslationBundle\Templating\LocaleSwitchHelper
-    arguments: ['@templating', '%netbull_translation.switcher.template%']
-    tags:
-      - { name: templating.helper, alias: switch }
+    arguments: ['@twig', '%netbull_translation.switcher.template%']
 
   netbull_translation.locale_switcher_controller:
     public: true

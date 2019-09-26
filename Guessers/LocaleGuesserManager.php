@@ -83,7 +83,7 @@ class LocaleGuesserManager
 
     /**
      * Loops through all the activated Locale Guessers and
-     * calls the guessLocale methode and passing the current request.
+     * calls the guessLocale method and passing the current request.
      *
      * @param Request $request
      *

@@ -2,9 +2,9 @@
 
 namespace NetBull\TranslationBundle\Form\EventListener;
 
+use Locale;
 use Symfony\Component\Form;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 use NetBull\TranslationBundle\Form\TranslationForm;
 use NetBull\TranslationBundle\Form\Type\TranslationsType;
 use NetBull\TranslationBundle\Form\Type\TranslationsFieldsType;
@@ -112,7 +112,7 @@ class TranslationsSubscriber implements EventSubscriberInterface
             }
 
             if (TranslationsFieldsType::isTranslationEmpty($translationForm) && $translationForm->getConfig()->getOption('required')) {
-                $translationForm->addError(new Form\FormError(sprintf('Language "%s" should not be blank.', \Locale::getDisplayLanguage($locale, 'en'))));
+                $translationForm->addError(new Form\FormError(sprintf('Language "%s" should not be blank.', Locale::getDisplayLanguage($locale, 'en'))));
             }
 
             $translation->setLocale($locale);

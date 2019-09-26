@@ -8,7 +8,6 @@ use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use NetBull\TranslationBundle\Form\EventListener\TranslationsSubscriber;
 
 /**

@@ -4,13 +4,11 @@ namespace NetBull\TranslationBundle\ORM\Subscribers\Translation;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\DoctrineBehaviors\Reflection\ClassAnalyzer;
-
 use Knp\DoctrineBehaviors\ORM\AbstractSubscriber;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use Doctrine\ORM\Id\BigIntegerIdentityGenerator;
 use Doctrine\ORM\Id\IdentityGenerator;
-
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\EntityManager;
@@ -26,7 +24,6 @@ use Doctrine\DBAL\Platforms;
  */
 class TranslationSubscriber extends AbstractSubscriber
 {
-    private $translatable;
     private $sluggableTrait = 'Knp\DoctrineBehaviors\Model\Sluggable\Sluggable';
 
     private $currentLocaleCallable;
@@ -36,10 +33,15 @@ class TranslationSubscriber extends AbstractSubscriber
     private $translatableFetchMode;
     private $translationFetchMode;
 
-    public function __construct(ClassAnalyzer $classAnalyzer, callable $currentLocaleCallable = null,
-        callable $defaultLocaleCallable = null,$translatableTrait, $translationTrait,
-        $translatableFetchMode, $translationFetchMode)
-    {
+    public function __construct(
+        ClassAnalyzer $classAnalyzer,
+        callable $currentLocaleCallable = null,
+        callable $defaultLocaleCallable = null,
+        $translatableTrait,
+        $translationTrait,
+        $translatableFetchMode,
+        $translationFetchMode
+    ) {
         parent::__construct($classAnalyzer, false);
 
         $this->currentLocaleCallable = $currentLocaleCallable;

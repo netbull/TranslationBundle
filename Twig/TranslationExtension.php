@@ -2,17 +2,21 @@
 
 namespace NetBull\TranslationBundle\Twig;
 
+use Exception;
+use Locale;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use NetBull\TranslationBundle\Utils\TranslationGuesser;
 use NetBull\TranslationBundle\Switcher\TargetInformationBuilder;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 /**
  * Class TranslationExtension
  * @package NetBull\TranslationBundle\Twig
  */
-class TranslationExtension extends \Twig_Extension
+class TranslationExtension extends AbstractExtension
 {
     /**
      * @var ContainerInterface
@@ -36,24 +40,24 @@ class TranslationExtension extends \Twig_Extension
     }
 
     /**
-     * @return array|\Twig_Filter[]
+     * @return array|TwigFilter[]
      */
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('guessTranslation', [$this, 'guessTranslation']),
-            new \Twig_SimpleFilter('getTranslation', [$this, 'getTranslation']),
-            new \Twig_SimpleFilter('language', [$this, 'languageFromLocale']),
+            new TwigFilter('guessTranslation', [$this, 'guessTranslation']),
+            new TwigFilter('getTranslation', [$this, 'getTranslation']),
+            new TwigFilter('language', [$this, 'languageFromLocale']),
         ];
     }
 
     /**
-     * @return array The added functions
+     * @return array|TwigFunction[]
      */
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('locale_switcher', [$this, 'renderSwitcher'], ['is_safe' => ['html']]),
+            new TwigFunction('locale_switcher', [$this, 'renderSwitcher'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -66,7 +70,7 @@ class TranslationExtension extends \Twig_Extension
      * @param array $parameters
      * @param null $route
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function renderSwitcher($template = null, $parameters = [], $route = null)
     {
@@ -138,7 +142,7 @@ class TranslationExtension extends \Twig_Extension
         $request = $this->requestStack->getCurrentRequest();
         $auto = $request ? $request->getLocale() : 'en';
         $toLocale = ($toLocale)?$toLocale:$auto;
-        $language = \Locale::getDisplayLanguage($locale, $toLocale);
+        $language = Locale::getDisplayLanguage($locale, $toLocale);
 
         return mb_convert_case($language, MB_CASE_TITLE, 'UTF-8');
     }

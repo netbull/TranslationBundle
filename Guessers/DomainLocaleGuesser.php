@@ -4,7 +4,6 @@ namespace NetBull\TranslationBundle\Guessers;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-
 use NetBull\TranslationBundle\Locale\LocaleMap;
 use NetBull\TranslationBundle\Validator\MetaValidator;
 
@@ -37,7 +36,7 @@ class DomainLocaleGuesser extends AbstractLocaleGuesser
 
     /**
      * Loops through all the activated Locale Guessers and
-     * calls the guessLocale methode and passing the current request.
+     * calls the guessLocale method and passing the current request.
      *
      * @param Request $request
      *

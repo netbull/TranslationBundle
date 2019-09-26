@@ -2,8 +2,9 @@
 
 namespace NetBull\TranslationBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class FilterLocaleSwitchEvent
@@ -29,7 +30,7 @@ class FilterLocaleSwitchEvent extends Event
     public function __construct(Request $request, string $locale)
     {
         if (!is_string($locale) || null === $locale || '' === $locale) {
-            throw new \InvalidArgumentException(sprintf('Wrong type, expected "string" got "%s"', $locale));
+            throw new InvalidArgumentException(sprintf('Wrong type, expected "string" got "%s"', $locale));
         }
 
         $this->request = $request;

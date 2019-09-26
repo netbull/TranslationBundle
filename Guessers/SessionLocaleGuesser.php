@@ -4,7 +4,6 @@ namespace NetBull\TranslationBundle\Guessers;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
-
 use NetBull\TranslationBundle\Validator\MetaValidator;
 
 /**

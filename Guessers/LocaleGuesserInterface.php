@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 interface LocaleGuesserInterface
 {
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      *
      * @return bool
      */

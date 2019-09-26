@@ -52,8 +52,10 @@ class NetBullTranslationExtension extends Extension
         }
 
         $loader->load('forms.yaml');
-        $container->getDefinition('netbull_translation.type.translations')
-            ->replaceArgument(2, $config['allowed_locales']);
+        $container
+            ->getDefinition('netbull_translation.type.translations')
+            ->replaceArgument(2, $config['allowed_locales'])
+        ;
 
         $loader->load('services.yaml');
     }

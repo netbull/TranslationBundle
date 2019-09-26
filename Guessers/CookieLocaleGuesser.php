@@ -3,7 +3,6 @@
 namespace NetBull\TranslationBundle\Guessers;
 
 use Symfony\Component\HttpFoundation\Request;
-
 use NetBull\TranslationBundle\Validator\MetaValidator;
 
 /**

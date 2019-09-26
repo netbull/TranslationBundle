@@ -3,8 +3,10 @@
 namespace NetBull\TranslationBundle\Form;
 
 use Doctrine\Common\Persistence\Proxy;
+use Exception;
 use Symfony\Component\Form\FormRegistry;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\Form\FormTypeGuesserChain;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 
 /**
@@ -14,7 +16,7 @@ use Symfony\Component\Form\FormTypeGuesserInterface;
 class TranslationForm
 {
     /**
-     * @var false|null|\Symfony\Component\Form\FormTypeGuesserChain|\Symfony\Component\Form\FormTypeGuesserInterface
+     * @var false|null|FormTypeGuesserChain|FormTypeGuesserInterface
      */
     private $typeGuesser;
 
@@ -74,7 +76,7 @@ class TranslationForm
      * @param $class
      * @param $options
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function getFieldsOptions($class, $options)
     {
@@ -114,7 +116,7 @@ class TranslationForm
      * @param $class
      * @param $options
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function getPrototypeFieldsOptions($class, $options)
     {
@@ -151,7 +153,7 @@ class TranslationForm
      * @param $options
      * @param $class
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     private function getFieldsList($options, $class)
     {
@@ -160,7 +162,7 @@ class TranslationForm
         // Check existing
         foreach ($formFields as $field) {
             if (!property_exists($class, $field)) {
-                throw new \Exception("Field '". $field ."' doesn't exist in ". $class);
+                throw new Exception("Field '". $field ."' doesn't exist in ". $class);
             }
         }
 

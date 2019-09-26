@@ -2,6 +2,8 @@
 
 namespace NetBull\TranslationBundle\Locale\Cookie;
 
+use DateTime;
+use Exception;
 use Symfony\Component\HttpFoundation\Cookie;
 
 /**
@@ -60,13 +62,19 @@ class LocaleCookie
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     private function computeExpireTime()
     {
         $expireTime = time() + $this->ttl;
-        $date = new \DateTime();
+        try {
+            $date = new DateTime();
+        } catch (Exception $e) {
+            return time();
+        }
+
         $date->setTimestamp($expireTime);
+
         return $date;
     }
 

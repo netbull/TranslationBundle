@@ -11,7 +11,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 use NetBull\TranslationBundle\Locale\Events;
 use NetBull\TranslationBundle\Guessers\LocaleGuesserManager;
 use NetBull\TranslationBundle\Event\FilterLocaleSwitchEvent;
