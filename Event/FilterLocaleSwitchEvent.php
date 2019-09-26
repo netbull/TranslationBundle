@@ -12,6 +12,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class FilterLocaleSwitchEvent extends Event
 {
+    public const NAME = 'netbull_translation.locale.change';
+
     /**
      * @var Request
      */

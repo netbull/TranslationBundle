@@ -11,7 +11,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use NetBull\TranslationBundle\Locale\Events;
 use NetBull\TranslationBundle\Guessers\LocaleGuesserManager;
 use NetBull\TranslationBundle\Event\FilterLocaleSwitchEvent;
 use NetBull\TranslationBundle\Matcher\BestLocaleMatcherInterface;
@@ -104,7 +103,7 @@ class LocaleListener implements EventSubscriberInterface
                 && ($manager->getGuesser('session') || $manager->getGuesser('cookie'))
             ) {
                 $localeSwitchEvent = new FilterLocaleSwitchEvent($request, $locale);
-                $this->dispatcher->dispatch(Events::ON_LOCALE_CHANGE, $localeSwitchEvent);
+                $this->dispatcher->dispatch($localeSwitchEvent, FilterLocaleSwitchEvent::NAME);
             }
         }
     }
