@@ -1,22 +1,24 @@
 {
-  "name" : "netbull/translation-bundle",
-  "description" : "Translation bundle",
-  "type" : "symfony-bundle",
-  "authors" : [{
-    "name" : "Aleksandar Dimitrov",
-    "email" : "netbull2007@gmail.com"
-  }],
-  "keywords" : [
-    "netbull translation symfony bundle"
-  ],
-  "license" : "AGPL-3.0-or-later",
-  "require" : {
-    "symfony/framework-bundle": "^4.0",
-    "netbull/doctrine-behaviors": "^1.5"
-  },
-  "autoload" : {
-    "psr-4" : {
-      "NetBull\\TranslationBundle\\" : ""
+    "name": "netbull/translation-bundle",
+    "description": "Translation bundle",
+    "type": "symfony-bundle",
+    "authors": [
+        {
+            "name": "Aleksandar Dimitrov",
+            "email": "netbull2007@gmail.com"
+        }
+    ],
+    "keywords": [
+        "netbull translation symfony bundle"
+    ],
+    "license": "AGPL-3.0-or-later",
+    "require": {
+        "symfony/framework-bundle": "5.0.*",
+        "netbull/doctrine-behaviors": "^1.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "NetBull\\TranslationBundle\\": ""
+        }
     }
-  }
 }
