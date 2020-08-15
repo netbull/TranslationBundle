@@ -2,7 +2,7 @@
 
 namespace NetBull\TranslationBundle\ORM\Subscribers\Translation;
 
-use Knp\DoctrineBehaviors\Model\Translatable\Translation;
+use Knp\DoctrineBehaviors\Model\Translatable\TranslationTrait as KnpTranslationTrait;
 
 /**
  * Trait TranslationTrait
@@ -10,7 +10,7 @@ use Knp\DoctrineBehaviors\Model\Translatable\Translation;
  */
 trait TranslationTrait
 {
-    use Translation;
+    use KnpTranslationTrait;
 
     /**
      * {@inheritdoc}

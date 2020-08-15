@@ -14,11 +14,11 @@
     "license": "AGPL-3.0-or-later",
     "require": {
         "symfony/framework-bundle": "5.0.*",
-        "netbull/doctrine-behaviors": "^1.5"
+        "knplabs/doctrine-behaviors": "2.*"
     },
     "autoload": {
         "psr-4": {
-            "NetBull\\TranslationBundle\\": ""
+            "NetBull\\TranslationBundle\\": "src/"
         }
     }
 }

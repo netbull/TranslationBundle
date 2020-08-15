@@ -24,7 +24,7 @@ use Doctrine\DBAL\Platforms;
  */
 class TranslationSubscriber extends AbstractSubscriber
 {
-    private $sluggableTrait = 'Knp\DoctrineBehaviors\Model\Sluggable\Sluggable';
+    private $sluggableTrait = 'Knp\DoctrineBehaviors\Model\Sluggable\SluggableTrait';
 
     private $currentLocaleCallable;
     private $defaultLocaleCallable;
