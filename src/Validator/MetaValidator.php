@@ -30,11 +30,11 @@ class MetaValidator
      * @param string $locale
      * @return bool
      */
-    public function isAllowed($locale)
+    public function isAllowed(string $locale)
     {
         $errorListLocale = $this->validator->validate($locale, new Locale);
         $errorListLocaleAllowed = $this->validator->validate($locale, new LocaleAllowed);
 
-        return (count($errorListLocale) == 0 && count($errorListLocaleAllowed) == 0);
+        return (0 === count($errorListLocale) && 0 === count($errorListLocaleAllowed));
     }
 }
