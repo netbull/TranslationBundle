@@ -4,6 +4,7 @@ namespace NetBull\TranslationBundle\Controller;
 
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -78,7 +79,7 @@ class LocaleController
         $metaValidator = $this->metaValidator;
 
         if (!$metaValidator->isAllowed($_locale)) {
-            throw new InvalidArgumentException(sprintf('Not allowed to switch to locale %s', $_locale));
+            throw new NotFoundHttpException(sprintf('Not allowed to switch to locale %s', $_locale));
         }
 
         $localeSwitchEvent = new FilterLocaleSwitchEvent($request, $_locale);
