@@ -2,7 +2,6 @@
 
 namespace NetBull\TranslationBundle\Controller;
 
-use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
@@ -67,25 +66,26 @@ class LocaleController
     }
 
     /**
+     * @param string $newLocale
      * @param Request $request
      * @return RedirectResponse
      */
-    public function switchAction(Request $request)
+    public function switchAction(string $newLocale, Request $request)
     {
-        $_locale = $request->attributes->get('_route_params')['_locale'] ?? $request->getLocale();
+        $locale = $newLocale ?? $request->getLocale();
         $statusCode = $request->attributes->get('statusCode', $this->statusCode);
         $useReferrer = $request->attributes->get('useReferrer', $this->useReferrer);
         $redirectToRoute = $request->attributes->get('route', $this->redirectToRoute);
         $metaValidator = $this->metaValidator;
 
-        if (!$metaValidator->isAllowed($_locale)) {
-            throw new NotFoundHttpException(sprintf('Not allowed to switch to locale %s', $_locale));
+        if (!$metaValidator->isAllowed($locale)) {
+            throw new NotFoundHttpException(sprintf('Not allowed to switch to locale %s', $locale));
         }
 
-        $localeSwitchEvent = new FilterLocaleSwitchEvent($request, $_locale);
+        $localeSwitchEvent = new FilterLocaleSwitchEvent($request, $locale);
         $this->dispatcher->dispatch($localeSwitchEvent);
 
-        return $this->getResponse($request, $useReferrer, $statusCode, $redirectToRoute, $_locale);
+        return $this->getResponse($request, $useReferrer, $statusCode, $redirectToRoute, $locale);
     }
 
     /**
@@ -93,16 +93,16 @@ class LocaleController
      * @param $useReferrer
      * @param $statusCode
      * @param $redirectToRoute
-     * @param $_locale
+     * @param $locale
      * @return RedirectResponse
      */
-    private function getResponse(Request $request, $useReferrer, $statusCode, $redirectToRoute, $_locale)
+    private function getResponse(Request $request, $useReferrer, $statusCode, $redirectToRoute, $locale)
     {
         // Redirect the User
         if ($useReferrer && $request->headers->has('referer')) {
             $response = new RedirectResponse($request->headers->get('referer'), $statusCode);
-        } elseif ($this->router && $redirectToRoute) {
-            $target = $this->router->generate($redirectToRoute, ['_locale' => $_locale]);
+        } elseif ($this->router) {
+            $target = $this->router->generate($redirectToRoute, ['newLocale' => $locale]);
             if ($request->getQueryString()) {
                 if (!strpos($target, '?')) {
                     $target .= '?';

@@ -1,5 +1,8 @@
 netbull_translation_locale_switcher:
-    path: /changeLocale/{_locale}
+    path: /changeLocale/{newLocale}
+    controller: netbull_translation.locale_switcher_controller::switchAction
     defaults:
-        _controller: netbull_translation.locale_switcher_controller::switchAction
-        _locale: '%kernel.default_locale%'
+        newLocale: '%kernel.default_locale%'
+    requirements:
+        newLocale: '\w{2}'
+
