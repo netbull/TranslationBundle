@@ -66,13 +66,13 @@ class LocaleController
     }
 
     /**
-     * @param string $newLocale
+     * @param string $_locale
      * @param Request $request
      * @return RedirectResponse
      */
-    public function switchAction(string $newLocale, Request $request)
+    public function switchAction(string $_locale, Request $request)
     {
-        $locale = $newLocale ?? $request->getLocale();
+        $locale = $_locale ?? $request->getLocale();
         $statusCode = $request->attributes->get('statusCode', $this->statusCode);
         $useReferrer = $request->attributes->get('useReferrer', $this->useReferrer);
         $redirectToRoute = $request->attributes->get('route', $this->redirectToRoute);
@@ -102,7 +102,7 @@ class LocaleController
         if ($useReferrer && $request->headers->has('referer')) {
             $response = new RedirectResponse($request->headers->get('referer'), $statusCode);
         } elseif ($this->router) {
-            $target = $this->router->generate($redirectToRoute, ['newLocale' => $locale]);
+            $target = $this->router->generate($redirectToRoute, ['_locale' => $locale]);
             if ($request->getQueryString()) {
                 if (!strpos($target, '?')) {
                     $target .= '?';
