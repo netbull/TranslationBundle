@@ -67,6 +67,7 @@ class TargetInformationBuilder
     public function getTargetInformation($targetRoute = null, $parameters = [])
     {
         $route = $this->request->attributes->get('_route');
+        $generator = null;
         if (method_exists($this->router, 'getGenerator')) {
             $generator = $this->router->getGenerator();
             if ($generator instanceof ConfigurableRequirementsInterface) {
@@ -86,39 +87,45 @@ class TargetInformationBuilder
             if (($this->showCurrentLocale && $strpos) || !$strpos) {
                 $targetLocaleTargetLang = Languages::getName($locale, $locale);
                 $targetLocaleCurrentLang = Languages::getName($locale, $this->request->getLocale());
-                $parameters['_locale'] = $locale;
-                try {
-                    if (null !== $targetRoute && "" !== $targetRoute) {
-                        $switchRoute = $this->router->generate($targetRoute, $parameters);
-                    } elseif ($this->useController) {
-                        $switchRoute = $this->router->generate('netbull_translation_locale_switcher', ['_locale' => $locale]);
-                    } elseif ($route) {
-                        $switchRoute = $this->router->generate($route, $parameters);
-                    } else {
+
+                if ($info['current_locale'] === $locale) { // If this locale is active, avoid generating a link, it's not needed anyway
+                    $url = 'javascript:';
+                } else {
+                    $parameters['_locale'] = $locale;
+                    try {
+                        if (null !== $targetRoute && "" !== $targetRoute) {
+                            $url = $this->router->generate($targetRoute, $parameters);
+                        } elseif ($this->useController) {
+                            $url = $this->router->generate('netbull_translation_locale_switcher', ['_locale' => $locale]);
+                        } elseif ($route) {
+                            $url = $this->router->generate($route, $parameters);
+                        } else {
+                            continue;
+                        }
+                    } catch (RouteNotFoundException $e) {
+                        // skip routes for which we cannot generate a url for the given locale
                         continue;
+                    } catch (InvalidParameterException $e) {
+                        // skip routes for which we cannot generate a url for the given locale
+                        continue;
+                    } catch (Exception $e) {
+                        if (isset($strict) && $generator) {
+                            $generator->setStrictRequirements(false);
+                        }
+                        throw $e;
                     }
-                } catch (RouteNotFoundException $e) {
-                    // skip routes for which we cannot generate a url for the given locale
-                    continue;
-                } catch (InvalidParameterException $e) {
-                    // skip routes for which we cannot generate a url for the given locale
-                    continue;
-                } catch (Exception $e) {
-                    if (isset($strict)) {
-                        $generator->setStrictRequirements(false);
-                    }
-                    throw $e;
                 }
+
                 $info['locales'][$locale] = [
                     'locale_current_language' => $targetLocaleCurrentLang,
                     'locale_target_language' => $targetLocaleTargetLang,
-                    'link' => $switchRoute,
+                    'link' => $url,
                     'locale' => $locale,
                 ];
             }
         }
 
-        if (isset($strict)) {
+        if (isset($strict) && $generator) {
             $generator->setStrictRequirements(false);
         }
         return $info;
