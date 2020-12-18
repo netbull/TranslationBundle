@@ -2,10 +2,10 @@
 
 namespace NetBull\TranslationBundle\Form;
 
-use Doctrine\Common\Persistence\Proxy;
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Proxy\Proxy;
 use Exception;
 use Symfony\Component\Form\FormRegistry;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormTypeGuesserChain;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 
@@ -21,19 +21,19 @@ class TranslationForm
     private $typeGuesser;
 
     /**
-     * @var ManagerRegistry
+     * @var Registry
      */
-    private $managerRegistry;
+    private $registry;
 
     /**
      * TranslationForm constructor.
      * @param FormRegistry $formRegistry
-     * @param ManagerRegistry $managerRegistry
+     * @param Registry $registry
      */
-    public function __construct(FormRegistry $formRegistry, ManagerRegistry $managerRegistry)
+    public function __construct(FormRegistry $formRegistry, Registry $registry)
     {
         $this->typeGuesser = $formRegistry->getTypeGuesser();
-        $this->managerRegistry = $managerRegistry;
+        $this->registry = $registry;
     }
 
     /**
@@ -59,7 +59,7 @@ class TranslationForm
         $fields = [];
         $translationClass = $this->getRealClass($translationClass);
 
-        if ($manager = $this->managerRegistry->getManagerForClass($translationClass)) {
+        if ($manager = $this->registry->getManagerForClass($translationClass)) {
             $metadataClass = $manager->getMetadataFactory()->getMetadataFor($translationClass);
 
             foreach ($metadataClass->fieldMappings as $fieldMapping) {
