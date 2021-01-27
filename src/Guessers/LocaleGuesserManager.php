@@ -83,9 +83,9 @@ class LocaleGuesserManager
 
     /**
      * @param Request $request
-     * @return bool
+     * @return string|bool
      */
-    public function runLocaleGuessing(Request $request): bool
+    public function runLocaleGuessing(Request $request)
     {
         $this->preferredLocales = $request->getLanguages();
         foreach ($this->guessingOrder as $guesser) {
