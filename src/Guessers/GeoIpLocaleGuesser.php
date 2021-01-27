@@ -26,6 +26,11 @@ class GeoIpLocaleGuesser extends AbstractLocaleGuesser
     private $binary;
 
     /**
+     * @var string
+     */
+    private $default;
+
+    /**
      * @var CountryMap
      */
     private $countryMap;
@@ -36,15 +41,17 @@ class GeoIpLocaleGuesser extends AbstractLocaleGuesser
     private $reader;
 
     /**
-     * CountryLocaleGuesser constructor.
+     * GeoIpLocaleGuesser constructor.
      * @param MetaValidator $metaValidator
      * @param string $binary
+     * @param string $default
      * @param CountryMap $countryMap
      */
-    public function __construct(MetaValidator $metaValidator, string $binary, CountryMap $countryMap)
+    public function __construct(MetaValidator $metaValidator, string $binary, string $default, CountryMap $countryMap)
     {
         $this->metaValidator = $metaValidator;
         $this->binary = $binary;
+        $this->default = $default;
         $this->countryMap = $countryMap;
     }
 
@@ -67,9 +74,9 @@ class GeoIpLocaleGuesser extends AbstractLocaleGuesser
      */
     public function guessLocale(Request $request): bool
     {
-        if ($this->reader) {
+        if ($this->getReader()) {
             try{
-                $record = $this->reader->country($request->getClientIp());
+                $record = $this->getReader()->country($request->getClientIp());
                 $country = strtolower($record->country->isoCode);
             } catch (AddressNotFoundException | InvalidDatabaseException $e) {
                 return false;
@@ -82,7 +89,7 @@ class GeoIpLocaleGuesser extends AbstractLocaleGuesser
         if ($this->countryMap->getLocale($country)) {
             $locale = $this->countryMap->getLocale($country);
         } else {
-            return false;
+            $locale = $this->default;
         }
 
         // now validate

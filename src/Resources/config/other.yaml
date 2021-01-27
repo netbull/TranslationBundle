@@ -13,7 +13,7 @@ services:
         arguments: [ '%netbull_translation.locale_map%' ]
 
     netbull_translation.geoip.country_map:
-        class: NetBull\TranslationBundle\Locale\LocaleMap
+        class: NetBull\TranslationBundle\Locale\CountryMap
         arguments: [ '%netbull_translation.geoip.country_map%' ]
 
     netbull_translation.best_locale_matcher:

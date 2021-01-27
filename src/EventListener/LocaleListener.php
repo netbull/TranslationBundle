@@ -144,9 +144,9 @@ class LocaleListener implements EventSubscriberInterface
     }
 
     /**
-     * @param string $excludedPattern
+     * @param string|null $excludedPattern
      */
-    public function setExcludedPattern(string $excludedPattern)
+    public function setExcludedPattern(?string $excludedPattern)
     {
         $this->excludedPattern = $excludedPattern;
     }

@@ -68,7 +68,7 @@ class NetBullTranslationExtension extends Extension
     {
         if (is_array($config) && empty($config[0])) {
             foreach ($config as $key => $value) {
-                if (in_array($key, ['locale_map', 'geoip.country_map'])) {
+                if (in_array($key, ['locale_map', 'country_map'])) {
                     //need a assoc array here
                     $container->setParameter($name . '.' . $key, $value);
                 } else {

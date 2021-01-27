@@ -19,7 +19,7 @@ services:
 
     netbull_translation.locale_geoip_guesser:
         class: NetBull\TranslationBundle\Guessers\GeoIpLocaleGuesser
-        arguments: [ '@netbull_translation.validator.meta', '%netbull_translation.geoip.binary%', '@netbull_translation.geoip.country_map' ]
+        arguments: [ '@netbull_translation.validator.meta', '%netbull_translation.geoip.binary%', '%netbull_translation.geoip.default%', '@netbull_translation.geoip.country_map' ]
         tags:
             - { name: 'locale_guesser', alias: 'geoip' }
 

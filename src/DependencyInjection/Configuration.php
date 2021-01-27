@@ -102,6 +102,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('geoip')
                     ->children()
                         ->scalarNode('binary')->defaultValue(null)->end()
+                        ->scalarNode('default')->defaultValue('en')->end()
                         ->arrayNode('country_map')
                             ->useAttributeAsKey('country')
                             ->prototype('scalar')->end()
