@@ -54,8 +54,7 @@ class NetBullTranslationExtension extends Extension
         $loader->load('forms.yaml');
         $container
             ->getDefinition('netbull_translation.type.translations')
-            ->replaceArgument(2, $config['allowed_locales'])
-        ;
+            ->replaceArgument(2, $config['allowed_locales']);
 
         $loader->load('services.yaml');
     }
@@ -69,7 +68,7 @@ class NetBullTranslationExtension extends Extension
     {
         if (is_array($config) && empty($config[0])) {
             foreach ($config as $key => $value) {
-                if ('locale_map' === $key) {
+                if (in_array($key, ['locale_map', 'geoip.country_map'])) {
                     //need a assoc array here
                     $container->setParameter($name . '.' . $key, $value);
                 } else {
@@ -84,7 +83,7 @@ class NetBullTranslationExtension extends Extension
     /**
      * @return string
      */
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'netbull_translation';
     }

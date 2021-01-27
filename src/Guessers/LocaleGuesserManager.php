@@ -51,7 +51,7 @@ class LocaleGuesserManager
      * @param LocaleGuesserInterface $guesser The Guesser Service
      * @param string $alias Alias of the Service
      */
-    public function addGuesser(LocaleGuesserInterface $guesser, $alias)
+    public function addGuesser(LocaleGuesserInterface $guesser, string $alias)
     {
         $this->guessers[$alias] = $guesser;
     }
@@ -62,7 +62,7 @@ class LocaleGuesserManager
      * @param string $alias
      * @return LocaleGuesserInterface|null
      */
-    public function getGuesser($alias)
+    public function getGuesser(string $alias): ?LocaleGuesserInterface
     {
         if (array_key_exists($alias, $this->guessers)) {
             return $this->guessers[$alias];
@@ -76,23 +76,16 @@ class LocaleGuesserManager
      *
      * @param string $alias
      */
-    public function removeGuesser($alias)
+    public function removeGuesser(string $alias)
     {
         unset($this->guessers[$alias]);
     }
 
     /**
-     * Loops through all the activated Locale Guessers and
-     * calls the guessLocale method and passing the current request.
-     *
      * @param Request $request
-     *
-     * @throws InvalidConfigurationException
-     *
-     * @return boolean false if no locale is identified
-     * @return bool the locale identified by the guessers
+     * @return bool
      */
-    public function runLocaleGuessing(Request $request)
+    public function runLocaleGuessing(Request $request): bool
     {
         $this->preferredLocales = $request->getLanguages();
         foreach ($this->guessingOrder as $guesser) {
@@ -116,9 +109,9 @@ class LocaleGuesserManager
      * Log detection events
      *
      * @param string $logMessage
-     * @param string $parameters
+     * @param mixed $parameters
      */
-    private function logEvent($logMessage, $parameters = null)
+    private function logEvent(string $logMessage, $parameters = null)
     {
         if (null !== $this->logger) {
             $this->logger->debug(sprintf($logMessage, $parameters));
@@ -130,7 +123,7 @@ class LocaleGuesserManager
      *
      * @return array
      */
-    public function getPreferredLocales()
+    public function getPreferredLocales(): array
     {
         return $this->preferredLocales;
     }
@@ -138,7 +131,7 @@ class LocaleGuesserManager
     /**
      * @return array
      */
-    public function getGuessingOrder()
+    public function getGuessingOrder(): array
     {
         return $this->guessingOrder;
     }

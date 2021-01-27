@@ -36,7 +36,7 @@ class LocaleSession
      * @param string $locale
      * @return bool
      */
-    public function hasLocaleChanged($locale)
+    public function hasLocaleChanged(string $locale): bool
     {
         return $locale !== $this->session->get($this->sessionVar);
     }
@@ -46,7 +46,7 @@ class LocaleSession
      *
      * @param string $locale
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale)
     {
         $this->session->set($this->sessionVar, $locale);
     }
@@ -57,7 +57,7 @@ class LocaleSession
      * @param $locale
      * @return string
      */
-    public function getLocale($locale)
+    public function getLocale($locale): string
     {
         return $this->session->get($this->sessionVar, $locale);
     }
@@ -67,7 +67,7 @@ class LocaleSession
      *
      * @return string
      */
-    public function getSessionVar()
+    public function getSessionVar(): string
     {
         return $this->sessionVar;
     }

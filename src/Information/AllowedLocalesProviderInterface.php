@@ -18,5 +18,5 @@ interface AllowedLocalesProviderInterface
      * Set the list of the allowed locales
      * @param array $allowedLocales
      */
-    public function setAllowedLocales($allowedLocales);
+    public function setAllowedLocales(array $allowedLocales);
 }

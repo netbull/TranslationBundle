@@ -41,13 +41,9 @@ class SessionLocaleGuesser extends AbstractLocaleGuesser
     }
 
     /**
-     * Guess the locale based on the session variable
-     *
-     * @param Request $request
-     *
-     * @return boolean
+     * @inheritDoc
      */
-    public function guessLocale(Request $request)
+    public function guessLocale(Request $request): bool
     {
         if ($this->session->has($this->sessionVariable)) {
             $locale = $this->session->get($this->sessionVariable);
@@ -57,6 +53,7 @@ class SessionLocaleGuesser extends AbstractLocaleGuesser
             $this->identifiedLocale = $this->session->get($this->sessionVariable);
             return true;
         }
+
         return false;
     }
 
@@ -64,9 +61,9 @@ class SessionLocaleGuesser extends AbstractLocaleGuesser
      * Sets the locale in the session
      *
      * @param string $locale Locale
-     * @param bool   $force  Force write session
+     * @param bool $force Force write session
      */
-    public function setSessionLocale($locale, $force = false)
+    public function setSessionLocale(string $locale, $force = false)
     {
         if (!$this->session->has($this->sessionVariable) || $force) {
             $this->session->set($this->sessionVariable, $locale);

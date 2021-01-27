@@ -24,9 +24,8 @@ class AllowedLocalesProvider implements AllowedLocalesProviderInterface
 
     /**
      * Return a list of the allowed locales
-     * @return array
      */
-    public function getAllowedLocales()
+    public function getAllowedLocales(): ?array
     {
         return $this->allowedLocales;
     }
@@ -35,7 +34,7 @@ class AllowedLocalesProvider implements AllowedLocalesProviderInterface
      * Set the list of the allowed locales
      * @param array $allowedLocales
      */
-    public function setAllowedLocales($allowedLocales)
+    public function setAllowedLocales(array $allowedLocales)
     {
         $this->allowedLocales = $allowedLocales;
     }

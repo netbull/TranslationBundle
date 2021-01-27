@@ -15,10 +15,10 @@ interface LocaleGuesserInterface
      *
      * @return bool
      */
-    public function guessLocale(Request $request);
+    public function guessLocale(Request $request): bool;
 
     /**
-     * @return mixed
+     * @return bool|string
      */
     public function getIdentifiedLocale();
 }

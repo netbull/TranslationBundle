@@ -83,7 +83,7 @@ class LocaleUpdateListener implements EventSubscriberInterface
      * @param $update
      * @return bool
      */
-    public function updateCookie(Request $request, $update)
+    public function updateCookie(Request $request, $update): bool
     {
         if ($this->checkGuesser('cookie')
             && $update === true
@@ -92,6 +92,7 @@ class LocaleUpdateListener implements EventSubscriberInterface
             $this->dispatcher->addListener(KernelEvents::RESPONSE, [$this, 'updateCookieOnResponse']);
             return true;
         }
+
         return false;
     }
 
@@ -102,7 +103,7 @@ class LocaleUpdateListener implements EventSubscriberInterface
      *
      * @return Response;
      */
-    public function updateCookieOnResponse(ResponseEvent $event)
+    public function updateCookieOnResponse(ResponseEvent $event): Response
     {
         $response = $event->getResponse();
         $cookie = $this->localeCookie->getLocaleCookie($this->locale);
@@ -110,6 +111,7 @@ class LocaleUpdateListener implements EventSubscriberInterface
         if (null !== $this->logger) {
             $this->logger->info(sprintf('Locale Cookie set to [ %s ]', $this->locale));
         }
+
         return $response;
     }
 
@@ -118,7 +120,7 @@ class LocaleUpdateListener implements EventSubscriberInterface
      *
      * @return bool
      */
-    public function updateSession()
+    public function updateSession(): bool
     {
         if ($this->session && $this->checkGuesser('session') && $this->session->hasLocaleChanged($this->locale)) {
             if (null !== $this->logger) {
@@ -127,6 +129,7 @@ class LocaleUpdateListener implements EventSubscriberInterface
             $this->session->setLocale($this->locale);
             return true;
         }
+
         return false;
     }
 
@@ -137,7 +140,7 @@ class LocaleUpdateListener implements EventSubscriberInterface
      *
      * @return bool
      */
-    private function checkGuesser($guesser)
+    private function checkGuesser(string $guesser): bool
     {
         return in_array($guesser, $this->registeredGuessers);
     }
@@ -145,7 +148,7 @@ class LocaleUpdateListener implements EventSubscriberInterface
     /**
      * {@inheritDoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             // must be registered after the Router to have access to the _locale and before the Symfony LocaleListener

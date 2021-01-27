@@ -3,7 +3,6 @@
 namespace NetBull\TranslationBundle\Guessers;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use NetBull\TranslationBundle\Locale\LocaleMap;
 use NetBull\TranslationBundle\Validator\MetaValidator;
 
@@ -35,45 +34,21 @@ class DomainLocaleGuesser extends AbstractLocaleGuesser
     }
 
     /**
-     * Loops through all the activated Locale Guessers and
-     * calls the guessLocale method and passing the current request.
-     *
-     * @param Request $request
-     *
-     * @throws InvalidConfigurationException
-     *
-     * @return boolean false if no locale is identified
-     * @return bool the locale identified by the guessers
+     * @inheritDoc
      */
-    public function runLocaleGuessing(Request $request)
-    {
-        if (false !== $this->guessLocale($request)) {
-            $locale = $this->getIdentifiedLocale();
-
-            return $locale;
-        }
-
-        return false;
-    }
-
-    /**
-     * Guess the locale based on the topLevelDomain
-     *
-     * @param Request $request
-     * @return bool
-     */
-    public function guessLocale(Request $request)
+    public function guessLocale(Request $request): bool
     {
         $topLevelDomain = substr(strrchr($request->getHost(), '.'), 1);
 
-        // Use topLevelDomain as locale
+        // use topLevelDomain as locale
         $locale = $topLevelDomain;
-        //see if we have some additional mappings
+
+        // see if we have some additional mappings
         if ($topLevelDomain && $this->localeMap->getLocale($topLevelDomain)) {
             $locale = $this->localeMap->getLocale($topLevelDomain);
         }
 
-        //now validate
+        // now validate
         if (false !== $locale && $this->metaValidator->isAllowed($locale)) {
             $this->identifiedLocale = $locale;
             return true;

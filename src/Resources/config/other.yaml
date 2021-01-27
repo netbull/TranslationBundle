@@ -1,48 +1,52 @@
 services:
-  netbull_translation.allowed_locales_provider:
-    public: true
-    class: NetBull\TranslationBundle\Information\AllowedLocalesProvider
-    calls:
-      - [setAllowedLocales, [ '%netbull_translation.allowed_locales%' ]]
+    netbull_translation.allowed_locales_provider:
+        public: true
+        class: NetBull\TranslationBundle\Information\AllowedLocalesProvider
+        calls:
+            - [ setAllowedLocales, [ '%netbull_translation.allowed_locales%' ] ]
 
-  NetBull\TranslationBundle\Information\AllowedLocalesProvider:
-    alias: netbull_translation.allowed_locales_provider
+    NetBull\TranslationBundle\Information\AllowedLocalesProvider:
+        alias: netbull_translation.allowed_locales_provider
 
-  netbull_translation.locale_map:
-    class: NetBull\TranslationBundle\Locale\LocaleMap
-    arguments: [ '%netbull_translation.locale_map%' ]
+    netbull_translation.locale_map:
+        class: NetBull\TranslationBundle\Locale\LocaleMap
+        arguments: [ '%netbull_translation.locale_map%' ]
 
-  netbull_translation.best_locale_matcher:
-    class: NetBull\TranslationBundle\Matcher\DefaultBestLocaleMatcher
-    arguments: ['@netbull_translation.allowed_locales_provider']
+    netbull_translation.geoip.country_map:
+        class: NetBull\TranslationBundle\Locale\LocaleMap
+        arguments: [ '%netbull_translation.geoip.country_map%' ]
 
-  netbull_translation.locale_cookie:
-    class: '%netbull_translation.cookie.class%'
-    arguments:
-      - '%netbull_translation.cookie.name%'
-      - '%netbull_translation.cookie.ttl%'
-      - '%netbull_translation.cookie.path%'
-      - '%netbull_translation.cookie.secure%'
-      - '%netbull_translation.cookie.httpOnly%'
-      - '%netbull_translation.cookie.set_on_change%'
-      - '%netbull_translation.cookie.domain%'
+    netbull_translation.best_locale_matcher:
+        class: NetBull\TranslationBundle\Matcher\DefaultBestLocaleMatcher
+        arguments: [ '@netbull_translation.allowed_locales_provider' ]
 
-  netbull_translation.locale_session:
-    class: NetBull\TranslationBundle\Locale\Session\LocaleSession
-    arguments: ['@session', '%netbull_translation.session.variable%']
+    netbull_translation.locale_cookie:
+        class: '%netbull_translation.cookie.class%'
+        arguments:
+            - '%netbull_translation.cookie.name%'
+            - '%netbull_translation.cookie.ttl%'
+            - '%netbull_translation.cookie.path%'
+            - '%netbull_translation.cookie.secure%'
+            - '%netbull_translation.cookie.httpOnly%'
+            - '%netbull_translation.cookie.set_on_change%'
+            - '%netbull_translation.cookie.domain%'
 
-  netbull_translation.locale_switcher_helper:
-    public: true
-    class: NetBull\TranslationBundle\Templating\LocaleSwitchHelper
-    arguments: ['@twig', '%netbull_translation.switcher.template%']
+    netbull_translation.locale_session:
+        class: NetBull\TranslationBundle\Locale\Session\LocaleSession
+        arguments: [ '@session', '%netbull_translation.session.variable%' ]
 
-  netbull_translation.locale_switcher_controller:
-    public: true
-    class: NetBull\TranslationBundle\Controller\LocaleController
-    arguments:
-      - '@event_dispatcher'
-      - '@netbull_translation.validator.meta'
-      - '@router'
-      - '%netbull_translation.switcher.use_referrer%'
-      - '%netbull_translation.switcher.redirect_to_route%'
-      - '%netbull_translation.switcher.redirect_status_code%'
+    netbull_translation.locale_switcher_helper:
+        public: true
+        class: NetBull\TranslationBundle\Templating\LocaleSwitchHelper
+        arguments: [ '@twig', '%netbull_translation.switcher.template%' ]
+
+    netbull_translation.locale_switcher_controller:
+        public: true
+        class: NetBull\TranslationBundle\Controller\LocaleController
+        arguments:
+            - '@event_dispatcher'
+            - '@netbull_translation.validator.meta'
+            - '@router'
+            - '%netbull_translation.switcher.use_referrer%'
+            - '%netbull_translation.switcher.redirect_to_route%'
+            - '%netbull_translation.switcher.redirect_status_code%'

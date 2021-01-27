@@ -42,7 +42,7 @@ class TranslationExtension extends AbstractExtension
     /**
      * @return array|TwigFilter[]
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('guessTranslation', [$this, 'guessTranslation']),
@@ -54,7 +54,7 @@ class TranslationExtension extends AbstractExtension
     /**
      * @return array|TwigFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('locale_switcher', [$this, 'renderSwitcher'], ['is_safe' => ['html']]),
@@ -99,7 +99,7 @@ class TranslationExtension extends AbstractExtension
      * @param bool $strict
      * @return mixed|string
      */
-    public function guessTranslation(array $translations, $field = 'name', $locale = null, $strict = false)
+    public function guessTranslation(array $translations, $field = 'name', $locale = null, $strict = false): string
     {
         if (empty($translations)) {
             return '';
@@ -118,7 +118,7 @@ class TranslationExtension extends AbstractExtension
      * @param bool $strict
      * @return mixed|string
      */
-    public function getTranslation(array $translations, $locale = null, $strict = false)
+    public function getTranslation(array $translations, $locale = null, $strict = false): string
     {
         if (empty($translations)) {
             return '';
@@ -137,7 +137,7 @@ class TranslationExtension extends AbstractExtension
      * @param string $toLocale
      * @return string
      */
-    public function languageFromLocale($locale, $toLocale = null)
+    public function languageFromLocale($locale, $toLocale = null): string
     {
         $request = $this->requestStack->getCurrentRequest();
         $auto = $request ? $request->getLocale() : 'en';
@@ -150,7 +150,7 @@ class TranslationExtension extends AbstractExtension
     /**
      * @return string The name of the extension
      */
-    public function getName()
+    public function getName(): string
     {
         return 'translation.extension';
     }

@@ -10,7 +10,7 @@ interface BestLocaleMatcherInterface
 {
     /**
      * @param $locale
-     * @return mixed
+     * @return bool|string
      */
     public function match($locale);
 }

@@ -18,7 +18,7 @@ class LocaleAllowed extends Constraint
     /**
      * {@inheritDoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'netbull_translation.validator.locale_allowed';
     }

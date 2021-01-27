@@ -58,8 +58,8 @@ class LocaleListener implements EventSubscriberInterface
 
     /**
      * LocaleListener constructor.
-     * @param string $defaultLocale
      * @param LocaleGuesserManager $guesserManager
+     * @param string $defaultLocale
      * @param BestLocaleMatcherInterface|null $bestLocaleMatcher
      * @param LoggerInterface|null $logger
      */
@@ -87,6 +87,7 @@ class LocaleListener implements EventSubscriberInterface
         if ($this->excludedPattern && preg_match(sprintf('#%s#', $this->excludedPattern), $request->getPathInfo())) {
             return;
         }
+
         $request->setDefaultLocale($this->defaultLocale);
         $manager = $this->guesserManager;
         $locale = $manager->runLocaleGuessing($request);
@@ -98,6 +99,7 @@ class LocaleListener implements EventSubscriberInterface
             $this->logEvent('Setting [ %s ] as locale for the (Sub-)Request', $locale);
             $request->setLocale($locale);
             $request->attributes->set('_locale', $locale);
+
             if (
                 ($event->getRequestType() === HttpKernelInterface::MASTER_REQUEST || $request->isXmlHttpRequest())
                 && ($manager->getGuesser('session') || $manager->getGuesser('cookie'))
@@ -115,12 +117,13 @@ class LocaleListener implements EventSubscriberInterface
      *
      * @return Response
      */
-    public function onLocaleDetectedSetVaryHeader(ResponseEvent $event)
+    public function onLocaleDetectedSetVaryHeader(ResponseEvent $event): Response
     {
         $response = $event->getResponse();
         if (!$this->disableVaryHeader) {
             $response->setVary('Accept-Language', false);
         }
+
         return $response;
     }
 
@@ -133,9 +136,9 @@ class LocaleListener implements EventSubscriberInterface
     }
 
     /**
-     * @param boolean $disableVaryHeader
+     * @param bool $disableVaryHeader
      */
-    public function setDisableVaryHeader($disableVaryHeader)
+    public function setDisableVaryHeader(bool $disableVaryHeader)
     {
         $this->disableVaryHeader = $disableVaryHeader;
     }
@@ -143,7 +146,7 @@ class LocaleListener implements EventSubscriberInterface
     /**
      * @param string $excludedPattern
      */
-    public function setExcludedPattern($excludedPattern)
+    public function setExcludedPattern(string $excludedPattern)
     {
         $this->excludedPattern = $excludedPattern;
     }
@@ -152,9 +155,9 @@ class LocaleListener implements EventSubscriberInterface
      * Log detection events
      *
      * @param string $logMessage
-     * @param string $parameters
+     * @param mixed $parameters
      */
-    private function logEvent($logMessage, $parameters = null)
+    private function logEvent(string $logMessage, $parameters = null)
     {
         if (null !== $this->logger) {
             $this->logger->info(sprintf($logMessage, $parameters));
@@ -164,7 +167,7 @@ class LocaleListener implements EventSubscriberInterface
     /**
      * {@inheritDoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             // must be registered after the Router to have access to the _locale and before the Symfony LocaleListener

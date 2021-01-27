@@ -2,6 +2,8 @@
 
 namespace NetBull\TranslationBundle\DependencyInjection;
 
+use NetBull\TranslationBundle\Locale\Cookie\LocaleCookie;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -12,21 +14,18 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     /**
-     * {@inheritdoc}
+     * @return TreeBuilder
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('netbull_translation');
         $rootNode = $treeBuilder->getRootNode();
 
-        $validStatusCodes = [300, 301, 302, 303, 307];
         $rootNode
             ->children()
                 ->booleanNode('disable_locale_listeners')->defaultFalse()->end()
                 ->booleanNode('disable_vary_header')->defaultFalse()->end()
-                ->scalarNode('guessing_excluded_pattern')
-                    ->defaultNull()
-                ->end()
+                ->scalarNode('guessing_excluded_pattern')->defaultNull()->end()
                 ->arrayNode('allowed_locales')
                     ->defaultValue(['en'])
                     ->requiresAtLeastOneElement()
@@ -38,32 +37,88 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('guessing_order')
                         ->beforeNormalization()
-                            ->ifString()
-                                ->then(function ($v) { return [$v]; })
+                            ->ifString()->then(function ($v) { return [$v]; })
                         ->end()
                         ->defaultValue(['cookie'])
                         ->requiresAtLeastOneElement()
                     ->prototype('scalar')->end()
                 ->end()
+            ->end();
+
+        $this->addCookieSection($rootNode);
+        $this->addSessionSection($rootNode);
+        $this->addGeoIpSection($rootNode);
+        $this->addSwitcherSection($rootNode);
+
+        return $treeBuilder;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addCookieSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
                 ->arrayNode('cookie')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('set_on_change')->defaultTrue()->end()
-                        ->scalarNode('class')->defaultValue('NetBull\TranslationBundle\Locale\Cookie\LocaleCookie')->end()
+                        ->booleanNode('set_on_change')->defaultTrue()->end()
+                        ->scalarNode('class')->defaultValue(LocaleCookie::class)->end()
                         ->scalarNode('name')->defaultValue('ntl')->end()
-                        ->scalarNode('ttl')->defaultValue('86400')->end()
+                        ->integerNode('ttl')->defaultValue(86400)->end()
                         ->scalarNode('path')->defaultValue('/')->end()
                         ->scalarNode('domain')->defaultValue(null)->end()
-                        ->scalarNode('secure')->defaultFalse()->end()
-                        ->scalarNode('httpOnly')->defaultTrue()->end()
+                        ->booleanNode('secure')->defaultFalse()->end()
+                        ->booleanNode('httpOnly')->defaultTrue()->end()
                      ->end()
                 ->end()
+            ->end();
+    }
+
+    /**
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addSessionSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
                 ->arrayNode('session')
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('variable')->defaultValue('ntl')->end()
-                     ->end()
+                    ->end()
                 ->end()
+            ->end();
+    }
+
+    /**
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addGeoIpSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('geoip')
+                    ->children()
+                        ->scalarNode('binary')->defaultValue(null)->end()
+                        ->arrayNode('country_map')
+                            ->useAttributeAsKey('country')
+                            ->prototype('scalar')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    /**
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addSwitcherSection(ArrayNodeDefinition $rootNode)
+    {
+        $validStatusCodes = [300, 301, 302, 303, 307];
+        $rootNode
+            ->children()
                 ->arrayNode('switcher')
                     ->addDefaultsIfNotSet()
                     ->children()
@@ -82,9 +137,6 @@ class Configuration implements ConfigurationInterface
                             ->thenInvalid(sprintf('Invalid HTTP status code. Available status codes for redirection are:\n\n%s \n\nSee reference for HTTP status codes', implode(', ', $validStatusCodes)))
                     ->end()
                 ->end()
-            ->end()
-        ;
-
-        return $treeBuilder;
+            ->end();
     }
 }

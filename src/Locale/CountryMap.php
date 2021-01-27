@@ -3,10 +3,10 @@
 namespace NetBull\TranslationBundle\Locale;
 
 /**
- * Class LocaleMap
+ * Class CountryMap
  * @package NetBull\TranslationBundle\Locale
  */
-class LocaleMap
+class CountryMap
 {
     /**
      * @var array
@@ -14,7 +14,7 @@ class LocaleMap
     private $map;
 
     /**
-     * @param array $map topLevelDomain locale map, [tld => locale]
+     * @param array $map country map, [country_iso2_code => locale]
      */
     public function __construct(array $map = [])
     {
@@ -22,13 +22,13 @@ class LocaleMap
     }
 
     /**
-     * @param string $tld
+     * @param string $country
      * @return bool|string
      */
-    public function getLocale(string $tld)
+    public function getLocale(string $country)
     {
-        if (isset($this->map[$tld]) && $this->map[$tld]) {
-            return $this->map[$tld];
+        if (isset($this->map[$country]) && $this->map[$country]) {
+            return $this->map[$country];
         }
 
         return false;

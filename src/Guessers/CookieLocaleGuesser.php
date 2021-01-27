@@ -33,13 +33,9 @@ class CookieLocaleGuesser extends AbstractLocaleGuesser
     }
 
     /**
-     * Retrieve from cookie
-     *
-     * @param Request $request Request
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function guessLocale(Request $request)
+    public function guessLocale(Request $request): bool
     {
         if ($request->cookies->has($this->cookieName) && $this->metaValidator->isAllowed($request->cookies->get($this->cookieName))) {
             $this->identifiedLocale = $request->cookies->get($this->cookieName);

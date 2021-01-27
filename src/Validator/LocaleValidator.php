@@ -50,20 +50,20 @@ class LocaleValidator extends ConstraintValidator
     }
 
     /**
-     * @param mixed $locale
+     * @param mixed $value
      * @param Constraint $constraint
      */
-    public function validate($locale, Constraint $constraint)
+    public function validate($value, Constraint $constraint)
     {
-        if (null === $locale || '' === $locale) {
+        if (null === $value || '' === $value) {
             return;
         }
 
-        if (!is_scalar($locale) && !(is_object($locale) && method_exists($locale, '__toString'))) {
-            throw new UnexpectedTypeException($locale, 'string');
+        if (!is_scalar($value) && !(is_object($value) && method_exists($value, '__toString'))) {
+            throw new UnexpectedTypeException($value, 'string');
         }
 
-        $locale = (string) $locale;
+        $locale = (string)$value;
 
         if ($this->intlExtension) {
             $primary = \Locale::getPrimaryLanguage($locale);

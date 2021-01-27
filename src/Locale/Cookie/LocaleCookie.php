@@ -2,8 +2,6 @@
 
 namespace NetBull\TranslationBundle\Locale\Cookie;
 
-use DateTime;
-use Exception;
 use Symfony\Component\HttpFoundation\Cookie;
 
 /**
@@ -12,25 +10,52 @@ use Symfony\Component\HttpFoundation\Cookie;
  */
 class LocaleCookie
 {
+    /**
+     * @var string
+     */
     private $name;
+
+    /**
+     * @var int
+     */
     private $ttl;
+
+    /**
+     * @var string
+     */
     private $path;
+
+    /**
+     * @var string|null
+     */
     private $domain;
+
+    /**
+     * @var bool
+     */
     private $secure;
+
+    /**
+     * @var bool
+     */
     private $httpOnly;
+
+    /**
+     * @var bool
+     */
     private $setOnChange;
 
     /**
      * LocaleCookie constructor.
-     * @param $name
-     * @param $ttl
-     * @param $path
-     * @param $secure
-     * @param $httpOnly
-     * @param $setOnChange
-     * @param null $domain
+     * @param string $name
+     * @param int $ttl
+     * @param string $path
+     * @param bool $secure
+     * @param bool $httpOnly
+     * @param bool $setOnChange
+     * @param string|null $domain
      */
-    public function __construct($name, $ttl, $path, $secure, $httpOnly, $setOnChange, $domain = null)
+    public function __construct(string $name, int $ttl, string $path, bool $secure, bool $httpOnly, bool $setOnChange, ?string $domain = null)
     {
         $this->name = $name;
         $this->ttl = $ttl;
@@ -42,46 +67,35 @@ class LocaleCookie
     }
 
     /**
-     * @param $locale
+     * @param string $locale
      * @return Cookie
      */
-    public function getLocaleCookie($locale)
+    public function getLocaleCookie(string $locale): Cookie
     {
-        $value = $locale;
         $expire = $this->computeExpireTime();
-        $cookie = new Cookie($this->name, $value, $expire, $this->path, $this->domain, $this->secure, $this->httpOnly);
-        return $cookie;
+        return new Cookie($this->name, $locale, $expire, $this->path, $this->domain, $this->secure, $this->httpOnly);
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
-    public function setCookieOnChange()
+    public function setCookieOnChange(): bool
     {
         return $this->setOnChange;
     }
 
     /**
-     * @return DateTime
+     * @return int
      */
-    private function computeExpireTime()
+    private function computeExpireTime(): int
     {
-        $expireTime = time() + $this->ttl;
-        try {
-            $date = new DateTime();
-        } catch (Exception $e) {
-            return time();
-        }
-
-        $date->setTimestamp($expireTime);
-
-        return $date;
+        return time() + $this->ttl;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
