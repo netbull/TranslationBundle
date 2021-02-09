@@ -95,11 +95,11 @@ class TranslationExtension extends AbstractExtension
     /**
      * @param array $translations
      * @param string $field
-     * @param null $locale
+     * @param string|null $locale
      * @param bool $strict
-     * @return mixed|string
+     * @return array|string|null
      */
-    public function guessTranslation(array $translations, $field = 'name', $locale = null, $strict = false): string
+    public function guessTranslation(array $translations, string $field = 'name', ?string $locale = null, bool $strict = false)
     {
         if (empty($translations)) {
             return '';
@@ -115,13 +115,13 @@ class TranslationExtension extends AbstractExtension
     /**
      * @param array $translations
      * @param null $locale
-     * @param bool $strict
-     * @return mixed|string
+     * @param false $strict
+     * @return array|null
      */
-    public function getTranslation(array $translations, $locale = null, $strict = false): string
+    public function getTranslation(array $translations, $locale = null, $strict = false)
     {
         if (empty($translations)) {
-            return '';
+            return null;
         }
 
         if (!$locale) {

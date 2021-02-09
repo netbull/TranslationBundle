@@ -9,17 +9,16 @@ namespace NetBull\TranslationBundle\Utils;
 class TranslationGuesser
 {
     /**
-     * Guess the translation
-     * @param array     $array
-     * @param string    $field
-     * @param string    $locale
-     * @param bool      $strict
-     * @return mixed
+     * @param array $array
+     * @param $field
+     * @param string $locale
+     * @param false $strict
+     * @return array|string|null
      */
     public static function guess(array $array, $field, $locale = 'en', $strict = false)
     {
         if (empty($array)) {
-            return '';
+            return null;
         }
 
         if (array_keys($array) !== range(0, count($array) - 1)) {
@@ -45,7 +44,7 @@ class TranslationGuesser
             }
         }
 
-        return '';
+        return null;
     }
 
     /**
@@ -53,12 +52,12 @@ class TranslationGuesser
      * @param string $field
      * @param string $locale
      * @param string $defaultLocale
-     * @return string
+     * @return string|null
      */
-    public static function guessFallback(array $translations, string $field, string $locale, string $defaultLocale)
+    public static function guessFallback(array $translations, string $field, string $locale, string $defaultLocale): ?string
     {
         if (empty($translations)) {
-            return '';
+            return null;
         }
 
         $translation = $translations[$locale] ?? null;
@@ -72,20 +71,19 @@ class TranslationGuesser
             return $defaultTranslation[$field];
         }
 
-        return '';
+        return null;
     }
 
     /**
-     * Get the translation
-     * @param array     $array
-     * @param string    $locale
-     * @param bool      $strict
-     * @return mixed
+     * @param array $array
+     * @param string $locale
+     * @param false $strict
+     * @return array|null
      */
-    public static function get(array $array, $locale = 'en', $strict = false)
+    public static function get(array $array, $locale = 'en', $strict = false): ?array
     {
         if (empty($array)) {
-            return '';
+            return null;
         }
 
         if (isset($array[$locale])) {
@@ -98,6 +96,6 @@ class TranslationGuesser
             }
         }
 
-        return false;
+        return null;
     }
 }
