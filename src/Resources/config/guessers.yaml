@@ -1,4 +1,10 @@
 services:
+    netbull_translation.locale_route_param_guesser:
+        class: NetBull\TranslationBundle\Guessers\RouteParamLocaleGuesser
+        arguments: [ '@netbull_translation.validator.meta' ]
+        tags:
+            - { name: 'locale_guesser', alias: 'route' }
+
     netbull_translation.locale_domain_guesser:
         class: NetBull\TranslationBundle\Guessers\DomainLocaleGuesser
         arguments: [ '@netbull_translation.validator.meta', '@netbull_translation.locale_map' ]
