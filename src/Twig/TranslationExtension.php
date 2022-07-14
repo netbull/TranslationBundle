@@ -75,7 +75,7 @@ class TranslationExtension extends AbstractExtension
         $showCurrentLocale = $this->container->getParameter('netbull_translation.switcher.show_current_locale');
         $useController = $this->container->getParameter('netbull_translation.switcher.use_controller');
         $allowedLocales = $this->container->get('netbull_translation.allowed_locales_provider')->getAllowedLocales();
-        $request = $this->container->get('request_stack')->getMasterRequest();
+        $request = $this->container->get('request_stack')->getMainRequest();
         $infoBuilder = new TargetInformationBuilder($request, $this->container->get('router'), $allowedLocales, $showCurrentLocale, $useController);
         $info = $infoBuilder->getTargetInformation($route, $parameters);
 
