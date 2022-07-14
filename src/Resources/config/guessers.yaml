@@ -19,7 +19,7 @@ services:
 
     netbull_translation.locale_session_guesser:
         class: NetBull\TranslationBundle\Guessers\SessionLocaleGuesser
-        arguments: [ '@session', '@netbull_translation.validator.meta', '%netbull_translation.session.variable%' ]
+        arguments: [ '@request_stack', '@netbull_translation.validator.meta', '%netbull_translation.session.variable%' ]
         tags:
             - { name: 'locale_guesser', alias: 'session' }
 
