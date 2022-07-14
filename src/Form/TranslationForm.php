@@ -3,16 +3,12 @@
 namespace NetBull\TranslationBundle\Form;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\Common\Proxy\Proxy;
+use Doctrine\Persistence\Proxy;
 use Exception;
 use Symfony\Component\Form\FormRegistry;
 use Symfony\Component\Form\FormTypeGuesserChain;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 
-/**
- * Class TranslationForm
- * @package NetBull\TranslationBundle\Form
- */
 class TranslationForm
 {
     /**
@@ -26,7 +22,6 @@ class TranslationForm
     private $registry;
 
     /**
-     * TranslationForm constructor.
      * @param FormRegistry $formRegistry
      * @param Registry $registry
      */
@@ -37,10 +32,10 @@ class TranslationForm
     }
 
     /**
-     * @param $class
+     * @param string $class
      * @return bool|string
      */
-    private function getRealClass($class)
+    private function getRealClass(string $class)
     {
         if (false === $pos = strrpos($class, '\\' . Proxy::MARKER . '\\')) {
             return $class;
@@ -50,11 +45,11 @@ class TranslationForm
     }
 
     /**
-     * @param $translationClass
+     * @param string $translationClass
      * @param array $exclude
      * @return array
      */
-    protected function getTranslationFields($translationClass, array $exclude = [])
+    protected function getTranslationFields(string $translationClass, array $exclude = []): array
     {
         $fields = [];
         $translationClass = $this->getRealClass($translationClass);
@@ -73,17 +68,17 @@ class TranslationForm
     }
 
     /**
-     * @param $class
-     * @param $options
+     * @param string $class
+     * @param array $options
      * @return array
      * @throws Exception
      */
-    public function getFieldsOptions($class, $options)
+    public function getFieldsOptions(string $class, array $options): array
     {
         $fieldsOptions = [];
 
         foreach ($this->getFieldsList($options, $class) as $field) {
-            $fieldOptions = isset($options['fields'][$field]) ? $options['fields'][$field] : [];
+            $fieldOptions = $options['fields'][$field] ?? [];
 
             if (!isset($fieldOptions['display']) || $fieldOptions['display']) {
                 $fieldOptions = $this->guessMissingFieldOptions($this->typeGuesser, $class, $field, $fieldOptions);
@@ -94,7 +89,7 @@ class TranslationForm
                     unset($fieldOptions['locale_options']);
 
                     foreach ($options['locales'] as $locale) {
-                        $localeFieldOptions = isset($localesFieldOptions[$locale]) ? $localesFieldOptions[$locale] : [];
+                        $localeFieldOptions = $localesFieldOptions[$locale] ?? [];
                         if (!isset($localeFieldOptions['display']) || $localeFieldOptions['display']) {
                             $fieldsOptions[$locale][$field] = $localeFieldOptions + $fieldOptions;
                         }
@@ -113,17 +108,17 @@ class TranslationForm
     }
 
     /**
-     * @param $class
-     * @param $options
+     * @param string $class
+     * @param array $options
      * @return array
      * @throws Exception
      */
-    public function getPrototypeFieldsOptions($class, $options)
+    public function getPrototypeFieldsOptions(string $class, array $options): array
     {
         $fieldsOptions = [];
 
         foreach ($this->getFieldsList($options, $class) as $field) {
-            $fieldOptions = isset($options['fields'][$field]) ? $options['fields'][$field] : [];
+            $fieldOptions = $options['fields'][$field] ?? [];
 
             if (!isset($fieldOptions['display']) || $fieldOptions['display']) {
                 $fieldOptions = $this->guessMissingFieldOptions($this->typeGuesser, $class, $field, $fieldOptions);
@@ -150,12 +145,12 @@ class TranslationForm
 
     /**
      * Combine formFields with translationFields. (Useful for upload field)
-     * @param $options
-     * @param $class
+     * @param array $options
+     * @param string $class
      * @return array
      * @throws Exception
      */
-    private function getFieldsList($options, $class)
+    private function getFieldsList(array $options, string $class): array
     {
         $formFields = array_keys($options['fields']);
 
@@ -170,9 +165,10 @@ class TranslationForm
     }
 
     /**
-     * {@inheritdoc}
+     * @param array $options
+     * @return array
      */
-    public function getFormsOptions($options)
+    public function getFormsOptions(array $options): array
     {
         $formsOptions = [];
 
@@ -185,7 +181,7 @@ class TranslationForm
             unset($formOptions['locale_options']);
 
             foreach ($options['locales'] as $locale) {
-                $localeFormOptions = isset($localesFormOptions[$locale]) ? $localesFormOptions[$locale] : [];
+                $localeFormOptions = $localesFormOptions[$locale] ?? [];
                 if (!isset($localeFormOptions['display']) || $localeFormOptions['display']) {
                     $formsOptions[$locale] = $localeFormOptions + $formOptions;
                 }
@@ -203,12 +199,12 @@ class TranslationForm
 
     /**
      * @param FormTypeGuesserInterface $guesser
-     * @param $class
-     * @param $property
-     * @param $options
-     * @return mixed
+     * @param string $class
+     * @param string $property
+     * @param array $options
+     * @return array
      */
-    public function guessMissingFieldOptions(FormTypeGuesserInterface $guesser, $class, $property, $options)
+    public function guessMissingFieldOptions(FormTypeGuesserInterface $guesser, string $class, string $property, array $options): array
     {
         if (!isset($options['field_type']) && ($typeGuess = $guesser->guessType($class, $property))) {
             $options['field_type'] = $typeGuess->getType();

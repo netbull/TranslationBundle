@@ -4,19 +4,14 @@ namespace NetBull\TranslationBundle\Validator;
 
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * Class MetaValidator
- * @package NetBull\TranslationBundle\Locale\Validator
- */
 class MetaValidator
 {
     /**
      * @var ValidatorInterface
      */
-    private $validator;
+    private ValidatorInterface $validator;
 
     /**
-     * MetaValidator constructor.
      * @param ValidatorInterface $validator
      */
     public function __construct(ValidatorInterface $validator)
@@ -25,8 +20,6 @@ class MetaValidator
     }
 
     /**
-     * Checks if a locale is allowed and valid
-     *
      * @param string $locale
      * @return bool
      */

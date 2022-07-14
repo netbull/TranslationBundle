@@ -2,16 +2,12 @@
 
 namespace NetBull\TranslationBundle\Locale;
 
-/**
- * Class LocaleMap
- * @package NetBull\TranslationBundle\Locale
- */
 class LocaleMap
 {
     /**
      * @var array
      */
-    private $map;
+    private array $map;
 
     /**
      * @param array $map topLevelDomain locale map, [tld => locale]
@@ -23,14 +19,14 @@ class LocaleMap
 
     /**
      * @param string $tld
-     * @return bool|string
+     * @return string|null
      */
-    public function getLocale(string $tld)
+    public function getLocale(string $tld): ?string
     {
         if (isset($this->map[$tld]) && $this->map[$tld]) {
             return $this->map[$tld];
         }
 
-        return false;
+        return null;
     }
 }

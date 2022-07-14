@@ -10,46 +10,41 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Routing\Generator\ConfigurableRequirementsInterface;
 
-/**
- * Class TargetInformationBuilder
- * @package NetBull\TranslationBundle\Switcher
- */
 class TargetInformationBuilder
 {
     /**
      * @var Request
      */
-    private $request;
+    private Request $request;
 
     /**
      * @var RouterInterface
      */
-    private $router;
+    private RouterInterface $router;
 
     /**
      * @var array
      */
-    private $allowedLocales;
+    private array $allowedLocales;
 
     /**
      * @var bool
      */
-    private $showCurrentLocale;
+    private bool $showCurrentLocale;
 
     /**
      * @var bool
      */
-    private $useController;
+    private bool $useController;
 
     /**
-     * TargetInformationBuilder constructor.
      * @param Request $request
      * @param RouterInterface $router
      * @param array $allowedLocales
      * @param bool $showCurrentLocale
      * @param bool $useController
      */
-    public function __construct(Request $request, RouterInterface $router, $allowedLocales = [], $showCurrentLocale = false, $useController = false)
+    public function __construct(Request $request, RouterInterface $router, array $allowedLocales = [], bool $showCurrentLocale = false, bool $useController = false)
     {
         $this->request = $request;
         $this->router = $router;
@@ -64,7 +59,7 @@ class TargetInformationBuilder
      * @return mixed
      * @throws Exception
      */
-    public function getTargetInformation($targetRoute = null, $parameters = [])
+    public function getTargetInformation($targetRoute = null, array $parameters = [])
     {
         $route = $this->request->attributes->get('_route');
         $generator = null;

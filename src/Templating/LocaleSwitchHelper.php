@@ -7,21 +7,17 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-/**
- * Class LocaleSwitchHelper
- * @package NetBull\TranslationBundle\Templating
- */
 class LocaleSwitchHelper
 {
     /**
      * @var Environment
      */
-    protected $twig;
+    protected Environment $twig;
 
     /**
      * @var array
      */
-    protected $templates = [
+    protected array $templates = [
         'links' => 'NetBullTranslationBundle:switcher_links.html.twig',
         'form' => 'NetBullTranslationBundle:switcher_form.html.twig'
     ];
@@ -32,7 +28,6 @@ class LocaleSwitchHelper
     protected $view;
 
     /**
-     * LocaleSwitchHelper constructor.
      * @param Environment $twig
      * @param $template
      */
@@ -47,7 +42,7 @@ class LocaleSwitchHelper
      * @param null $template
      * @return string|null
      */
-    public function renderSwitch(array $viewParams = [], $template = null)
+    public function renderSwitch(array $viewParams = [], $template = null): ?string
     {
         if (!$template) {
             $template = $this->view;
@@ -63,7 +58,7 @@ class LocaleSwitchHelper
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'locale_switch_helper';
     }

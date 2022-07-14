@@ -2,10 +2,6 @@
 
 namespace NetBull\TranslationBundle\Guessers;
 
-/**
- * Class AbstractLocaleGuesser
- * @package NetBull\TranslationBundle\Guessers
- */
 abstract class AbstractLocaleGuesser implements LocaleGuesserInterface
 {
     /**
@@ -14,12 +10,12 @@ abstract class AbstractLocaleGuesser implements LocaleGuesserInterface
     protected $identifiedLocale;
 
     /**
-     * @return bool|string
+     * @return string|null
      */
-    public function getIdentifiedLocale()
+    public function getIdentifiedLocale(): ?string
     {
         if (null === $this->identifiedLocale) {
-            return false;
+            return null;
         }
 
         return $this->identifiedLocale;

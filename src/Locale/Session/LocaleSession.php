@@ -2,73 +2,87 @@
 
 namespace NetBull\TranslationBundle\Locale\Session;
 
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-/**
- * Class LocaleSession
- * @package NetBull\TranslationBundle\Locale\Session
- */
 class LocaleSession
 {
     /**
-     * @var Session
+     * @var RequestStack
      */
-    private $session;
+    private RequestStack $requestStack;
     /**
      * @var string
      */
-    private $sessionVar;
+    private string $sessionVar;
 
     /**
-     * LocaleSession constructor.
-     * @param Session $session
+     * @param RequestStack $requestStack
      * @param string $sessionVar
      */
-    public function __construct(Session $session, $sessionVar = 'ntl')
+    public function __construct(RequestStack $requestStack, string $sessionVar = 'ntl')
     {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->sessionVar = $sessionVar;
     }
 
     /**
-     * Checks if the locale has changes
-     *
      * @param string $locale
      * @return bool
      */
     public function hasLocaleChanged(string $locale): bool
     {
-        return $locale !== $this->session->get($this->sessionVar);
+        if ($session = $this->getSession()) {
+            return $locale !== $session->get($this->sessionVar);
+        }
+
+        return false;
     }
 
     /**
-     * Sets the locale
-     *
      * @param string $locale
      */
     public function setLocale(string $locale)
     {
-        $this->session->set($this->sessionVar, $locale);
+        if ($session = $this->getSession()) {
+            $session->set($this->sessionVar, $locale);
+        }
     }
 
     /**
-     * Returns the locale
-     *
      * @param $locale
-     * @return string
+     * @return string|null
      */
-    public function getLocale($locale): string
+    public function getLocale($locale): ?string
     {
-        return $this->session->get($this->sessionVar, $locale);
+        if ($session = $this->getSession()) {
+            return $session->get($this->sessionVar, $locale);
+        }
+
+        return null;
     }
 
     /**
      * Returns the session var/key where the locale is saved in
-     *
      * @return string
      */
     public function getSessionVar(): string
     {
         return $this->sessionVar;
+    }
+
+    /**
+     * @return SessionInterface|null
+     */
+    private function getSession(): ?SessionInterface
+    {
+        try {
+            $session = $this->requestStack->getSession();
+        } catch (SessionNotFoundException $e) {
+            return null;
+        }
+
+        return $session;
     }
 }

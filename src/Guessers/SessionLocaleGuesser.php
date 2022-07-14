@@ -2,20 +2,17 @@
 
 namespace NetBull\TranslationBundle\Guessers;
 
+use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\RequestStack;
 use NetBull\TranslationBundle\Validator\MetaValidator;
 
-/**
- * Class SessionLocaleGuesser
- * @package NetBull\TranslationBundle\Guessers
- */
 class SessionLocaleGuesser extends AbstractLocaleGuesser
 {
     /**
-     * @var Session
+     * @var RequestStack
      */
-    private $session;
+    private $requestStack;
 
     /**
      * @var MetaValidator
@@ -28,29 +25,35 @@ class SessionLocaleGuesser extends AbstractLocaleGuesser
     private $sessionVariable;
 
     /**
-     * SessionLocaleGuesser constructor.
-     * @param Session $session
+     * @param RequestStack $requestStack
      * @param MetaValidator $metaValidator
      * @param string $sessionVariable
      */
-    public function __construct(Session $session, MetaValidator $metaValidator, string $sessionVariable)
+    public function __construct(RequestStack $requestStack, MetaValidator $metaValidator, string $sessionVariable)
     {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->metaValidator = $metaValidator;
         $this->sessionVariable = $sessionVariable;
     }
 
     /**
-     * @inheritDoc
+     * @param Request $request
+     * @return bool
      */
     public function guessLocale(Request $request): bool
     {
-        if ($this->session->has($this->sessionVariable)) {
-            $locale = $this->session->get($this->sessionVariable);
+        try {
+            $session = $this->requestStack->getSession();
+        } catch (SessionNotFoundException $e) {
+            return false;
+        }
+
+        if ($session->has($this->sessionVariable)) {
+            $locale = $session->get($this->sessionVariable);
             if (!$this->metaValidator->isAllowed($locale)) {
                 return false;
             }
-            $this->identifiedLocale = $this->session->get($this->sessionVariable);
+            $this->identifiedLocale = $session->get($this->sessionVariable);
             return true;
         }
 
@@ -59,14 +62,19 @@ class SessionLocaleGuesser extends AbstractLocaleGuesser
 
     /**
      * Sets the locale in the session
-     *
      * @param string $locale Locale
      * @param bool $force Force write session
      */
-    public function setSessionLocale(string $locale, $force = false)
+    public function setSessionLocale(string $locale, bool $force = false)
     {
-        if (!$this->session->has($this->sessionVariable) || $force) {
-            $this->session->set($this->sessionVariable, $locale);
+        try {
+            $session = $this->requestStack->getSession();
+        } catch (SessionNotFoundException $e) {
+            return false;
+        }
+
+        if (!$session->has($this->sessionVariable) || $force) {
+            $session->set($this->sessionVariable, $locale);
         }
     }
 }

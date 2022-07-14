@@ -2,20 +2,15 @@
 
 namespace NetBull\TranslationBundle\ORM\Subscribers\Translation;
 
-/**
- * Interface TranslationInterface
- * @package NetBull\TranslationBundle\ORM\Subscribers\Translation
- */
 interface TranslationInterface
 {
     /**
-     * Get Mandatory Fields
      * @return array
      */
-    public function getMandatoryFields();
+    public function getMandatoryFields(): array;
 
     /**
      * @return array
      */
-    public function toArray();
+    public function toArray(): array;
 }

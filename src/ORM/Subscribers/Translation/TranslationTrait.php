@@ -3,31 +3,27 @@
 namespace NetBull\TranslationBundle\ORM\Subscribers\Translation;
 
 use Knp\DoctrineBehaviors\Model\Translatable\TranslationTrait as KnpTranslationTrait;
+use ReflectionClass;
 
-/**
- * Trait TranslationTrait
- * @package NetBull\TranslationBundle\ORM\Subscribers\Translation
- */
 trait TranslationTrait
 {
     use KnpTranslationTrait;
 
     /**
-     * {@inheritdoc}
+     * @return array
      */
-    public function getMandatoryFields()
+    public function getMandatoryFields(): array
     {
         return $this->mandatoryFields ?? [];
     }
 
     /**
      * @return array
-     * @throws \ReflectionException
      */
-    public function toArray()
+    public function toArray(): array
     {
         $output = [];
-        $ref = new \ReflectionClass($this);
+        $ref = new ReflectionClass($this);
         $properties = $ref->getProperties();
         foreach ($properties as $property) {
             $getMethod = 'get'.ucfirst($property->name);

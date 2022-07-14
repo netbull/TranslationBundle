@@ -4,19 +4,15 @@ namespace NetBull\TranslationBundle\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * Class LocaleAllowed
- * @package NetBull\TranslationBundle\Locale\Validator
- */
 class LocaleAllowed extends Constraint
 {
     /**
      * @var string
      */
-    public $message = 'The locale "%string%" is not allowed by application configuration.';
+    public string $message = 'The locale "%string%" is not allowed by application configuration.';
 
     /**
-     * {@inheritDoc}
+     * @return string
      */
     public function validatedBy(): string
     {

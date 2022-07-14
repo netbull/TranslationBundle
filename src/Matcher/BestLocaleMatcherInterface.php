@@ -2,15 +2,11 @@
 
 namespace NetBull\TranslationBundle\Matcher;
 
-/**
- * Interface BestLocaleMatcherInterface
- * @package NetBull\TranslationBundle\Matcher
- */
 interface BestLocaleMatcherInterface
 {
     /**
-     * @param $locale
-     * @return bool|string
+     * @param string $locale
+     * @return string|null
      */
-    public function match($locale);
+    public function match(string $locale): ?string;
 }

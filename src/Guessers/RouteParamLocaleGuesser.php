@@ -5,10 +5,6 @@ namespace NetBull\TranslationBundle\Guessers;
 use Symfony\Component\HttpFoundation\Request;
 use NetBull\TranslationBundle\Validator\MetaValidator;
 
-/**
- * Class RouteParamLocaleGuesser
- * @package NetBull\TranslationBundle\Guessers
- */
 class RouteParamLocaleGuesser extends AbstractLocaleGuesser
 {
     /**
@@ -16,17 +12,17 @@ class RouteParamLocaleGuesser extends AbstractLocaleGuesser
      */
     private $metaValidator;
 
-	/**
-	 * RouteParamLocaleGuesser constructor.
-	 * @param MetaValidator $metaValidator
-	 */
+    /**
+     * @param MetaValidator $metaValidator
+     */
     public function __construct(MetaValidator $metaValidator)
     {
         $this->metaValidator = $metaValidator;
     }
 
     /**
-     * @inheritDoc
+     * @param Request $request
+     * @return bool
      */
     public function guessLocale(Request $request): bool
     {

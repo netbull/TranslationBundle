@@ -2,20 +2,16 @@
 
 namespace NetBull\TranslationBundle\Utils;
 
-/**
- * Class TranslationGuesser
- * @package NetBull\TranslationBundle\Utils
- */
 class TranslationGuesser
 {
     /**
      * @param array $array
-     * @param $field
+     * @param string $field
      * @param string $locale
-     * @param false $strict
-     * @return array|string|null
+     * @param bool $strict
+     * @return mixed|null
      */
-    public static function guess(array $array, $field, $locale = 'en', $strict = false)
+    public static function guess(array $array, string $field, string $locale = 'en', bool $strict = false)
     {
         if (empty($array)) {
             return null;
@@ -77,10 +73,10 @@ class TranslationGuesser
     /**
      * @param array $array
      * @param string $locale
-     * @param false $strict
+     * @param bool $strict
      * @return array|null
      */
-    public static function get(array $array, $locale = 'en', $strict = false): ?array
+    public static function get(array $array, string $locale = 'en', bool $strict = false): ?array
     {
         if (empty($array)) {
             return null;
@@ -89,11 +85,7 @@ class TranslationGuesser
         if (isset($array[$locale])) {
             return $array[$locale];
         } else if (!$strict) {
-            if (isset($array['en'])) {
-                return $array['en'];
-            } else {
-                return array_values($array)[0];
-            }
+            return $array['en'] ?? array_values($array)[0];
         }
 
         return null;

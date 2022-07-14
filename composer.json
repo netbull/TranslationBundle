@@ -13,9 +13,18 @@
     ],
     "license": "AGPL-3.0-or-later",
     "require": {
+        "php": "^7.4 || ^8.0 || ^8.1",
         "symfony/framework-bundle": "5.2.*|5.3.*|5.4.*",
         "knplabs/doctrine-behaviors": "2.*",
-        "geoip2/geoip2": "^2.10"
+        "geoip2/geoip2": "^2.10",
+        "symfony/yaml": "^5.4",
+        "symfony/form": "^5.4",
+      "ext-intl": "*",
+        "symfony/validator": "^5.4",
+        "doctrine/doctrine-bundle": "^2.7",
+        "doctrine/orm": "^2.12",
+        "symfony/intl": "^5.4",
+        "symfony/twig-bundle": "^5.4"
     },
     "autoload": {
         "psr-4": {

@@ -7,19 +7,14 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use NetBull\TranslationBundle\Information\AllowedLocalesProviderInterface;
 
-/**
- * Class LocaleAllowedValidator
- * @package NetBull\TranslationBundle\Locale\Validator
- */
 class LocaleAllowedValidator extends ConstraintValidator
 {
     /**
      * @var AllowedLocalesProviderInterface
      */
-    private $allowedLocalesProvider;
+    private AllowedLocalesProviderInterface $allowedLocalesProvider;
 
     /**
-     * LocaleAllowedValidator constructor.
      * @param AllowedLocalesProviderInterface $allowedLocalesProvider
      */
     public function __construct(AllowedLocalesProviderInterface $allowedLocalesProvider)

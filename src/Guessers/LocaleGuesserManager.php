@@ -83,9 +83,9 @@ class LocaleGuesserManager
 
     /**
      * @param Request $request
-     * @return string|bool
+     * @return string|null
      */
-    public function runLocaleGuessing(Request $request)
+    public function runLocaleGuessing(Request $request): ?string
     {
         $this->preferredLocales = $request->getLanguages();
         foreach ($this->guessingOrder as $guesser) {
@@ -102,12 +102,11 @@ class LocaleGuesserManager
             }
             $this->logEvent('Locale has not been identified by the %s guessing service', ucfirst($guesser));
         }
-        return false;
+        return null;
     }
 
     /**
      * Log detection events
-     *
      * @param string $logMessage
      * @param mixed $parameters
      */
@@ -120,7 +119,6 @@ class LocaleGuesserManager
 
     /**
      * Retrieves the detected preferred locales
-     *
      * @return array
      */
     public function getPreferredLocales(): array

@@ -5,10 +5,6 @@ namespace NetBull\TranslationBundle\Guessers;
 use Symfony\Component\HttpFoundation\Request;
 use NetBull\TranslationBundle\Validator\MetaValidator;
 
-/**
- * Class CookieLocaleGuesser
- * @package NetBull\TranslationBundle\Guessers
- */
 class CookieLocaleGuesser extends AbstractLocaleGuesser
 {
     /**
@@ -22,7 +18,6 @@ class CookieLocaleGuesser extends AbstractLocaleGuesser
     private $cookieName;
 
     /**
-     * CookieLocaleGuesser constructor.
      * @param MetaValidator $metaValidator
      * @param string $cookieName
      */
@@ -33,7 +28,8 @@ class CookieLocaleGuesser extends AbstractLocaleGuesser
     }
 
     /**
-     * @inheritDoc
+     * @param Request $request
+     * @return bool
      */
     public function guessLocale(Request $request): bool
     {

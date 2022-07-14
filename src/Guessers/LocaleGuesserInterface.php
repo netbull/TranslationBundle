@@ -4,10 +4,6 @@ namespace NetBull\TranslationBundle\Guessers;
 
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * Interface LocaleGuesserInterface
- * @package NetBull\TranslationBundle\Guessers
- */
 interface LocaleGuesserInterface
 {
     /**
@@ -18,7 +14,7 @@ interface LocaleGuesserInterface
     public function guessLocale(Request $request): bool;
 
     /**
-     * @return bool|string
+     * @return string|null
      */
-    public function getIdentifiedLocale();
+    public function getIdentifiedLocale(): ?string;
 }

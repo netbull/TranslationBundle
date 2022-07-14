@@ -13,10 +13,6 @@ use NetBull\TranslationBundle\Locale\Cookie\LocaleCookie;
 use NetBull\TranslationBundle\Locale\Session\LocaleSession;
 use NetBull\TranslationBundle\Event\FilterLocaleSwitchEvent;
 
-/**
- * Class LocaleUpdateListener
- * @package NetBull\TranslationBundle\EventListener
- */
 class LocaleUpdateListener implements EventSubscriberInterface
 {
     /**
@@ -50,25 +46,23 @@ class LocaleUpdateListener implements EventSubscriberInterface
     private $logger;
 
     /**
-     * LocaleUpdateListener constructor.
      * @param EventDispatcherInterface $dispatcher
      * @param LocaleCookie $localeCookie
      * @param LocaleSession|null $session
      * @param array $registeredGuessers
      * @param LoggerInterface|null $logger
      */
-    public function __construct(EventDispatcherInterface $dispatcher, LocaleCookie $localeCookie, LocaleSession $session = null, $registeredGuessers = [], LoggerInterface $logger = null)
+    public function __construct(EventDispatcherInterface $dispatcher, LocaleCookie $localeCookie, LocaleSession $session = null, array $registeredGuessers = [], LoggerInterface $logger = null)
     {
         $this->localeCookie = $localeCookie;
         $this->session = $session;
         $this->dispatcher = $dispatcher;
-        $this->logger = $logger;
         $this->registeredGuessers = $registeredGuessers;
+        $this->logger = $logger;
     }
 
     /**
      * Processes the locale updates. Adds listener for the cookie and updates the session.
-     *
      * @param FilterLocaleSwitchEvent $event
      */
     public function onLocaleChange(FilterLocaleSwitchEvent $event)
@@ -98,9 +92,7 @@ class LocaleUpdateListener implements EventSubscriberInterface
 
     /**
      * Event for updating the cookie on response
-     *
      * @param ResponseEvent $event
-     *
      * @return Response;
      */
     public function updateCookieOnResponse(ResponseEvent $event): Response
@@ -117,7 +109,6 @@ class LocaleUpdateListener implements EventSubscriberInterface
 
     /**
      * Update Session section
-     *
      * @return bool
      */
     public function updateSession(): bool
@@ -135,9 +126,7 @@ class LocaleUpdateListener implements EventSubscriberInterface
 
     /**
      * Returns if a guesser is
-     *
      * @param string $guesser Name of the guesser to check
-     *
      * @return bool
      */
     private function checkGuesser(string $guesser): bool

@@ -6,10 +6,6 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
-/**
- * Class GuesserCompilerPass
- * @package NetBull\TranslationBundle\DependencyInjection\Compiler
- */
 class GuesserCompilerPass implements CompilerPassInterface
 {
     /**

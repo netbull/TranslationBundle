@@ -6,10 +6,6 @@ use Symfony\Component\HttpFoundation\Request;
 use NetBull\TranslationBundle\Locale\LocaleMap;
 use NetBull\TranslationBundle\Validator\MetaValidator;
 
-/**
- * Class DomainLocaleGuesser
- * @package NetBull\TranslationBundle\Guessers
- */
 class DomainLocaleGuesser extends AbstractLocaleGuesser
 {
     /**
@@ -23,7 +19,6 @@ class DomainLocaleGuesser extends AbstractLocaleGuesser
     private $localeMap;
 
     /**
-     * DomainLocaleGuesser constructor.
      * @param MetaValidator $metaValidator
      * @param LocaleMap $localeMap
      */
@@ -34,7 +29,8 @@ class DomainLocaleGuesser extends AbstractLocaleGuesser
     }
 
     /**
-     * @inheritDoc
+     * @param Request $request
+     * @return bool
      */
     public function guessLocale(Request $request): bool
     {

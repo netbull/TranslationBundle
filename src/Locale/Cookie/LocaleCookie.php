@@ -4,49 +4,44 @@ namespace NetBull\TranslationBundle\Locale\Cookie;
 
 use Symfony\Component\HttpFoundation\Cookie;
 
-/**
- * Class LocaleCookie
- * @package NetBull\TranslationBundle\Locale\Cookie
- */
 class LocaleCookie
 {
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var int
      */
-    private $ttl;
+    private int $ttl;
 
     /**
      * @var string
      */
-    private $path;
+    private string $path;
+
+    /**
+     * @var bool
+     */
+    private bool $secure;
+
+    /**
+     * @var bool
+     */
+    private bool $httpOnly;
+
+    /**
+     * @var bool
+     */
+    private bool $setOnChange;
 
     /**
      * @var string|null
      */
-    private $domain;
+    private ?string $domain;
 
     /**
-     * @var bool
-     */
-    private $secure;
-
-    /**
-     * @var bool
-     */
-    private $httpOnly;
-
-    /**
-     * @var bool
-     */
-    private $setOnChange;
-
-    /**
-     * LocaleCookie constructor.
      * @param string $name
      * @param int $ttl
      * @param string $path
@@ -60,10 +55,10 @@ class LocaleCookie
         $this->name = $name;
         $this->ttl = $ttl;
         $this->path = $path;
-        $this->domain = $domain;
         $this->secure = $secure;
         $this->httpOnly = $httpOnly;
         $this->setOnChange = $setOnChange;
+        $this->domain = $domain;
     }
 
     /**

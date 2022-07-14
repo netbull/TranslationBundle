@@ -2,16 +2,12 @@
 
 namespace NetBull\TranslationBundle\Locale;
 
-/**
- * Class CountryMap
- * @package NetBull\TranslationBundle\Locale
- */
 class CountryMap
 {
     /**
      * @var array
      */
-    private $map;
+    private array $map;
 
     /**
      * @param array $map country map, [country_iso2_code => locale]
@@ -23,14 +19,14 @@ class CountryMap
 
     /**
      * @param string $country
-     * @return bool|string
+     * @return string|null
      */
-    public function getLocale(string $country)
+    public function getLocale(string $country): ?string
     {
         if (isset($this->map[$country]) && $this->map[$country]) {
             return $this->map[$country];
         }
 
-        return false;
+        return null;
     }
 }

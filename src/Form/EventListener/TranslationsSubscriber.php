@@ -2,6 +2,7 @@
 
 namespace NetBull\TranslationBundle\Form\EventListener;
 
+use Exception;
 use Locale;
 use Symfony\Component\Form;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -9,10 +10,6 @@ use NetBull\TranslationBundle\Form\TranslationForm;
 use NetBull\TranslationBundle\Form\Type\TranslationsType;
 use NetBull\TranslationBundle\Form\Type\TranslationsFieldsType;
 
-/**
- * Class TranslationsSubscriber
- * @package NetBull\TranslationBundle\Form\EventListener
- */
 class TranslationsSubscriber implements EventSubscriberInterface
 {
     /**
@@ -31,7 +28,6 @@ class TranslationsSubscriber implements EventSubscriberInterface
     private $parentForm;
 
     /**
-     * TranslationsSubscriber constructor.
      * @param TranslationForm $translationForm
      * @param Form\FormFactoryInterface $formFactory
      */
@@ -50,7 +46,9 @@ class TranslationsSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param Form\FormEvent $event
+     * @return void
+     * @throws Exception
      */
     public function preSetData(Form\FormEvent $event)
     {
@@ -91,7 +89,7 @@ class TranslationsSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param Form\FormEvent $event
      */
     public function submit(Form\FormEvent $event)
     {
@@ -120,9 +118,9 @@ class TranslationsSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Form\FormEvents::PRE_SET_DATA => 'preSetData',
@@ -131,10 +129,10 @@ class TranslationsSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param $translatableClass
+     * @param mixed $translatableClass
      * @return string
      */
-    private function getTranslationClass($translatableClass)
+    private function getTranslationClass($translatableClass): string
     {
         if (method_exists($translatableClass, 'getTranslationEntityClass')) {
             return $translatableClass::getTranslationEntityClass();

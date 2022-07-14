@@ -9,10 +9,6 @@ use NetBull\TranslationBundle\Locale\CountryMap;
 use Symfony\Component\HttpFoundation\Request;
 use NetBull\TranslationBundle\Validator\MetaValidator;
 
-/**
- * Class GeoIpLocaleGuesser
- * @package NetBull\TranslationBundle\Guessers
- */
 class GeoIpLocaleGuesser extends AbstractLocaleGuesser
 {
     /**
@@ -41,7 +37,6 @@ class GeoIpLocaleGuesser extends AbstractLocaleGuesser
     private $reader;
 
     /**
-     * GeoIpLocaleGuesser constructor.
      * @param MetaValidator $metaValidator
      * @param string $binary
      * @param string $default
@@ -70,7 +65,8 @@ class GeoIpLocaleGuesser extends AbstractLocaleGuesser
     }
 
     /**
-     * @inheritDoc
+     * @param Request $request
+     * @return bool
      */
     public function guessLocale(Request $request): bool
     {

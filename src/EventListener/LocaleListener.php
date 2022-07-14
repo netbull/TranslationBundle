@@ -15,10 +15,6 @@ use NetBull\TranslationBundle\Guessers\LocaleGuesserManager;
 use NetBull\TranslationBundle\Event\FilterLocaleSwitchEvent;
 use NetBull\TranslationBundle\Matcher\BestLocaleMatcherInterface;
 
-/**
- * Class LocaleListener
- * @package NetBull\TranslationBundle\EventListener
- */
 class LocaleListener implements EventSubscriberInterface
 {
     /**
@@ -57,13 +53,12 @@ class LocaleListener implements EventSubscriberInterface
     private $excludedPattern;
 
     /**
-     * LocaleListener constructor.
      * @param LocaleGuesserManager $guesserManager
      * @param string $defaultLocale
      * @param BestLocaleMatcherInterface|null $bestLocaleMatcher
      * @param LoggerInterface|null $logger
      */
-    public function __construct(LocaleGuesserManager $guesserManager, $defaultLocale = 'en', BestLocaleMatcherInterface $bestLocaleMatcher = null, LoggerInterface $logger = null)
+    public function __construct(LocaleGuesserManager $guesserManager, string $defaultLocale = 'en', BestLocaleMatcherInterface $bestLocaleMatcher = null, LoggerInterface $logger = null)
     {
         $this->defaultLocale = $defaultLocale;
         $this->guesserManager = $guesserManager;
@@ -101,7 +96,7 @@ class LocaleListener implements EventSubscriberInterface
             $request->attributes->set('_locale', $locale);
 
             if (
-                ($event->getRequestType() === HttpKernelInterface::MASTER_REQUEST || $request->isXmlHttpRequest())
+                ($event->getRequestType() === HttpKernelInterface::MAIN_REQUEST || $request->isXmlHttpRequest())
                 && ($manager->getGuesser('session') || $manager->getGuesser('cookie'))
             ) {
                 $localeSwitchEvent = new FilterLocaleSwitchEvent($request, $locale);
@@ -111,10 +106,7 @@ class LocaleListener implements EventSubscriberInterface
     }
 
     /**
-     * This Listener adds a vary header to all responses.
-     *
      * @param ResponseEvent $event
-     *
      * @return Response
      */
     public function onLocaleDetectedSetVaryHeader(ResponseEvent $event): Response
@@ -152,10 +144,8 @@ class LocaleListener implements EventSubscriberInterface
     }
 
     /**
-     * Log detection events
-     *
      * @param string $logMessage
-     * @param mixed $parameters
+     * @param $parameters
      */
     private function logEvent(string $logMessage, $parameters = null)
     {
@@ -165,7 +155,7 @@ class LocaleListener implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @return array|array[]|\array[][]|string[]
      */
     public static function getSubscribedEvents(): array
     {

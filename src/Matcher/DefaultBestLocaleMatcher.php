@@ -4,19 +4,14 @@ namespace NetBull\TranslationBundle\Matcher;
 
 use NetBull\TranslationBundle\Information\AllowedLocalesProvider;
 
-/**
- * Class DefaultBestLocaleMatcher
- * @package NetBull\TranslationBundle\Matcher
- */
 class DefaultBestLocaleMatcher implements BestLocaleMatcherInterface
 {
     /**
      * @var AllowedLocalesProvider
      */
-    private $allowedLocaleProvider;
+    private AllowedLocalesProvider $allowedLocaleProvider;
 
     /**
-     * DefaultBestLocaleMatcher constructor.
      * @param AllowedLocalesProvider $allowedLocales
      */
     public function __construct(AllowedLocalesProvider $allowedLocales)
@@ -25,9 +20,10 @@ class DefaultBestLocaleMatcher implements BestLocaleMatcherInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $locale
+     * @return string|null
      */
-    public function match($locale)
+    public function match(string $locale): ?string
     {
         $allowedLocales = $this->allowedLocaleProvider->getAllowedLocales();
         uasort($allowedLocales, function ($a, $b) {
@@ -40,6 +36,6 @@ class DefaultBestLocaleMatcher implements BestLocaleMatcherInterface
             }
         }
 
-        return false;
+        return null;
     }
 }

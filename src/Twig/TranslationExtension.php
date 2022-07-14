@@ -12,24 +12,19 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
-/**
- * Class TranslationExtension
- * @package NetBull\TranslationBundle\Twig
- */
 class TranslationExtension extends AbstractExtension
 {
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    protected ContainerInterface $container;
 
     /**
      * @var RequestStack
      */
-    private $requestStack;
+    private RequestStack $requestStack;
 
     /**
-     * TranslationExtension constructor.
      * @param ContainerInterface $container
      * @param RequestStack $requestStack
      */
@@ -64,15 +59,14 @@ class TranslationExtension extends AbstractExtension
     #########################################
     #              Functions                #
     #########################################
-
     /**
-     * @param null $template
+     * @param string|null $template
      * @param array $parameters
      * @param null $route
      * @return mixed
      * @throws Exception
      */
-    public function renderSwitcher($template = null, $parameters = [], $route = null)
+    public function renderSwitcher(string $template = null, array $parameters = [], $route = null)
     {
         if (!$route) {
             $route = $this->container->getParameter('netbull_translation.switcher.route');
@@ -91,7 +85,6 @@ class TranslationExtension extends AbstractExtension
     #########################################
     #                Filters                #
     #########################################
-
     /**
      * @param array $translations
      * @param string $field
@@ -115,10 +108,10 @@ class TranslationExtension extends AbstractExtension
     /**
      * @param array $translations
      * @param null $locale
-     * @param false $strict
+     * @param bool $strict
      * @return array|null
      */
-    public function getTranslation(array $translations, $locale = null, $strict = false)
+    public function getTranslation(array $translations, $locale = null, bool $strict = false): ?array
     {
         if (empty($translations)) {
             return null;
@@ -132,12 +125,11 @@ class TranslationExtension extends AbstractExtension
     }
 
     /**
-     * Return Language representation for a given Locale
-     * @param $locale
-     * @param string $toLocale
+     * @param string $locale
+     * @param string|null $toLocale
      * @return string
      */
-    public function languageFromLocale($locale, $toLocale = null): string
+    public function languageFromLocale(string $locale, string $toLocale = null): string
     {
         $request = $this->requestStack->getCurrentRequest();
         $auto = $request ? $request->getLocale() : 'en';
@@ -148,7 +140,7 @@ class TranslationExtension extends AbstractExtension
     }
 
     /**
-     * @return string The name of the extension
+     * @return string
      */
     public function getName(): string
     {

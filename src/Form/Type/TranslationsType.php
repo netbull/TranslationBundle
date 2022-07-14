@@ -10,10 +10,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use NetBull\TranslationBundle\Form\EventListener\TranslationsSubscriber;
 
-/**
- * Class TranslationsType
- * @package NetBull\TranslationBundle\Form\Type
- */
 class TranslationsType extends AbstractType
 {
     const RENDER_TYPE_ROWS = 'rows';
@@ -51,12 +47,11 @@ class TranslationsType extends AbstractType
     private $renderType = self::RENDER_TYPE_ROWS;
 
     /**
-     * TranslationsType constructor.
      * @param TranslationsSubscriber $translationsSubscriber
      * @param string $defaultLocale
      * @param array $locales
      */
-    public function __construct(TranslationsSubscriber $translationsSubscriber, $defaultLocale = 'en', $locales = [])
+    public function __construct(TranslationsSubscriber $translationsSubscriber, string $defaultLocale = 'en', array $locales = [])
     {
         $this->translationsSubscriber = $translationsSubscriber;
         $this->locales = $locales;
@@ -76,7 +71,7 @@ class TranslationsType extends AbstractType
      * @param string $name
      * @return FormInterface|null
      */
-    public function getPrototype(string $name)
+    public function getPrototype(string $name): ?FormInterface
     {
         return $this->prototypes[$name] ?? null;
     }
@@ -146,9 +141,9 @@ class TranslationsType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'translations_' . $this->renderType;
     }

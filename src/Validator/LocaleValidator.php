@@ -7,41 +7,35 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-/**
- * Class LocaleValidator
- * @package NetBull\TranslationBundle\Locale\Validator
- */
 class LocaleValidator extends ConstraintValidator
 {
     /**
      * @var bool
      */
-    private $intlExtension;
+    private bool $intlExtension;
 
     /**
      * @var array
      */
-    private $iso3166;
+    private array $iso3166;
 
     /**
      * @var array
      */
-    private $iso639;
+    private array $iso639;
 
     /**
      * @var array
      */
-    private $script;
+    private array $script;
 
     /**
-     * Constructor
-     *
-     * @param bool  $intlExtension Weather the intl extension is installed
-     * @param array $iso3166 Array of valid iso3166 codes
-     * @param array $iso639 Array of valid iso639 codes
-     * @param array $script Array of valid locale scripts
+     * @param bool $intlExtension Weather the intl extension is installed
+     * @param array $iso3166
+     * @param array $iso639
+     * @param array $script
      */
-    public function __construct($intlExtension = false, array $iso3166 = [], array $iso639 = [], array $script = [])
+    public function __construct(bool $intlExtension = false, array $iso3166 = [], array $iso639 = [], array $script = [])
     {
         $this->intlExtension = $intlExtension;
         $this->iso3166 = $iso3166;

@@ -11,16 +11,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use NetBull\TranslationBundle\ORM\Subscribers\Translation\TranslationInterface;
 
-/**
- * Class TranslationsFieldsType
- * @package NetBull\TranslationBundle\Form\Type
- */
 class TranslationsFieldsType extends AbstractType
 {
     /**
-     *
-     * @param FormBuilderInterface  $builder
-     * @param array                 $options
+     * @param FormBuilderInterface $builder
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -37,7 +32,9 @@ class TranslationsFieldsType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * @param FormView $view
+     * @param FormInterface $form
+     * @param array $options
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
@@ -48,11 +45,10 @@ class TranslationsFieldsType extends AbstractType
      * @param FormInterface $form
      * @return bool
      */
-    public static function isTranslationEmpty(FormInterface $form)
+    public static function isTranslationEmpty(FormInterface $form): bool
     {
         $empty = true;
-
-        foreach ($form as $field => $fieldForm) {
+        foreach ($form as $fieldForm) {
             if ($fieldForm->getData()) {
                 $empty = false;
                 break;
@@ -63,7 +59,7 @@ class TranslationsFieldsType extends AbstractType
     }
 
     /**
-     * @param $payload
+     * @param mixed $payload
      * @param ExecutionContextInterface $context
      */
     public function validate($payload, ExecutionContextInterface $context)

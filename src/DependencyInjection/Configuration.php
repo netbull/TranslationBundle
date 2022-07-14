@@ -6,11 +6,8 @@ use NetBull\TranslationBundle\Locale\Cookie\LocaleCookie;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Class Configuration
- * @package NetBull\TranslationBundle\DependencyInjection
- */
 class Configuration implements ConfigurationInterface
 {
     /**
@@ -117,7 +114,13 @@ class Configuration implements ConfigurationInterface
      */
     private function addSwitcherSection(ArrayNodeDefinition $rootNode)
     {
-        $validStatusCodes = [300, 301, 302, 303, 307];
+        $validStatusCodes = [
+            Response::HTTP_MULTIPLE_CHOICES, // 300
+            Response::HTTP_MOVED_PERMANENTLY, // 301
+            Response::HTTP_FOUND, // 302
+            Response::HTTP_SEE_OTHER, // 303,
+            Response::HTTP_TEMPORARY_REDIRECT, // 307,
+        ];
         $rootNode
             ->children()
                 ->arrayNode('switcher')
