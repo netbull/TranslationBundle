@@ -1,3 +1,10 @@
+## [5.5.1](https://github.com/netbull/TranslationBundle/compare/v5.5.0...v5.5.1) (2022-07-14)
+
+
+### Bug Fixes
+
+* refactored to clear deprecations ([e045220](https://github.com/netbull/TranslationBundle/commit/e045220edeaa5f405052fe2580e817f727c608d1))
+
 # [5.5.0](https://github.com/netbull/TranslationBundle/compare/v5.4.1...v5.5.0) (2022-07-14)
 
 
