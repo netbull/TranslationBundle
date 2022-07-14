@@ -6,48 +6,39 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
-/**
- * Class LocaleGuesserManager
- * @package NetBull\TranslationBundle\Guessers
- */
 class LocaleGuesserManager
 {
     /**
      * @var array
      */
-    private $guessingOrder;
+    private array $guessingOrder;
+
+    /**
+     * @var LoggerInterface|null
+     */
+    private ?LoggerInterface $logger;
 
     /**
      * @var array
      */
-    private $guessers;
+    private array $guessers = [];
 
     /**
      * @var array
      */
-    private $preferredLocales;
+    private array $preferredLocales = [];
 
     /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * LocaleGuesserManager constructor.
      * @param array $guessingOrder
      * @param LoggerInterface|null $logger
      */
     public function __construct(array $guessingOrder, LoggerInterface $logger = null)
     {
         $this->guessingOrder = $guessingOrder;
-        $this->guessers = [];
-        $this->preferredLocales = [];
         $this->logger = $logger;
     }
 
     /**
-     * Adds a guesser to this manager
-     *
      * @param LocaleGuesserInterface $guesser The Guesser Service
      * @param string $alias Alias of the Service
      */
@@ -57,8 +48,6 @@ class LocaleGuesserManager
     }
 
     /**
-     * Returns the guesser
-     *
      * @param string $alias
      * @return LocaleGuesserInterface|null
      */
@@ -72,8 +61,6 @@ class LocaleGuesserManager
     }
 
     /**
-     * Removes a guesser from this manager
-     *
      * @param string $alias
      */
     public function removeGuesser(string $alias)

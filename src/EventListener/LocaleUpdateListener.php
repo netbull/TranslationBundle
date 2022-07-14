@@ -18,45 +18,45 @@ class LocaleUpdateListener implements EventSubscriberInterface
     /**
      * @var EventDispatcherInterface
      */
-    private $dispatcher;
-
-    /**
-     * @var string
-     */
-    private $locale;
-
-    /**
-     * @var LocaleSession
-     */
-    private $session;
+    private EventDispatcherInterface $dispatcher;
 
     /**
      * @var LocaleCookie
      */
-    private $localeCookie;
+    private LocaleCookie $localeCookie;
+
+    /**
+     * @var LocaleSession
+     */
+    private LocaleSession $localeSession;
 
     /**
      * @var array
      */
-    private $registeredGuessers;
+    private array $registeredGuessers;
 
     /**
-     * @var LoggerInterface
+     * @var LoggerInterface|null
      */
-    private $logger;
+    private ?LoggerInterface $logger;
+
+    /**
+     * @var string|null
+     */
+    private ?string $locale = null;
 
     /**
      * @param EventDispatcherInterface $dispatcher
      * @param LocaleCookie $localeCookie
-     * @param LocaleSession|null $session
+     * @param LocaleSession $localeSession
      * @param array $registeredGuessers
      * @param LoggerInterface|null $logger
      */
-    public function __construct(EventDispatcherInterface $dispatcher, LocaleCookie $localeCookie, LocaleSession $session = null, array $registeredGuessers = [], LoggerInterface $logger = null)
+    public function __construct(EventDispatcherInterface $dispatcher, LocaleCookie $localeCookie, LocaleSession $localeSession, array $registeredGuessers = [], LoggerInterface $logger = null)
     {
-        $this->localeCookie = $localeCookie;
-        $this->session = $session;
         $this->dispatcher = $dispatcher;
+        $this->localeCookie = $localeCookie;
+        $this->localeSession = $localeSession;
         $this->registeredGuessers = $registeredGuessers;
         $this->logger = $logger;
     }
@@ -91,9 +91,8 @@ class LocaleUpdateListener implements EventSubscriberInterface
     }
 
     /**
-     * Event for updating the cookie on response
      * @param ResponseEvent $event
-     * @return Response;
+     * @return Response
      */
     public function updateCookieOnResponse(ResponseEvent $event): Response
     {
@@ -108,16 +107,15 @@ class LocaleUpdateListener implements EventSubscriberInterface
     }
 
     /**
-     * Update Session section
      * @return bool
      */
     public function updateSession(): bool
     {
-        if ($this->session && $this->checkGuesser('session') && $this->session->hasLocaleChanged($this->locale)) {
+        if ($this->checkGuesser('session') && $this->localeSession->hasLocaleChanged($this->locale)) {
             if (null !== $this->logger) {
-                $this->logger->info(sprintf('Session var "%s" set to [ %s ]', $this->session->getSessionVar(), $this->locale));
+                $this->logger->info(sprintf('Session var "%s" set to [ %s ]', $this->localeSession->getSessionVar(), $this->locale));
             }
-            $this->session->setLocale($this->locale);
+            $this->localeSession->setLocale($this->locale);
             return true;
         }
 
@@ -125,8 +123,7 @@ class LocaleUpdateListener implements EventSubscriberInterface
     }
 
     /**
-     * Returns if a guesser is
-     * @param string $guesser Name of the guesser to check
+     * @param string $guesser
      * @return bool
      */
     private function checkGuesser(string $guesser): bool
@@ -135,7 +132,7 @@ class LocaleUpdateListener implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @return string[][]
      */
     public static function getSubscribedEvents(): array
     {

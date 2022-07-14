@@ -10,12 +10,12 @@ class CookieLocaleGuesser extends AbstractLocaleGuesser
     /**
      * @var MetaValidator
      */
-    private $metaValidator;
+    private MetaValidator $metaValidator;
 
     /**
      * @var string
      */
-    private $cookieName;
+    private string $cookieName;
 
     /**
      * @param MetaValidator $metaValidator

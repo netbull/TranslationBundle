@@ -12,14 +12,14 @@ use Symfony\Component\Form\FormTypeGuesserInterface;
 class TranslationForm
 {
     /**
-     * @var false|null|FormTypeGuesserChain|FormTypeGuesserInterface
+     * @var mixed|FormTypeGuesserChain|FormTypeGuesserInterface
      */
     private $typeGuesser;
 
     /**
      * @var Registry
      */
-    private $registry;
+    private Registry $registry;
 
     /**
      * @param FormRegistry $formRegistry

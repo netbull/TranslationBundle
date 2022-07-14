@@ -11,12 +11,12 @@ class DomainLocaleGuesser extends AbstractLocaleGuesser
     /**
      * @var MetaValidator
      */
-    private $metaValidator;
+    private MetaValidator $metaValidator;
 
     /**
-     * @var array
+     * @var LocaleMap
      */
-    private $localeMap;
+    private LocaleMap $localeMap;
 
     /**
      * @param MetaValidator $metaValidator

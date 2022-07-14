@@ -5,9 +5,9 @@ namespace NetBull\TranslationBundle\Information;
 class AllowedLocalesProvider implements AllowedLocalesProviderInterface
 {
     /**
-     * @var array|null
+     * @var array
      */
-    protected $allowedLocales;
+    protected array $allowedLocales;
 
     /**
      * @param array $allowedLocales

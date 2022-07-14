@@ -10,7 +10,7 @@ class RouteParamLocaleGuesser extends AbstractLocaleGuesser
     /**
      * @var MetaValidator
      */
-    private $metaValidator;
+    private MetaValidator $metaValidator;
 
     /**
      * @param MetaValidator $metaValidator

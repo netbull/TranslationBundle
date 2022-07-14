@@ -14,27 +14,27 @@ class GeoIpLocaleGuesser extends AbstractLocaleGuesser
     /**
      * @var MetaValidator
      */
-    private $metaValidator;
+    private MetaValidator $metaValidator;
 
     /**
      * @var string
      */
-    private $binary;
+    private string $binary;
 
     /**
      * @var string
      */
-    private $default;
+    private string $default;
 
     /**
      * @var CountryMap
      */
-    private $countryMap;
+    private CountryMap $countryMap;
 
     /**
      * @var Reader|null
      */
-    private $reader;
+    private ?Reader $reader = null;
 
     /**
      * @param MetaValidator $metaValidator

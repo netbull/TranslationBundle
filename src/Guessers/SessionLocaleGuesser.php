@@ -12,17 +12,17 @@ class SessionLocaleGuesser extends AbstractLocaleGuesser
     /**
      * @var RequestStack
      */
-    private $requestStack;
+    private RequestStack $requestStack;
 
     /**
      * @var MetaValidator
      */
-    private $metaValidator;
+    private MetaValidator $metaValidator;
 
     /**
      * @var string
      */
-    private $sessionVariable;
+    private string $sessionVariable;
 
     /**
      * @param RequestStack $requestStack
@@ -61,16 +61,15 @@ class SessionLocaleGuesser extends AbstractLocaleGuesser
     }
 
     /**
-     * Sets the locale in the session
-     * @param string $locale Locale
-     * @param bool $force Force write session
+     * @param string $locale
+     * @param bool $force
      */
     public function setSessionLocale(string $locale, bool $force = false)
     {
         try {
             $session = $this->requestStack->getSession();
         } catch (SessionNotFoundException $e) {
-            return false;
+            return;
         }
 
         if (!$session->has($this->sessionVariable) || $force) {

@@ -19,12 +19,12 @@ class TranslationsType extends AbstractType
     /**
      * @var TranslationsSubscriber
      */
-    private $translationsSubscriber;
+    private TranslationsSubscriber $translationsSubscriber;
 
     /**
      * @var array
      */
-    private $locales;
+    private array $locales;
 
     /**
      * @var array
@@ -34,17 +34,17 @@ class TranslationsType extends AbstractType
     /**
      * @var array
      */
-    private $renderTypes = [self::RENDER_TYPE_ROWS, self::RENDER_TYPE_TABS, self::RENDER_TYPE_TABS_SMALL];
+    private array $renderTypes = [self::RENDER_TYPE_ROWS, self::RENDER_TYPE_TABS, self::RENDER_TYPE_TABS_SMALL];
 
     /**
      * @var array|null
      */
-    private $prototypes;
+    private ?array $prototypes = null;
 
     /**
      * @var string
      */
-    private $renderType = self::RENDER_TYPE_ROWS;
+    private string $renderType = self::RENDER_TYPE_ROWS;
 
     /**
      * @param TranslationsSubscriber $translationsSubscriber
@@ -60,7 +60,7 @@ class TranslationsType extends AbstractType
 
     /**
      * @param string $name
-     * @param null|FormInterface $prototype
+     * @param FormInterface|null $prototype
      */
     public function setPrototype(string $name, ?FormInterface $prototype = null)
     {

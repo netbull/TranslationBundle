@@ -8,7 +8,6 @@ interface LocaleGuesserInterface
 {
     /**
      * @param Request $request
-     *
      * @return bool
      */
     public function guessLocale(Request $request): bool;

@@ -16,27 +16,27 @@ class LocaleController
     /**
      * @var EventDispatcherInterface
      */
-    private $dispatcher;
+    private EventDispatcherInterface $dispatcher;
 
     /**
      * @var MetaValidator
      */
-    private $metaValidator;
+    private MetaValidator $metaValidator;
 
     /**
      * @var RouterInterface|null
      */
-    private $router;
+    private ?RouterInterface $router;
 
     /**
      * @var bool
      */
-    private $useReferrer;
+    private bool $useReferrer;
 
     /**
      * @var string|null
      */
-    private $redirectToRoute;
+    private ?string $redirectToRoute;
 
     /**
      * @var string

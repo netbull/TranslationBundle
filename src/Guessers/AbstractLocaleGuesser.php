@@ -5,9 +5,9 @@ namespace NetBull\TranslationBundle\Guessers;
 abstract class AbstractLocaleGuesser implements LocaleGuesserInterface
 {
     /**
-     * @var string
+     * @var string|null
      */
-    protected $identifiedLocale;
+    protected ?string $identifiedLocale = null;
 
     /**
      * @return string|null

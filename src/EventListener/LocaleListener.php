@@ -18,39 +18,39 @@ use NetBull\TranslationBundle\Matcher\BestLocaleMatcherInterface;
 class LocaleListener implements EventSubscriberInterface
 {
     /**
-     * @var string Default framework locale
+     * @var string
      */
-    private $defaultLocale;
+    private string $defaultLocale;
 
     /**
      * @var LocaleGuesserManager
      */
-    private $guesserManager;
+    private LocaleGuesserManager $guesserManager;
 
     /**
-     * @var BestLocaleMatcherInterface
+     * @var BestLocaleMatcherInterface|null
      */
-    private $bestLocaleMatcher;
+    private ?BestLocaleMatcherInterface $bestLocaleMatcher;
 
     /**
-     * @var LoggerInterface
+     * @var LoggerInterface|null
      */
-    private $logger;
+    private ?LoggerInterface $logger;
 
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface|null
      */
-    private $dispatcher;
+    private ?EventDispatcherInterface $dispatcher = null;
 
     /**
      * @var boolean
      */
-    private $disableVaryHeader = false;
+    private bool $disableVaryHeader = false;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private $excludedPattern;
+    private ?string $excludedPattern = null;
 
     /**
      * @param LocaleGuesserManager $guesserManager

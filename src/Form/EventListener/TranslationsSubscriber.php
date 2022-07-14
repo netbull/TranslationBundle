@@ -15,17 +15,17 @@ class TranslationsSubscriber implements EventSubscriberInterface
     /**
      * @var TranslationForm
      */
-    private $translationForm;
+    private TranslationForm $translationForm;
 
     /**
      * @var Form\FormFactoryInterface
      */
-    private $formFactory;
+    private Form\FormFactoryInterface $formFactory;
 
     /**
      * @var TranslationsType|null
      */
-    private $parentForm;
+    private ?TranslationsType $parentForm = null;
 
     /**
      * @param TranslationForm $translationForm

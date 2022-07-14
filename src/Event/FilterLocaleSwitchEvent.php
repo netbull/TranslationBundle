@@ -12,12 +12,12 @@ class FilterLocaleSwitchEvent extends Event
     /**
      * @var Request
      */
-    protected $request;
+    protected Request $request;
 
     /**
      * @var string
      */
-    protected $locale;
+    protected string $locale;
 
     /**
      * @param Request $request
