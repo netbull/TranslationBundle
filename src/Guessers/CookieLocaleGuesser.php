@@ -8,23 +8,13 @@ use NetBull\TranslationBundle\Validator\MetaValidator;
 class CookieLocaleGuesser extends AbstractLocaleGuesser
 {
     /**
-     * @var MetaValidator
-     */
-    private MetaValidator $metaValidator;
-
-    /**
-     * @var string
-     */
-    private string $cookieName;
-
-    /**
      * @param MetaValidator $metaValidator
      * @param string $cookieName
      */
-    public function __construct(MetaValidator $metaValidator, string $cookieName)
-    {
-        $this->metaValidator = $metaValidator;
-        $this->cookieName = $cookieName;
+    public function __construct(
+        private MetaValidator $metaValidator,
+        private string $cookieName
+    ) {
     }
 
     /**

@@ -10,30 +10,15 @@ use NetBull\TranslationBundle\Validator\MetaValidator;
 class SessionLocaleGuesser extends AbstractLocaleGuesser
 {
     /**
-     * @var RequestStack
-     */
-    private RequestStack $requestStack;
-
-    /**
-     * @var MetaValidator
-     */
-    private MetaValidator $metaValidator;
-
-    /**
-     * @var string
-     */
-    private string $sessionVariable;
-
-    /**
      * @param RequestStack $requestStack
      * @param MetaValidator $metaValidator
      * @param string $sessionVariable
      */
-    public function __construct(RequestStack $requestStack, MetaValidator $metaValidator, string $sessionVariable)
-    {
-        $this->requestStack = $requestStack;
-        $this->metaValidator = $metaValidator;
-        $this->sessionVariable = $sessionVariable;
+    public function __construct(
+        private RequestStack $requestStack,
+        private MetaValidator $metaValidator,
+        private string $sessionVariable
+    ) {
     }
 
     /**
@@ -44,7 +29,7 @@ class SessionLocaleGuesser extends AbstractLocaleGuesser
     {
         try {
             $session = $this->requestStack->getSession();
-        } catch (SessionNotFoundException $e) {
+        } catch (SessionNotFoundException) {
             return false;
         }
 
@@ -64,11 +49,11 @@ class SessionLocaleGuesser extends AbstractLocaleGuesser
      * @param string $locale
      * @param bool $force
      */
-    public function setSessionLocale(string $locale, bool $force = false)
+    public function setSessionLocale(string $locale, bool $force = false): void
     {
         try {
             $session = $this->requestStack->getSession();
-        } catch (SessionNotFoundException $e) {
+        } catch (SessionNotFoundException) {
             return;
         }
 

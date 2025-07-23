@@ -11,7 +11,7 @@ class TranslationGuesser
      * @param bool $strict
      * @return mixed|null
      */
-    public static function guess(array $array, string $field, string $locale = 'en', bool $strict = false)
+    public static function guess(array $array, string $field, string $locale = 'en', bool $strict = false): mixed
     {
         if (empty($array)) {
             return null;

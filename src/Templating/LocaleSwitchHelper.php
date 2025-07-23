@@ -10,11 +10,6 @@ use Twig\Error\SyntaxError;
 class LocaleSwitchHelper
 {
     /**
-     * @var Environment
-     */
-    protected Environment $twig;
-
-    /**
      * @var array
      */
     protected array $templates = [
@@ -25,15 +20,16 @@ class LocaleSwitchHelper
     /**
      * @var mixed
      */
-    protected $view;
+    protected mixed $view;
 
     /**
      * @param Environment $twig
-     * @param $template
+     * @param string $template
      */
-    public function __construct(Environment $twig, $template)
-    {
-        $this->twig = $twig;
+    public function __construct(
+        private Environment $twig,
+        string $template
+    ) {
         $this->view = array_key_exists($template, $this->templates) ? $this->templates[$template] : $template;
     }
 
@@ -50,7 +46,7 @@ class LocaleSwitchHelper
 
         try {
             return $this->twig->render($template, $viewParams);
-        } catch (LoaderError | RuntimeError | SyntaxError $e) {
+        } catch (LoaderError | RuntimeError | SyntaxError) {
             return null;
         }
     }

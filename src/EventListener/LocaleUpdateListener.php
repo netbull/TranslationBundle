@@ -16,31 +16,6 @@ use NetBull\TranslationBundle\Event\FilterLocaleSwitchEvent;
 class LocaleUpdateListener implements EventSubscriberInterface
 {
     /**
-     * @var EventDispatcherInterface
-     */
-    private EventDispatcherInterface $dispatcher;
-
-    /**
-     * @var LocaleCookie
-     */
-    private LocaleCookie $localeCookie;
-
-    /**
-     * @var LocaleSession
-     */
-    private LocaleSession $localeSession;
-
-    /**
-     * @var array
-     */
-    private array $registeredGuessers;
-
-    /**
-     * @var LoggerInterface|null
-     */
-    private ?LoggerInterface $logger;
-
-    /**
      * @var string|null
      */
     private ?string $locale = null;
@@ -52,20 +27,20 @@ class LocaleUpdateListener implements EventSubscriberInterface
      * @param array $registeredGuessers
      * @param LoggerInterface|null $logger
      */
-    public function __construct(EventDispatcherInterface $dispatcher, LocaleCookie $localeCookie, LocaleSession $localeSession, array $registeredGuessers = [], LoggerInterface $logger = null)
-    {
-        $this->dispatcher = $dispatcher;
-        $this->localeCookie = $localeCookie;
-        $this->localeSession = $localeSession;
-        $this->registeredGuessers = $registeredGuessers;
-        $this->logger = $logger;
+    public function __construct(
+        private EventDispatcherInterface $dispatcher,
+        private LocaleCookie $localeCookie,
+        private LocaleSession $localeSession,
+        private array $registeredGuessers = [],
+        private ?LoggerInterface $logger = null
+    ) {
     }
 
     /**
      * Processes the locale updates. Adds listener for the cookie and updates the session.
      * @param FilterLocaleSwitchEvent $event
      */
-    public function onLocaleChange(FilterLocaleSwitchEvent $event)
+    public function onLocaleChange(FilterLocaleSwitchEvent $event): void
     {
         $this->locale = $event->getLocale();
         $this->updateCookie($event->getRequest(), $this->localeCookie->setCookieOnChange());
@@ -99,9 +74,7 @@ class LocaleUpdateListener implements EventSubscriberInterface
         $response = $event->getResponse();
         $cookie = $this->localeCookie->getLocaleCookie($this->locale);
         $response->headers->setCookie($cookie);
-        if (null !== $this->logger) {
-            $this->logger->info(sprintf('Locale Cookie set to [ %s ]', $this->locale));
-        }
+        $this->logger?->info(sprintf('Locale Cookie set to [ %s ]', $this->locale));
 
         return $response;
     }
@@ -112,9 +85,7 @@ class LocaleUpdateListener implements EventSubscriberInterface
     public function updateSession(): bool
     {
         if ($this->checkGuesser('session') && $this->localeSession->hasLocaleChanged($this->locale)) {
-            if (null !== $this->logger) {
-                $this->logger->info(sprintf('Session var "%s" set to [ %s ]', $this->localeSession->getSessionVar(), $this->locale));
-            }
+            $this->logger?->info(sprintf('Session var "%s" set to [ %s ]', $this->localeSession->getSessionVar(), $this->locale));
             $this->localeSession->setLocale($this->locale);
             return true;
         }

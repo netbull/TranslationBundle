@@ -7,16 +7,10 @@ use NetBull\TranslationBundle\Information\AllowedLocalesProvider;
 class DefaultBestLocaleMatcher implements BestLocaleMatcherInterface
 {
     /**
-     * @var AllowedLocalesProvider
+     * @param AllowedLocalesProvider $allowedLocaleProvider
      */
-    private AllowedLocalesProvider $allowedLocaleProvider;
-
-    /**
-     * @param AllowedLocalesProvider $allowedLocales
-     */
-    public function __construct(AllowedLocalesProvider $allowedLocales)
+    public function __construct(private AllowedLocalesProvider $allowedLocaleProvider)
     {
-        $this->allowedLocaleProvider = $allowedLocales;
     }
 
     /**
@@ -26,12 +20,10 @@ class DefaultBestLocaleMatcher implements BestLocaleMatcherInterface
     public function match(string $locale): ?string
     {
         $allowedLocales = $this->allowedLocaleProvider->getAllowedLocales();
-        uasort($allowedLocales, function ($a, $b) {
-            return strlen($b) - strlen($a);
-        });
+        uasort($allowedLocales, fn ($a, $b) => strlen($b) - strlen($a));
 
         foreach ($allowedLocales as $allowedLocale) {
-            if (0 === strpos($locale, $allowedLocale)) {
+            if (str_starts_with($locale, $allowedLocale)) {
                 return $allowedLocale;
             }
         }

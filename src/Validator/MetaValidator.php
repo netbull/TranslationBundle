@@ -7,16 +7,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class MetaValidator
 {
     /**
-     * @var ValidatorInterface
-     */
-    private ValidatorInterface $validator;
-
-    /**
      * @param ValidatorInterface $validator
      */
-    public function __construct(ValidatorInterface $validator)
+    public function __construct(private ValidatorInterface $validator)
     {
-        $this->validator = $validator;
     }
 
     /**

@@ -7,41 +7,6 @@ use Symfony\Component\HttpFoundation\Cookie;
 class LocaleCookie
 {
     /**
-     * @var string
-     */
-    private string $name;
-
-    /**
-     * @var int
-     */
-    private int $ttl;
-
-    /**
-     * @var string
-     */
-    private string $path;
-
-    /**
-     * @var bool
-     */
-    private bool $secure;
-
-    /**
-     * @var bool
-     */
-    private bool $httpOnly;
-
-    /**
-     * @var bool
-     */
-    private bool $setOnChange;
-
-    /**
-     * @var string|null
-     */
-    private ?string $domain;
-
-    /**
      * @param string $name
      * @param int $ttl
      * @param string $path
@@ -50,15 +15,15 @@ class LocaleCookie
      * @param bool $setOnChange
      * @param string|null $domain
      */
-    public function __construct(string $name, int $ttl, string $path, bool $secure, bool $httpOnly, bool $setOnChange, ?string $domain = null)
-    {
-        $this->name = $name;
-        $this->ttl = $ttl;
-        $this->path = $path;
-        $this->secure = $secure;
-        $this->httpOnly = $httpOnly;
-        $this->setOnChange = $setOnChange;
-        $this->domain = $domain;
+    public function __construct(
+        private string $name,
+        private int $ttl,
+        private string $path,
+        private bool $secure,
+        private bool $httpOnly,
+        private bool $setOnChange,
+        private ?string $domain = null
+    ) {
     }
 
     /**

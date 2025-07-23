@@ -10,44 +10,24 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class LocaleValidator extends ConstraintValidator
 {
     /**
-     * @var bool
-     */
-    private bool $intlExtension;
-
-    /**
-     * @var array
-     */
-    private array $iso3166;
-
-    /**
-     * @var array
-     */
-    private array $iso639;
-
-    /**
-     * @var array
-     */
-    private array $script;
-
-    /**
      * @param bool $intlExtension Weather the intl extension is installed
      * @param array $iso3166
      * @param array $iso639
      * @param array $script
      */
-    public function __construct(bool $intlExtension = false, array $iso3166 = [], array $iso639 = [], array $script = [])
-    {
-        $this->intlExtension = $intlExtension;
-        $this->iso3166 = $iso3166;
-        $this->iso639 = $iso639;
-        $this->script = $script;
+    public function __construct(
+        private bool $intlExtension = false,
+        private array $iso3166 = [],
+        private array $iso639 = [],
+        private array $script = []
+    ) {
     }
 
     /**
      * @param mixed $value
      * @param Constraint $constraint
      */
-    public function validate($value, Constraint $constraint)
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (null === $value || '' === $value) {
             return;

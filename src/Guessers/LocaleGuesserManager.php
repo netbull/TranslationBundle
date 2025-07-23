@@ -11,16 +11,6 @@ class LocaleGuesserManager
     /**
      * @var array
      */
-    private array $guessingOrder;
-
-    /**
-     * @var LoggerInterface|null
-     */
-    private ?LoggerInterface $logger;
-
-    /**
-     * @var array
-     */
     private array $guessers = [];
 
     /**
@@ -32,17 +22,17 @@ class LocaleGuesserManager
      * @param array $guessingOrder
      * @param LoggerInterface|null $logger
      */
-    public function __construct(array $guessingOrder, LoggerInterface $logger = null)
-    {
-        $this->guessingOrder = $guessingOrder;
-        $this->logger = $logger;
+    public function __construct(
+        private array $guessingOrder,
+        private ?LoggerInterface $logger = null
+    ) {
     }
 
     /**
      * @param LocaleGuesserInterface $guesser The Guesser Service
      * @param string $alias Alias of the Service
      */
-    public function addGuesser(LocaleGuesserInterface $guesser, string $alias)
+    public function addGuesser(LocaleGuesserInterface $guesser, string $alias): void
     {
         $this->guessers[$alias] = $guesser;
     }
@@ -63,7 +53,7 @@ class LocaleGuesserManager
     /**
      * @param string $alias
      */
-    public function removeGuesser(string $alias)
+    public function removeGuesser(string $alias): void
     {
         unset($this->guessers[$alias]);
     }
@@ -95,13 +85,11 @@ class LocaleGuesserManager
     /**
      * Log detection events
      * @param string $logMessage
-     * @param mixed $parameters
+     * @param mixed|null $parameters
      */
-    private function logEvent(string $logMessage, $parameters = null)
+    private function logEvent(string $logMessage, mixed $parameters = null): void
     {
-        if (null !== $this->logger) {
-            $this->logger->debug(sprintf($logMessage, $parameters));
-        }
+        $this->logger?->debug(sprintf($logMessage, $parameters));
     }
 
     /**

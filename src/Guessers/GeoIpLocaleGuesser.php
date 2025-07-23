@@ -12,26 +12,6 @@ use NetBull\TranslationBundle\Validator\MetaValidator;
 class GeoIpLocaleGuesser extends AbstractLocaleGuesser
 {
     /**
-     * @var MetaValidator
-     */
-    private MetaValidator $metaValidator;
-
-    /**
-     * @var string
-     */
-    private string $binary;
-
-    /**
-     * @var string
-     */
-    private string $default;
-
-    /**
-     * @var CountryMap
-     */
-    private CountryMap $countryMap;
-
-    /**
      * @var Reader|null
      */
     private ?Reader $reader = null;
@@ -42,23 +22,23 @@ class GeoIpLocaleGuesser extends AbstractLocaleGuesser
      * @param string $default
      * @param CountryMap $countryMap
      */
-    public function __construct(MetaValidator $metaValidator, string $binary, string $default, CountryMap $countryMap)
-    {
-        $this->metaValidator = $metaValidator;
-        $this->binary = $binary;
-        $this->default = $default;
-        $this->countryMap = $countryMap;
+    public function __construct(
+        private MetaValidator $metaValidator,
+        private string $binary,
+        private string $default,
+        private CountryMap $countryMap
+    ) {
     }
 
     /**
-     * @return Reader|null
+     * @return Reader
      */
     private function getReader(): Reader
     {
         if (!$this->reader) {
             try {
                 $this->reader = new Reader($this->binary);
-            } catch (InvalidDatabaseException $e) {}
+            } catch (InvalidDatabaseException) {}
         }
 
         return $this->reader;
@@ -74,7 +54,7 @@ class GeoIpLocaleGuesser extends AbstractLocaleGuesser
             try{
                 $record = $this->getReader()->country($request->getClientIp());
                 $country = strtolower($record->country->isoCode);
-            } catch (AddressNotFoundException | InvalidDatabaseException $e) {
+            } catch (AddressNotFoundException | InvalidDatabaseException) {
                 return false;
             }
         } else {

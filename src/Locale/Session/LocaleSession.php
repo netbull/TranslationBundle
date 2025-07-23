@@ -9,22 +9,13 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class LocaleSession
 {
     /**
-     * @var RequestStack
-     */
-    private RequestStack $requestStack;
-    /**
-     * @var string
-     */
-    private string $sessionVar;
-
-    /**
      * @param RequestStack $requestStack
      * @param string $sessionVar
      */
-    public function __construct(RequestStack $requestStack, string $sessionVar = 'ntl')
-    {
-        $this->requestStack = $requestStack;
-        $this->sessionVar = $sessionVar;
+    public function __construct(
+        private RequestStack $requestStack,
+        private string $sessionVar = 'ntl'
+    ) {
     }
 
     /**
@@ -43,7 +34,7 @@ class LocaleSession
     /**
      * @param string $locale
      */
-    public function setLocale(string $locale)
+    public function setLocale(string $locale): void
     {
         if ($session = $this->getSession()) {
             $session->set($this->sessionVar, $locale);
@@ -79,7 +70,7 @@ class LocaleSession
     {
         try {
             $session = $this->requestStack->getSession();
-        } catch (SessionNotFoundException $e) {
+        } catch (SessionNotFoundException) {
             return null;
         }
 

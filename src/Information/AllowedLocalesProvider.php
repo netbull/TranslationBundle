@@ -5,16 +5,10 @@ namespace NetBull\TranslationBundle\Information;
 class AllowedLocalesProvider implements AllowedLocalesProviderInterface
 {
     /**
-     * @var array
-     */
-    protected array $allowedLocales;
-
-    /**
      * @param array $allowedLocales
      */
-    public function __construct(array $allowedLocales = [])
+    public function __construct(protected array $allowedLocales = [])
     {
-        $this->allowedLocales = $allowedLocales;
     }
 
     /**
@@ -29,7 +23,7 @@ class AllowedLocalesProvider implements AllowedLocalesProviderInterface
      * Set the list of the allowed locales
      * @param array $allowedLocales
      */
-    public function setAllowedLocales(array $allowedLocales)
+    public function setAllowedLocales(array $allowedLocales): void
     {
         $this->allowedLocales = $allowedLocales;
     }

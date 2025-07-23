@@ -14,36 +14,6 @@ use NetBull\TranslationBundle\Event\FilterLocaleSwitchEvent;
 class LocaleController
 {
     /**
-     * @var EventDispatcherInterface
-     */
-    private EventDispatcherInterface $dispatcher;
-
-    /**
-     * @var MetaValidator
-     */
-    private MetaValidator $metaValidator;
-
-    /**
-     * @var RouterInterface|null
-     */
-    private ?RouterInterface $router;
-
-    /**
-     * @var bool
-     */
-    private bool $useReferrer;
-
-    /**
-     * @var string|null
-     */
-    private ?string $redirectToRoute;
-
-    /**
-     * @var string
-     */
-    private $statusCode;
-
-    /**
      * @param EventDispatcherInterface $dispatcher
      * @param MetaValidator $metaValidator
      * @param RouterInterface|null $router
@@ -51,14 +21,14 @@ class LocaleController
      * @param string|null $redirectToRoute
      * @param string $statusCode
      */
-    public function __construct(EventDispatcherInterface $dispatcher, MetaValidator $metaValidator, RouterInterface $router = null, bool $useReferrer = true, string $redirectToRoute = null, string $statusCode = Response::HTTP_FOUND)
-    {
-        $this->dispatcher = $dispatcher;
-        $this->metaValidator = $metaValidator;
-        $this->router = $router;
-        $this->useReferrer = $useReferrer;
-        $this->redirectToRoute = $redirectToRoute;
-        $this->statusCode = $statusCode;
+    public function __construct(
+        private EventDispatcherInterface $dispatcher,
+        private MetaValidator $metaValidator,
+        private ?RouterInterface $router = null,
+        private bool $useReferrer = true,
+        private ?string $redirectToRoute = null,
+        private string $statusCode = Response::HTTP_FOUND
+    ) {
     }
 
     /**

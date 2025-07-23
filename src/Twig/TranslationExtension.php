@@ -15,23 +15,13 @@ use Twig\TwigFunction;
 class TranslationExtension extends AbstractExtension
 {
     /**
-     * @var ContainerInterface
-     */
-    protected ContainerInterface $container;
-
-    /**
-     * @var RequestStack
-     */
-    private RequestStack $requestStack;
-
-    /**
      * @param ContainerInterface $container
      * @param RequestStack $requestStack
      */
-    public function __construct(ContainerInterface $container, RequestStack $requestStack)
-    {
-        $this->container = $container;
-        $this->requestStack = $requestStack;
+    public function __construct(
+        private ContainerInterface $container,
+        private RequestStack $requestStack
+    ) {
     }
 
     /**
@@ -66,7 +56,7 @@ class TranslationExtension extends AbstractExtension
      * @return mixed
      * @throws Exception
      */
-    public function renderSwitcher(string $template = null, array $parameters = [], $route = null)
+    public function renderSwitcher(string $template = null, array $parameters = [], $route = null): mixed
     {
         if (!$route) {
             $route = $this->container->getParameter('netbull_translation.switcher.route');
@@ -92,7 +82,7 @@ class TranslationExtension extends AbstractExtension
      * @param bool $strict
      * @return array|string|null
      */
-    public function guessTranslation(array $translations, string $field = 'name', ?string $locale = null, bool $strict = false)
+    public function guessTranslation(array $translations, string $field = 'name', ?string $locale = null, bool $strict = false): array|string|null
     {
         if (empty($translations)) {
             return '';
@@ -133,7 +123,7 @@ class TranslationExtension extends AbstractExtension
     {
         $request = $this->requestStack->getCurrentRequest();
         $auto = $request ? $request->getLocale() : 'en';
-        $toLocale = ($toLocale)?$toLocale:$auto;
+        $toLocale = $toLocale?:$auto;
         $language = Locale::getDisplayLanguage($locale, $toLocale);
 
         return mb_convert_case($language, MB_CASE_TITLE, 'UTF-8');

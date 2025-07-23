@@ -13,53 +13,28 @@ use Symfony\Component\Routing\Generator\ConfigurableRequirementsInterface;
 class TargetInformationBuilder
 {
     /**
-     * @var Request
-     */
-    private Request $request;
-
-    /**
-     * @var RouterInterface
-     */
-    private RouterInterface $router;
-
-    /**
-     * @var array
-     */
-    private array $allowedLocales;
-
-    /**
-     * @var bool
-     */
-    private bool $showCurrentLocale;
-
-    /**
-     * @var bool
-     */
-    private bool $useController;
-
-    /**
      * @param Request $request
      * @param RouterInterface $router
      * @param array $allowedLocales
      * @param bool $showCurrentLocale
      * @param bool $useController
      */
-    public function __construct(Request $request, RouterInterface $router, array $allowedLocales = [], bool $showCurrentLocale = false, bool $useController = false)
-    {
-        $this->request = $request;
-        $this->router = $router;
-        $this->allowedLocales = $allowedLocales;
-        $this->showCurrentLocale = $showCurrentLocale;
-        $this->useController = $useController;
+    public function __construct(
+        private Request $request,
+        private RouterInterface $router,
+        private array $allowedLocales = [],
+        private bool $showCurrentLocale = false,
+        private bool $useController = false
+    ) {
     }
 
     /**
-     * @param null $targetRoute
+     * @param $targetRoute
      * @param array $parameters
-     * @return mixed
+     * @return array
      * @throws Exception
      */
-    public function getTargetInformation($targetRoute = null, array $parameters = [])
+    public function getTargetInformation($targetRoute = null, array $parameters = []): array
     {
         $route = $this->request->attributes->get('_route');
         $generator = null;
@@ -77,7 +52,7 @@ class TargetInformationBuilder
         $info['locales'] = [];
 
         foreach ($this->allowedLocales as $locale) {
-            $strpos = 0 === strpos($this->request->getLocale(), $locale);
+            $strpos = str_starts_with($this->request->getLocale(), $locale);
 
             if (($this->showCurrentLocale && $strpos) || !$strpos) {
                 $targetLocaleTargetLang = Languages::getName($locale, $locale);
@@ -97,10 +72,7 @@ class TargetInformationBuilder
                         } else {
                             continue;
                         }
-                    } catch (RouteNotFoundException $e) {
-                        // skip routes for which we cannot generate a url for the given locale
-                        continue;
-                    } catch (InvalidParameterException $e) {
+                    } catch (RouteNotFoundException | InvalidParameterException) {
                         // skip routes for which we cannot generate a url for the given locale
                         continue;
                     } catch (Exception $e) {

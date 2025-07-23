@@ -5,16 +5,10 @@ namespace NetBull\TranslationBundle\Locale;
 class LocaleMap
 {
     /**
-     * @var array
-     */
-    private array $map;
-
-    /**
      * @param array $map topLevelDomain locale map, [tld => locale]
      */
-    public function __construct(array $map = [])
+    public function __construct(private array $map = [])
     {
-        $this->map = $map;
     }
 
     /**

@@ -17,7 +17,7 @@ class NetBullTranslationExtension extends Extension
      * @return void
      * @throws Exception
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
@@ -63,7 +63,7 @@ class NetBullTranslationExtension extends Extension
      * @param $name
      * @param $config
      */
-    public function bindParameters(ContainerBuilder $container, $name, $config)
+    public function bindParameters(ContainerBuilder $container, $name, $config): void
     {
         if (is_array($config) && empty($config[0])) {
             foreach ($config as $key => $value) {

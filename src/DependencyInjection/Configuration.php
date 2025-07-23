@@ -53,7 +53,7 @@ class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $rootNode
      */
-    private function addCookieSection(ArrayNodeDefinition $rootNode)
+    private function addCookieSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
             ->children()
@@ -76,7 +76,7 @@ class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $rootNode
      */
-    private function addSessionSection(ArrayNodeDefinition $rootNode)
+    private function addSessionSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
             ->children()
@@ -92,7 +92,7 @@ class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $rootNode
      */
-    private function addGeoIpSection(ArrayNodeDefinition $rootNode)
+    private function addGeoIpSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
             ->children()
@@ -112,7 +112,7 @@ class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $rootNode
      */
-    private function addSwitcherSection(ArrayNodeDefinition $rootNode)
+    private function addSwitcherSection(ArrayNodeDefinition $rootNode): void
     {
         $validStatusCodes = [
             Response::HTTP_MULTIPLE_CHOICES, // 300

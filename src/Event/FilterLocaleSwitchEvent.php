@@ -10,23 +10,13 @@ class FilterLocaleSwitchEvent extends Event
     public const NAME = 'netbull_translation.locale.change';
 
     /**
-     * @var Request
-     */
-    protected Request $request;
-
-    /**
-     * @var string
-     */
-    protected string $locale;
-
-    /**
      * @param Request $request
      * @param string $locale
      */
-    public function __construct(Request $request, string $locale)
-    {
-        $this->request = $request;
-        $this->locale = $locale;
+    public function __construct(
+        protected Request $request,
+        protected string $locale
+    ) {
     }
 
     /**

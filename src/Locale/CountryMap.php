@@ -5,16 +5,10 @@ namespace NetBull\TranslationBundle\Locale;
 class CountryMap
 {
     /**
-     * @var array
-     */
-    private array $map;
-
-    /**
      * @param array $map country map, [country_iso2_code => locale]
      */
-    public function __construct(array $map = [])
+    public function __construct(private array $map = [])
     {
-        $this->map = $map;
     }
 
     /**

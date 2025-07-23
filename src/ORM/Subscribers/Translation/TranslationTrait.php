@@ -2,12 +2,12 @@
 
 namespace NetBull\TranslationBundle\ORM\Subscribers\Translation;
 
-use Knp\DoctrineBehaviors\Model\Translatable\TranslationTrait as KnpTranslationTrait;
+use NetBull\DoctrineBehaviors\Model\Translatable\TranslationTrait as NetBullTranslationTrait;
 use ReflectionClass;
 
 trait TranslationTrait
 {
-    use KnpTranslationTrait;
+    use NetBullTranslationTrait;
 
     /**
      * @return array

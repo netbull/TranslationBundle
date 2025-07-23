@@ -13,7 +13,7 @@ class NetBullTranslationBundle extends Bundle
     /**
      * @param ContainerBuilder $container
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -21,9 +21,9 @@ class NetBullTranslationBundle extends Bundle
     }
 
     /**
-     * @return NetBullTranslationExtension|null|ExtensionInterface
+     * @return ExtensionInterface|null
      */
-    public function getContainerExtension()
+    public function getContainerExtension(): ?ExtensionInterface
     {
         return new NetBullTranslationExtension();
     }

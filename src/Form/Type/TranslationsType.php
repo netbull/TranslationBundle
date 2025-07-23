@@ -17,21 +17,6 @@ class TranslationsType extends AbstractType
     const RENDER_TYPE_TABS_SMALL = 'tabs_small';
 
     /**
-     * @var TranslationsSubscriber
-     */
-    private TranslationsSubscriber $translationsSubscriber;
-
-    /**
-     * @var array
-     */
-    private array $locales;
-
-    /**
-     * @var array
-     */
-    private $defaultLocale;
-
-    /**
      * @var array
      */
     private array $renderTypes = [self::RENDER_TYPE_ROWS, self::RENDER_TYPE_TABS, self::RENDER_TYPE_TABS_SMALL];
@@ -51,18 +36,18 @@ class TranslationsType extends AbstractType
      * @param string $defaultLocale
      * @param array $locales
      */
-    public function __construct(TranslationsSubscriber $translationsSubscriber, string $defaultLocale = 'en', array $locales = [])
-    {
-        $this->translationsSubscriber = $translationsSubscriber;
-        $this->locales = $locales;
-        $this->defaultLocale = $defaultLocale;
+    public function __construct(
+        private TranslationsSubscriber $translationsSubscriber,
+        private string $defaultLocale = 'en',
+        private array $locales = []
+    ) {
     }
 
     /**
      * @param string $name
      * @param FormInterface|null $prototype
      */
-    public function setPrototype(string $name, ?FormInterface $prototype = null)
+    public function setPrototype(string $name, ?FormInterface $prototype = null): void
     {
         $this->prototypes[$name] = $prototype;
     }
@@ -81,7 +66,7 @@ class TranslationsType extends AbstractType
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this->renderType = $options['render_type'];
         $this->translationsSubscriber->setParentForm($this);
@@ -96,7 +81,7 @@ class TranslationsType extends AbstractType
      * @param FormInterface $form
      * @param array $options
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['default_locale'] = $options['default_locale'];
         $view->vars['required_locales'] = $options['required_locales'];
@@ -121,7 +106,7 @@ class TranslationsType extends AbstractType
     /**
      * @param OptionsResolver $resolver
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'by_reference' => false,

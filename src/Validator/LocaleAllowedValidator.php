@@ -10,23 +10,17 @@ use NetBull\TranslationBundle\Information\AllowedLocalesProviderInterface;
 class LocaleAllowedValidator extends ConstraintValidator
 {
     /**
-     * @var AllowedLocalesProviderInterface
-     */
-    private AllowedLocalesProviderInterface $allowedLocalesProvider;
-
-    /**
      * @param AllowedLocalesProviderInterface $allowedLocalesProvider
      */
-    public function __construct(AllowedLocalesProviderInterface $allowedLocalesProvider)
+    public function __construct(private AllowedLocalesProviderInterface $allowedLocalesProvider)
     {
-        $this->allowedLocalesProvider = $allowedLocalesProvider;
     }
 
     /**
      * @param mixed $value
      * @param Constraint $constraint
      */
-    public function validate($value, Constraint $constraint)
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (null === $value || '' === $value) {
             return;

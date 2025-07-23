@@ -8,16 +8,10 @@ use NetBull\TranslationBundle\Validator\MetaValidator;
 class RouteParamLocaleGuesser extends AbstractLocaleGuesser
 {
     /**
-     * @var MetaValidator
-     */
-    private MetaValidator $metaValidator;
-
-    /**
      * @param MetaValidator $metaValidator
      */
-    public function __construct(MetaValidator $metaValidator)
+    public function __construct(private MetaValidator $metaValidator)
     {
-        $this->metaValidator = $metaValidator;
     }
 
     /**

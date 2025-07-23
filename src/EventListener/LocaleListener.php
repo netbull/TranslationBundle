@@ -8,7 +8,6 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use NetBull\TranslationBundle\Guessers\LocaleGuesserManager;
@@ -17,26 +16,6 @@ use NetBull\TranslationBundle\Matcher\BestLocaleMatcherInterface;
 
 class LocaleListener implements EventSubscriberInterface
 {
-    /**
-     * @var string
-     */
-    private string $defaultLocale;
-
-    /**
-     * @var LocaleGuesserManager
-     */
-    private LocaleGuesserManager $guesserManager;
-
-    /**
-     * @var BestLocaleMatcherInterface|null
-     */
-    private ?BestLocaleMatcherInterface $bestLocaleMatcher;
-
-    /**
-     * @var LoggerInterface|null
-     */
-    private ?LoggerInterface $logger;
-
     /**
      * @var EventDispatcherInterface|null
      */
@@ -58,12 +37,12 @@ class LocaleListener implements EventSubscriberInterface
      * @param BestLocaleMatcherInterface|null $bestLocaleMatcher
      * @param LoggerInterface|null $logger
      */
-    public function __construct(LocaleGuesserManager $guesserManager, string $defaultLocale = 'en', BestLocaleMatcherInterface $bestLocaleMatcher = null, LoggerInterface $logger = null)
-    {
-        $this->defaultLocale = $defaultLocale;
-        $this->guesserManager = $guesserManager;
-        $this->bestLocaleMatcher = $bestLocaleMatcher;
-        $this->logger = $logger;
+    public function __construct(
+        private LocaleGuesserManager $guesserManager,
+        private string $defaultLocale = 'en',
+        private ?BestLocaleMatcherInterface $bestLocaleMatcher = null,
+        private ?LoggerInterface $logger = null
+    ) {
     }
 
     /**
@@ -76,7 +55,7 @@ class LocaleListener implements EventSubscriberInterface
      *
      * @param RequestEvent $event
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
         if ($this->excludedPattern && preg_match(sprintf('#%s#', $this->excludedPattern), $request->getPathInfo())) {
@@ -122,7 +101,7 @@ class LocaleListener implements EventSubscriberInterface
     /**
      * @param EventDispatcherInterface $dispatcher
      */
-    public function setEventDispatcher(EventDispatcherInterface $dispatcher)
+    public function setEventDispatcher(EventDispatcherInterface $dispatcher): void
     {
         $this->dispatcher = $dispatcher;
     }
@@ -130,7 +109,7 @@ class LocaleListener implements EventSubscriberInterface
     /**
      * @param bool $disableVaryHeader
      */
-    public function setDisableVaryHeader(bool $disableVaryHeader)
+    public function setDisableVaryHeader(bool $disableVaryHeader): void
     {
         $this->disableVaryHeader = $disableVaryHeader;
     }
@@ -138,7 +117,7 @@ class LocaleListener implements EventSubscriberInterface
     /**
      * @param string|null $excludedPattern
      */
-    public function setExcludedPattern(?string $excludedPattern)
+    public function setExcludedPattern(?string $excludedPattern): void
     {
         $this->excludedPattern = $excludedPattern;
     }
@@ -147,11 +126,9 @@ class LocaleListener implements EventSubscriberInterface
      * @param string $logMessage
      * @param $parameters
      */
-    private function logEvent(string $logMessage, $parameters = null)
+    private function logEvent(string $logMessage, $parameters = null): void
     {
-        if (null !== $this->logger) {
-            $this->logger->info(sprintf($logMessage, $parameters));
-        }
+        $this->logger?->info(sprintf($logMessage, $parameters));
     }
 
     /**

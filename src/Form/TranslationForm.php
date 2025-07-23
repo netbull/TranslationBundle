@@ -14,28 +14,24 @@ class TranslationForm
     /**
      * @var mixed|FormTypeGuesserChain|FormTypeGuesserInterface
      */
-    private $typeGuesser;
-
-    /**
-     * @var Registry
-     */
-    private Registry $registry;
+    private mixed $typeGuesser;
 
     /**
      * @param FormRegistry $formRegistry
      * @param Registry $registry
      */
-    public function __construct(FormRegistry $formRegistry, Registry $registry)
-    {
+    public function __construct(
+        FormRegistry $formRegistry,
+        private Registry $registry
+    ) {
         $this->typeGuesser = $formRegistry->getTypeGuesser();
-        $this->registry = $registry;
     }
 
     /**
      * @param string $class
-     * @return bool|string
+     * @return string
      */
-    private function getRealClass(string $class)
+    private function getRealClass(string $class): string
     {
         if (false === $pos = strrpos($class, '\\' . Proxy::MARKER . '\\')) {
             return $class;
@@ -128,7 +124,7 @@ class TranslationForm
                     $localesFieldOptions = $fieldOptions['locale_options'];
                     unset($fieldOptions['locale_options']);
 
-                    $localeFieldOptions = $localesFieldOptions ? $localesFieldOptions : [];
+                    $localeFieldOptions = $localesFieldOptions ?: [];
                     if (!isset($localeFieldOptions['display']) || $localeFieldOptions['display']) {
                         $fieldsOptions[$field] = $localeFieldOptions + $fieldOptions;
                     }

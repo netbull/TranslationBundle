@@ -13,16 +13,6 @@ use NetBull\TranslationBundle\Form\Type\TranslationsFieldsType;
 class TranslationsSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var TranslationForm
-     */
-    private TranslationForm $translationForm;
-
-    /**
-     * @var Form\FormFactoryInterface
-     */
-    private Form\FormFactoryInterface $formFactory;
-
-    /**
      * @var TranslationsType|null
      */
     private ?TranslationsType $parentForm = null;
@@ -31,16 +21,16 @@ class TranslationsSubscriber implements EventSubscriberInterface
      * @param TranslationForm $translationForm
      * @param Form\FormFactoryInterface $formFactory
      */
-    public function __construct(TranslationForm $translationForm, Form\FormFactoryInterface $formFactory)
-    {
-        $this->translationForm = $translationForm;
-        $this->formFactory = $formFactory;
+    public function __construct(
+        private TranslationForm $translationForm,
+        private Form\FormFactoryInterface $formFactory
+    ) {
     }
 
     /**
      * @param TranslationsType $form
      */
-    public function setParentForm(TranslationsType $form)
+    public function setParentForm(TranslationsType $form): void
     {
         $this->parentForm = $form;
     }
@@ -50,7 +40,7 @@ class TranslationsSubscriber implements EventSubscriberInterface
      * @return void
      * @throws Exception
      */
-    public function preSetData(Form\FormEvent $event)
+    public function preSetData(Form\FormEvent $event): void
     {
         $form = $event->getForm();
 
@@ -91,7 +81,7 @@ class TranslationsSubscriber implements EventSubscriberInterface
     /**
      * @param Form\FormEvent $event
      */
-    public function submit(Form\FormEvent $event)
+    public function submit(Form\FormEvent $event): void
     {
         $data = $event->getData();
         $form = $event->getForm();
@@ -132,7 +122,7 @@ class TranslationsSubscriber implements EventSubscriberInterface
      * @param mixed $translatableClass
      * @return string
      */
-    private function getTranslationClass($translatableClass): string
+    private function getTranslationClass(mixed $translatableClass): string
     {
         if (method_exists($translatableClass, 'getTranslationEntityClass')) {
             return $translatableClass::getTranslationEntityClass();

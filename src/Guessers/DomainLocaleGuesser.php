@@ -9,23 +9,13 @@ use NetBull\TranslationBundle\Validator\MetaValidator;
 class DomainLocaleGuesser extends AbstractLocaleGuesser
 {
     /**
-     * @var MetaValidator
-     */
-    private MetaValidator $metaValidator;
-
-    /**
-     * @var LocaleMap
-     */
-    private LocaleMap $localeMap;
-
-    /**
      * @param MetaValidator $metaValidator
      * @param LocaleMap $localeMap
      */
-    public function __construct(MetaValidator $metaValidator, LocaleMap $localeMap)
-    {
-        $this->metaValidator = $metaValidator;
-        $this->localeMap = $localeMap;
+    public function __construct(
+        private MetaValidator $metaValidator,
+        private LocaleMap $localeMap
+    ) {
     }
 
     /**

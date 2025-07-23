@@ -17,7 +17,7 @@ class TranslationsFieldsType extends AbstractType
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         foreach ($options['fields'] as $fieldName => $fieldConfig) {
             $fieldType = $fieldConfig['field_type'];
@@ -36,7 +36,7 @@ class TranslationsFieldsType extends AbstractType
      * @param FormInterface $form
      * @param array $options
      */
-    public function finishView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['empty'] = self::isTranslationEmpty($form);
     }
@@ -62,7 +62,7 @@ class TranslationsFieldsType extends AbstractType
      * @param mixed $payload
      * @param ExecutionContextInterface $context
      */
-    public function validate($payload, ExecutionContextInterface $context)
+    public function validate(mixed $payload, ExecutionContextInterface $context): void
     {
         /** @var FormInterface $form **/
         $form = $context->getObject();
@@ -81,7 +81,7 @@ class TranslationsFieldsType extends AbstractType
     /**
      * @param OptionsResolver $resolver
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'fields' => [],
