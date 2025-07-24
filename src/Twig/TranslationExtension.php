@@ -4,6 +4,8 @@ namespace NetBull\TranslationBundle\Twig;
 
 use Exception;
 use Locale;
+use NetBull\TranslationBundle\Information\AllowedLocalesProvider;
+use NetBull\TranslationBundle\Templating\LocaleSwitchHelper;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use NetBull\TranslationBundle\Utils\TranslationGuesser;
@@ -64,12 +66,12 @@ class TranslationExtension extends AbstractExtension
 
         $showCurrentLocale = $this->container->getParameter('netbull_translation.switcher.show_current_locale');
         $useController = $this->container->getParameter('netbull_translation.switcher.use_controller');
-        $allowedLocales = $this->container->get('netbull_translation.allowed_locales_provider')->getAllowedLocales();
+        $allowedLocales = $this->container->get(AllowedLocalesProvider::class)->getAllowedLocales();
         $request = $this->container->get('request_stack')->getMainRequest();
         $infoBuilder = new TargetInformationBuilder($request, $this->container->get('router'), $allowedLocales, $showCurrentLocale, $useController);
         $info = $infoBuilder->getTargetInformation($route, $parameters);
 
-        return $this->container->get('netbull_translation.locale_switcher_helper')->renderSwitch($info, $template);
+        return $this->container->get(LocaleSwitchHelper::class)->renderSwitch($info, $template);
     }
 
     #########################################
