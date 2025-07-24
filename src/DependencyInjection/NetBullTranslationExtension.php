@@ -3,6 +3,7 @@
 namespace NetBull\TranslationBundle\DependencyInjection;
 
 use Exception;
+use NetBull\TranslationBundle\Form\Type\TranslationsType;
 use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader;
@@ -52,7 +53,7 @@ class NetBullTranslationExtension extends Extension
         }
 
         $loader->load('forms.yaml');
-        $container->getDefinition('netbull_translation.type.translations')
+        $container->getDefinition(TranslationsType::class)
             ->replaceArgument(2, $config['allowed_locales']);
 
         $loader->load('services.yaml');

@@ -7,8 +7,7 @@ services:
     NetBull\TranslationBundle\:
         resource: '../../**/*Listener.php'
 
-    netbull_translation.twig.extension:
-        class: NetBull\TranslationBundle\Twig\TranslationExtension
+    NetBull\TranslationBundle\Twig\TranslationExtension:
         arguments: [ '@service_container', '@request_stack' ]
         tags:
             - { name: twig.extension }

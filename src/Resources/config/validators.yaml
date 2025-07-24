@@ -1,6 +1,5 @@
 services:
-    netbull_translation.validator.locale:
-        class: NetBull\TranslationBundle\Validator\LocaleValidator
+    NetBull\TranslationBundle\Validator\LocaleValidator:
         tags:
             - { name: validator.constraint_validator, alias: netbull_translation.validator.locale }
         arguments:
@@ -9,12 +8,10 @@ services:
             - '%netbull_translation.intl_extension_fallback.iso639%'
             - '%netbull_translation.intl_extension_fallback.script%'
 
-    netbull_translation.validator.locale_allowed:
-        class: NetBull\TranslationBundle\Validator\LocaleAllowedValidator
+    NetBull\TranslationBundle\Validator\LocaleAllowedValidator:
         tags:
             - { name: validator.constraint_validator, alias: netbull_translation.validator.locale_allowed }
-        arguments: [ '@netbull_translation.allowed_locales_provider' ]
+        arguments: [ '@NetBull\TranslationBundle\Information\AllowedLocalesProvider' ]
 
-    netbull_translation.validator.meta:
-        class: NetBull\TranslationBundle\Validator\MetaValidator
+    NetBull\TranslationBundle\Validator\MetaValidator:
         arguments: [ '@validator' ]

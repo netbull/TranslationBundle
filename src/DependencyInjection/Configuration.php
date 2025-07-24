@@ -2,7 +2,6 @@
 
 namespace NetBull\TranslationBundle\DependencyInjection;
 
-use NetBull\TranslationBundle\Locale\Cookie\LocaleCookie;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -61,7 +60,6 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('set_on_change')->defaultTrue()->end()
-                        ->scalarNode('class')->defaultValue(LocaleCookie::class)->end()
                         ->scalarNode('name')->defaultValue('ntl')->end()
                         ->integerNode('ttl')->defaultValue(86400)->end()
                         ->scalarNode('path')->defaultValue('/')->end()
