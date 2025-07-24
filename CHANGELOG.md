@@ -1,3 +1,10 @@
+## [7.0.2](https://github.com/netbull/TranslationBundle/compare/v7.0.1...v7.0.2) (2025-07-24)
+
+
+### Bug Fixes
+
+* adjustments ([cecea2b](https://github.com/netbull/TranslationBundle/commit/cecea2b51a26ecf8e5c3861e02c6fd2d95c5660b))
+
 ## [7.0.1](https://github.com/netbull/TranslationBundle/compare/v7.0.0...v7.0.1) (2025-07-24)
 
 
