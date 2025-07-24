@@ -1,3 +1,16 @@
+# [6.0.0](https://github.com/netbull/TranslationBundle/compare/v5.5.4...v6.0.0) (2025-07-23)
+
+
+### Bug Fixes
+
+* adjustments ([5fa7287](https://github.com/netbull/TranslationBundle/commit/5fa72878519f11fa4a40e0d2e3e5d833338ff4f2))
+* adjustments ([87f3ec3](https://github.com/netbull/TranslationBundle/commit/87f3ec375663e370fb16a18813f69320aacad1fc))
+
+
+### BREAKING CHANGES
+
+* adj
+
 ## [5.5.4](https://github.com/netbull/TranslationBundle/compare/v5.5.3...v5.5.4) (2022-07-14)
 
 
