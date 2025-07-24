@@ -2,6 +2,7 @@
 
 namespace NetBull\TranslationBundle\DependencyInjection\Compiler;
 
+use NetBull\TranslationBundle\Guessers\LocaleGuesserManager;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -13,11 +14,11 @@ class GuesserCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container): void
     {
-        if (false === $container->hasDefinition('netbull_translation.locale_guess_manager')) {
+        if (false === $container->hasDefinition(LocaleGuesserManager::class)) {
             return;
         }
 
-        $definition = $container->getDefinition('netbull_translation.locale_guess_manager');
+        $definition = $container->getDefinition(LocaleGuesserManager::class);
         $taggedServiceIds = $container->findTaggedServiceIds('locale_guesser');
         $neededServices = $container->getParameter('netbull_translation.guessing_order');
 
