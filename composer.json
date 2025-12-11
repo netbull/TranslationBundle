@@ -20,7 +20,7 @@
         "symfony/yaml": "7.2.*|7.3.*|7.4.*",
         "symfony/form": "7.2.*|7.3.*|7.4.*",
       "ext-intl": "*",
-        "symfony/validator": "7.2.*",
+        "symfony/validator": "7.2.*|7.3.*|7.4.*",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/orm": "^2.12",
         "symfony/intl": "7.2.*|7.3.*|7.4.*",
