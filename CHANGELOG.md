@@ -1,3 +1,10 @@
+## [7.0.5](https://github.com/netbull/TranslationBundle/compare/v7.0.4...v7.0.5) (2025-12-11)
+
+
+### Bug Fixes
+
+* bump versions ([7d2dfe0](https://github.com/netbull/TranslationBundle/commit/7d2dfe0390b9f34f7e340298ade48849839aa0eb))
+
 ## [7.0.4](https://github.com/netbull/TranslationBundle/compare/v7.0.3...v7.0.4) (2025-11-21)
 
 
