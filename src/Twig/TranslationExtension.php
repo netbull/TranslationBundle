@@ -58,7 +58,7 @@ class TranslationExtension extends AbstractExtension
      * @return mixed
      * @throws Exception
      */
-    public function renderSwitcher(string $template = null, array $parameters = [], $route = null): mixed
+    public function renderSwitcher(?string $template = null, array $parameters = [], $route = null): mixed
     {
         if (!$route) {
             $route = $this->container->getParameter('netbull_translation.switcher.route');
@@ -121,7 +121,7 @@ class TranslationExtension extends AbstractExtension
      * @param string|null $toLocale
      * @return string
      */
-    public function languageFromLocale(string $locale, string $toLocale = null): string
+    public function languageFromLocale(string $locale, ?string $toLocale = null): string
     {
         $request = $this->requestStack->getCurrentRequest();
         $auto = $request ? $request->getLocale() : 'en';
