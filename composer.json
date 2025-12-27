@@ -14,17 +14,17 @@
     "license": "AGPL-3.0-or-later",
     "require": {
         "php": "8.*",
-        "symfony/framework-bundle": "7.2.*",
+        "symfony/framework-bundle": "7.2.*|7.3.*|7.4.*",
         "netbull/doctrine-behaviors": "7.*",
         "geoip2/geoip2": "^2.10",
-        "symfony/yaml": "7.2.*",
-        "symfony/form": "7.2.*",
+        "symfony/yaml": "7.2.*|7.3.*|7.4.*",
+        "symfony/form": "7.2.*|7.3.*|7.4.*",
       "ext-intl": "*",
-        "symfony/validator": "7.2.*",
+        "symfony/validator": "7.2.*|7.3.*|7.4.*",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/orm": "^2.12",
-        "symfony/intl": "7.2.*",
-        "symfony/twig-bundle": "7.2.*"
+        "symfony/intl": "7.2.*|7.3.*|7.4.*",
+        "symfony/twig-bundle": "7.2.*|7.3.*|7.4.*"
     },
     "autoload": {
         "psr-4": {
