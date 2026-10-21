@@ -4,8 +4,11 @@ services:
         autoconfigure: true
         public: true
 
-    NetBull\TranslationBundle\:
-        resource: '../../**/*Listener.php'
+    # Doctrine listener, tagged through its #[AsDoctrineListener] attribute.
+    # Keep this explicit: the former '**/*Listener.php' prototype also matched the kernel listeners in
+    # EventListener/, replacing the definitions from listeners.yaml (dropping their arguments and calls)
+    # and registering them even with "disable_locale_listeners: true", where their dependencies are not loaded.
+    NetBull\TranslationBundle\ORM\Subscribers\Translation\TranslationListener: ~
 
     NetBull\TranslationBundle\Twig\TranslationExtension:
         arguments: [ '@service_container', '@request_stack' ]
