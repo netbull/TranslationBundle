@@ -1,3 +1,10 @@
+## [7.0.7](https://github.com/netbull/TranslationBundle/compare/v7.0.6...v7.0.7) (2026-10-21)
+
+
+### Bug Fixes
+
+* register only the ORM listener explicitly, fix the switcher route controller and the locale change event name ([ea22e4e](https://github.com/netbull/TranslationBundle/commit/ea22e4e88fabbde60297a0e53fab2e111ee402ac))
+
 ## [7.0.6](https://github.com/netbull/TranslationBundle/compare/v7.0.5...v7.0.6) (2025-12-27)
 
 
